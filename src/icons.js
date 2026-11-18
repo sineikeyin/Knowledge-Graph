@@ -1,0 +1,35 @@
+// 统一线性图标。使用内置 SVG，不依赖在线字体或第三方图标服务。
+const paths = {
+  home: '<path d="m3 10 9-7 9 7v10H3z"/><path d="M9 20v-7h6v7"/>',
+  folder: '<path d="M3 7V5h6l2 2h10v13H3z"/>',
+  layers: '<path d="m12 3 10 5-10 5L2 8zM3 12l9 5 9-5M3 16l9 5 9-5"/>',
+  build: '<path d="M4 4h6v6H4zM14 14h6v6h-6zM14 4h6v6h-6zM7 10v7h7M10 7h4"/>',
+  graph: '<path d="m6 6 12 2-6 11L6 6l13 11"/><circle cx="6" cy="6" r="3"/><circle cx="18" cy="8" r="3"/><circle cx="12" cy="19" r="3"/><circle cx="19" cy="17" r="2"/>',
+  search: '<circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/>',
+  rule: '<path d="M8 4H4v16h16v-4M9 8l3 3 8-8M8 15h6M8 18h4"/>',
+  plug: '<path d="M8 3v5M16 3v5M6 8h12v3a6 6 0 0 1-12 0zM12 17v4"/>',
+  users: '<circle cx="9" cy="8" r="3"/><path d="M3 21v-3a6 6 0 0 1 12 0v3M16 5a3 3 0 0 1 0 6M17 14a5 5 0 0 1 4 5v2"/>',
+  settings: '<path d="M10 3h4l1 3 3 1 3 3v4l-3 3-3 1-1 3h-4l-1-3-3-1-3-3v-4l3-3 3-1z"/><circle cx="12" cy="12" r="3"/>',
+  refresh: '<path d="M20 7v5h-5M4 17v-5h5M5 8a8 8 0 0 1 13-3l2 2M4 17l2 2a8 8 0 0 0 13-3"/>',
+  upload: '<path d="M12 16V3m-5 5 5-5 5 5M4 16v5h16v-5"/>',
+  arrow: '<path d="M4 12h16m-6-6 6 6-6 6"/>',
+  chevron: '<path d="m9 5 7 7-7 7"/>',
+  down: '<path d="m6 9 6 6 6-6"/>',
+  file: '<path d="M5 3h9l5 5v13H5zM14 3v6h5M8 13h8M8 17h6"/>',
+  well: '<path d="M12 3 5 21h14L12 3ZM8 16h8M10 10h4M4 21h16"/>',
+  check: '<path d="m5 12 4 4L19 6"/>',
+  clock: '<circle cx="12" cy="12" r="9"/><path d="M12 6v6l4 2"/>',
+  info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/>',
+  bell: '<path d="M6 9a6 6 0 0 1 12 0v6l2 3H4l2-3zM10 21h4"/>',
+  close: '<path d="m5 5 14 14M19 5 5 19"/>',
+  more: '<circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/>',
+  book: '<path d="M12 5C9 3 5 3 2 4v15c4-1 7 0 10 2 3-2 6-3 10-2V4c-3-1-7-1-10 1v16"/>',
+  play: '<path d="m8 4 12 8-12 8z"/>',
+  warning: '<path d="m12 3 10 18H2zM12 9v5M12 17h.01"/>',
+  download: '<path d="M12 3v13m-5-5 5 5 5-5M4 17v4h16v-4"/>',
+  link: '<path d="m9 15 6-6M7 14l-2 2a4 4 0 0 0 6 6l4-4M17 10l2-2a4 4 0 0 0-6-6L9 6"/>',
+  panel: '<path d="M3 4h18v16H3zM8 4v16M8 10h13"/>',
+};
+export function icon(name, size = 18) {
+  return `<svg class="icon" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name] || paths.file}</svg>`;
+}
