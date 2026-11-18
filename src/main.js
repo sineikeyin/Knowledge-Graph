@@ -58,7 +58,7 @@ function render() {
     <div class="header-right"><span class="demo-indicator"><i></i>${offlineMode?'离线演示':'本机会话'}</span><span class="update-time">更新于 <span id="updated-time">${state.updatedAt.toLocaleTimeString('zh-CN',{hour12:false})}</span></span><span class="header-divider"></span><button class="icon-button" data-action="notifications" aria-label="查看待办通知">${icon('bell')}</button><button class="icon-button" data-action="help" aria-label="查看使用说明">${icon('info')}</button><button class="user-button" data-action="profile" aria-label="查看个人信息"><span class="avatar">${escape(currentUser.name.slice(0,1))}</span><span><strong>${escape(currentUser.name)}</strong><small>${escape(currentUser.roleName)}</small></span>${icon('down',14)}</button></div>
   </header>
   <nav class="main-nav" aria-label="主菜单">${navigation.filter(([id])=>permitted(id)).map(([id,glyph,label])=>`<button data-route="${id}" class="nav-item ${page===id?'active':''}" ${page===id?'aria-current="page"':''}>${icon(glyph,17)}<span>${label}</span></button>`).join('')}</nav>
-  <div class="context-bar"><div class="context-controls"><label for="project-select">当前项目</label><select id="project-select">${projects.map(p=>`<option value="${p.id}" ${p.id===state.projectId?'selected':''}>${p.name}</option>`).join('')}</select><span class="context-stat">井数 <b>${projectWells().length}</b></span><span class="context-stat">资料 <b>${getAssets().length}</b></span><span class="context-stat current-well">当前井 <b>${currentWell().short}</b></span></div><div class="context-steps"><span>工作流程</span><button data-action="import">1 导入资料</button>${icon('chevron',12)}<button data-route="construction">2 构建知识</button>${icon('chevron',12)}<button class="step-current" data-route="retrieval">3 检索与推理</button></div></div>
+  <div class="context-bar"><div class="context-controls"><label for="project-select">当前项目</label><select id="project-select">${projects.map(p=>`<option value="${p.id}" ${p.id===state.projectId?'selected':''}>${p.name}</option>`).join('')}</select><span class="context-stat">井数 <b>${projectWells().length}</b></span><span class="context-stat">资料 <b>${getAssets().length}</b></span><span class="context-stat current-well">当前井 <b>${currentWell().short}</b></span></div><div class="context-steps"><span>工作流程</span><button data-action="import">1 导入资料</button>${icon('chevron',12)}<button data-route="construction">2 构建知识</button>${icon('chevron',12)}<button data-route="retrieval">3 检索与推理</button></div></div>
   <div class="app-body ${page==='users'?'admin-layout':''}"><aside class="data-sidebar" aria-label="数据树与属性"><section class="tree-pane"><div class="pane-heading"><h2>${icon('folder',17)}数据资源</h2><button class="icon-button small" data-action="expand-tree" aria-label="展开全部井">${icon('layers',16)}</button></div><label class="tree-search">${icon('search',15)}<input id="tree-search" placeholder="搜索井、资料或对象" aria-label="搜索数据树" value="${escape(state.treeFilter)}"></label><div id="tree-list" class="tree-list">${treeHtml()}</div><button class="tree-import" data-action="import">${icon('upload',15)}导入资料</button></section><section id="properties" class="properties-pane">${propertiesHtml()}</section></aside><main class="main-content" id="main-content" tabindex="-1">${pageHtml(page)}</main></div>
   <footer class="status-bar"><span><i class="status-dot"></i>示例数据 · ${currentProject().block} / ${currentWell().short}</span><span>资料版本 ${currentWell().version}<span class="footer-separator">|</span>知识可追溯 · 结果可校核</span></footer>`;
   applyPermissions();
@@ -75,6 +75,17 @@ function treeHtml() {
     return `<div class="well-group"><div class="tree-well-row ${well.id===state.wellId&&state.selectedType==='well'?'selected':''}"><button class="tree-toggle ${expanded?'expanded':''}" data-action="toggle-well" data-well="${well.id}" aria-label="${expanded?'折叠':'展开'}${well.name}" aria-expanded="${expanded}">${icon('chevron',13)}</button><button class="tree-node" data-action="select-node" data-well="${well.id}" data-type="well">${icon('well',16)}<span>${well.short}</span><small>${authorizedAssets.filter(a=>a.wellId===well.id).length} 份</small></button></div>${expanded?`<div class="tree-children">${types.map(type=>`<button class="tree-leaf ${state.wellId===well.id&&state.selectedType===type.id?'selected':''}" data-action="select-node" data-well="${well.id}" data-type="${type.id}">${icon(type.icon,14)}<span>${type.name}</span><small>${authorizedAssets.filter(a=>a.wellId===well.id&&a.objectType===type.id).length}</small></button>`).join('')}</div>`:''}</div>`;
   }).join('');
   return `<div class="tree-project">${icon('folder',16)}<strong>${currentProject().name}</strong><small>${projectWells().length} 井</small></div>${rows || '<div class="tree-empty">没有匹配的井或资料。</div>'}${count?'<div class="tree-note">选择对象可查看下方属性</div>':''}`;
+}
+// 同一井内切换对象仅更新局部内容，保留工作区滚动位置与图谱节点焦点。
+function updateObjectSelection() {
+  const tree=$('#tree-list');const treeScroll=tree.scrollTop;
+  tree.innerHTML=treeHtml();tree.scrollTop=treeScroll;
+  $('#properties').innerHTML=propertiesHtml();
+  for(const node of document.querySelectorAll('.graph-node')) {
+    const selected=node.dataset.type===state.selectedType;
+    node.classList.toggle('selected',selected);
+    node.setAttribute('aria-pressed',String(selected));
+  }
 }
 function propertiesHtml() {
   const well=currentWell();const type=objectTypes.find(t=>t.id===state.selectedType);
@@ -121,7 +132,7 @@ function graphHtml() {
     ['model',504,221,'区块模型','地质模型','amber'],
     ['instruction',322,271,'历史指令','依据记录','slate'],
   ].filter(([id])=>id==='well'||authorizedAssets.some(a=>a.wellId===w.id&&a.objectType===id));
-  return `<div class="graph-canvas"><svg class="knowledge-graph" viewBox="0 0 640 330" role="group" aria-label="${escape(w.short)}五类知识对象关联图"><defs><pattern id="graph-dot" width="18" height="18" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r=".8" fill="#e0e7f0"/></pattern></defs><rect width="640" height="330" fill="url(#graph-dot)"/>${nodes.slice(1).map(([id,x,y],i)=>{const labels=nodes.slice(1).map(([key])=>({stratum:'钻遇',log:'包含',trajectory:'关联',model:'适用',instruction:'依据'}[key]));return `<path class="graph-edge" d="M320 142L${x} ${y}"/><text class="edge-label" x="${(320+x)/2}" y="${(142+y)/2-8}" text-anchor="middle">${labels[i]}</text>`;}).join('')}${nodes.map(([id,x,y,title,subtitle,tone])=>`<g class="graph-node ${tone} ${state.selectedType===id?'selected':''}" data-action="select-node" data-well="${w.id}" data-type="${id}" role="button" tabindex="0" aria-label="查看${subtitle}属性" transform="translate(${x},${y})"><rect x="-65" y="-24" width="130" height="48" rx="8"/><circle cx="-48" cy="-3" r="4"/><text class="node-title" x="-35" y="1">${escape(title)}</text><text class="node-subtitle" x="0" y="39" text-anchor="middle">${subtitle}</text></g>`).join('')}</svg></div>`;
+  return `<div class="graph-canvas"><svg class="knowledge-graph" viewBox="0 0 640 330" role="group" aria-label="${escape(w.short)}五类知识对象关联图"><defs><pattern id="graph-dot" width="18" height="18" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r=".8" fill="#e0e7f0"/></pattern></defs><rect width="640" height="330" fill="url(#graph-dot)"/>${nodes.slice(1).map(([id,x,y],i)=>{const labels=nodes.slice(1).map(([key])=>({stratum:'钻遇',log:'包含',trajectory:'关联',model:'适用',instruction:'依据'}[key]));return `<path class="graph-edge" d="M320 142L${x} ${y}"/><text class="edge-label" x="${(320+x)/2}" y="${(142+y)/2-8}" text-anchor="middle">${labels[i]}</text>`;}).join('')}${nodes.map(([id,x,y,title,subtitle,tone])=>`<g class="graph-node ${tone} ${state.selectedType===id?'selected':''}" data-action="select-node" data-well="${w.id}" data-type="${id}" role="button" tabindex="0" aria-pressed="${state.selectedType===id}" aria-label="查看${subtitle}属性" transform="translate(${x},${y})"><rect x="-65" y="-24" width="130" height="48" rx="8"/><circle cx="-48" cy="-3" r="4"/><text class="node-title" x="-35" y="1">${escape(title)}</text><text class="node-subtitle" x="0" y="39" text-anchor="middle">${subtitle}</text></g>`).join('')}</svg></div>`;
 }
 function graphLegend(){return `<div class="graph-legend"><span><i class="legend-dot blue"></i>井／轨迹</span><span><i class="legend-dot teal"></i>地层</span><span><i class="legend-dot purple"></i>测井</span><span><i class="legend-dot amber"></i>模型</span><span><i class="legend-dot slate"></i>历史指令</span><small>示例关系 · 可回查来源</small></div>`;}
 function assetTable(limit) {
@@ -171,6 +182,13 @@ function invalidateResult() {
   $('#measurement-origin').textContent='手工输入（演示）';$('.joint-panel button').disabled=true;
 }
 
+// SVG 原生鼠标聚焦会滚动整个图形；保留焦点但不移动当前视口。
+document.addEventListener('mousedown',event=>{
+  const node=event.target.closest('.graph-node');
+  if(!node||event.button!==0)return;
+  event.preventDefault();
+  node.focus({preventScroll:true});
+});
 document.addEventListener('click',async event=>{
   if(event.target.closest('[data-auth]')){await handleAuthAction(event);return;}
   if(await usersUI.click(event))return;
@@ -186,7 +204,14 @@ document.addEventListener('click',async event=>{
   if(action==='close-modal') {$('dialog')?.close();return;}
   if(action==='toggle-well'){state.expanded.has(well)?state.expanded.delete(well):state.expanded.add(well);$('#tree-list').innerHTML=treeHtml();return;}
   if(action==='expand-tree'){projectWells().forEach(w=>state.expanded.add(w.id));$('#tree-list').innerHTML=treeHtml();return;}
-  if(action==='select-node'){const changed=state.wellId!==well;state.wellId=well;state.selectedType=type;state.expanded.add(well);if(changed)state.activeResult=null;persist();render();return;}
+  if(action==='select-node'){
+    const changed=state.wellId!==well;
+    state.wellId=well;state.selectedType=type;state.expanded.add(well);
+    if(changed)state.activeResult=null;
+    persist();
+    if(changed)render();else updateObjectSelection();
+    return;
+  }
   if(action==='home-tab'){state.homeTab=control.dataset.tab;render();return;}
   if(action==='refresh'){state.updatedAt=new Date();await refreshWorkspace();toast('已重新读取当前身份与授权范围。');return;}
   if(action==='scenario'){go('retrieval',control.dataset.scenario);return;}
