@@ -56,8 +56,8 @@ h1,h2,h3,p {margin:0;}
 .nav-item {display:flex;align-items:center;gap:7px;padding:8px 13px;border:0;background:transparent;color:#687689;font-size:12px;border-radius:6px;white-space:nowrap;}
 .nav-item:hover {background:#f2f6fd;color:var(--blue);}
 .nav-item.active {background:var(--blue);color:white;box-shadow:0 2px 5px #2563eb20;}
-.context-bar {display:grid;grid-template-columns:minmax(0,1fr);gap:12px;padding:11px 20px 13px;flex-shrink:0;background:#f6f8fc;border-bottom:1px solid var(--border);}
-.context-controls {display:flex;align-items:center;gap:10px;min-width:0;}
+.context-bar {display:flex;align-items:center;gap:24px;padding:11px 20px;min-height:56px;flex-shrink:0;overflow-x:auto;scrollbar-width:thin;background:#f6f8fc;border-bottom:1px solid var(--border);}
+.context-controls {display:flex;align-items:center;gap:10px;flex:0 0 auto;min-width:0;}
 .context-controls>label {font-size:10px;color:#8190a6;white-space:nowrap;}
 select,input:not([type="checkbox"]):not([type="file"]) {height:33px;border:1px solid #dce3ed;border-radius:5px;background:white;padding:0 10px;color:#3d4a5d;min-width:0;}
 select:hover,input:hover {border-color:#b5c6df;}
@@ -66,7 +66,7 @@ input[readonly] {background:#f7f9fc!important;color:#6c7a8b!important;}
 .context-stat {font-size:10px;color:#8a96a8;border-left:1px solid #dfe5ee;padding-left:12px;white-space:nowrap;}
 .context-stat b {font-size:13px;color:#485b75;margin-left:5px;font-weight:600;}
 .context-stat.current-well b {color:var(--blue);}
-.context-steps {display:grid;grid-template-columns:auto minmax(0,1fr) 14px minmax(0,1fr) 14px minmax(0,1fr);align-items:center;gap:20px;width:100%;max-width:880px;margin-inline:auto;color:#a5afbd;}
+.context-steps {display:grid;grid-template-columns:auto minmax(0,1fr) 14px minmax(0,1fr) 14px minmax(0,1fr);align-items:center;gap:clamp(8px,1.4vw,20px);flex:1 0 390px;max-width:880px;margin-inline:auto;color:#a5afbd;}
 .context-steps>span {font-size:11px;color:#939eae;white-space:nowrap;}
 .context-steps button {width:100%;font-size:11px;line-height:1.6;border:1px solid #e0e6ef;background:white;border-radius:5px;padding:7px 12px;color:#697a8f;white-space:nowrap;}
 .context-steps button:hover {background:#f8fafc;border-color:#bdcddd;}
@@ -367,9 +367,9 @@ input[type="checkbox"] {accent-color:var(--blue);}
   .header-right {margin-left:auto;gap:4px;}.header-right>.icon-button,.demo-indicator {display:none;}
   .user-button>span:not(.avatar),.user-button>.icon {display:none;}.avatar {height:30px;width:30px;}
   .main-nav {padding:7px 10px;height:47px;gap:3px;}.nav-item {font-size:11px;padding:8px 11px;}
-  .context-bar {padding:9px 12px;gap:10px;}.context-controls {gap:7px;flex-wrap:wrap;}
-  .context-steps {grid-template-columns:minmax(0,1fr) 10px minmax(0,1fr) 10px minmax(0,1fr);gap:6px;}
-  .context-steps>span {grid-column:1/-1;justify-self:center;}
+  .context-bar {padding:9px 12px;gap:16px;}.context-controls {gap:7px;flex-wrap:nowrap;}
+  .context-steps {grid-template-columns:auto minmax(0,1fr) 10px minmax(0,1fr) 10px minmax(0,1fr);gap:6px;}
+  .context-steps>span {font-size:10px;}
   .context-steps button {font-size:10px;padding:6px 3px;}
   .context-controls select {max-width:145px;}.context-stat {padding-left:8px;font-size:9px;}.context-stat b {font-size:11px;margin-left:2px;}.context-stat.current-well {display:none;}
   .app-body {display:flex;flex-direction:column;}
