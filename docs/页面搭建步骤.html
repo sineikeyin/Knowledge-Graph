@@ -223,6 +223,10 @@ figcaption { color:var(--muted); text-align:center; font-size:11px; padding:9px;
 </tr>
 </tbody></table></div>
 <p>完成标志：用户登录后只能访问授权范围；所有后续页面接入同一身份与权限机制，服务端同时验证权限。</p>
+<h3>2.1 本机实现进度（2026-11-18）</h3>
+<p><strong>已更新代码：</strong>登录页及用户、组织、角色、项目成员、权限配置、审计六个页签已实现；首页个人信息、菜单、项目井树、资料及规则操作已接入统一授权。</p>
+<ul><li>登录：账号校验、密码显隐、登录/退出、30分钟会话、失效与停用提示；新增账号密码由管理员设置。</li><li>管理：组织树与用户搜索分页、新增编辑启停、角色权限矩阵、项目成员角色与井范围。</li><li>授权：项目、井、文档、图谱对象及字段限制；后端过滤返回结果，导入、判定和导出再次校验。</li><li>审计：操作者、对象、变更前后、结果、请求编号；按用户、井、时间、操作筛选。</li><li>运行：在当前项目根目录 E:\Knowledge Graph Platform 中执行 node server.mjs。初始测试账号 admin / engineer / expert / reader / auditor，密码 GeoDemo!2026；disabled 用于停用验证。</li></ul>
+<p><a href="../首页预览.html">打开更新后的登录与工作台页面</a>。双击预览为独立离线演示；通过本机服务访问为后端会话和权限验证。本机数据保存在 .runtime/platform.json；生产部署、统一身份认证和多实例数据库后续接入。</p>
 </section>
 
 <section id="section-3" class="doc-section" aria-labelledby="heading-3"><h2 id="heading-3">第三步：开发数据接入与治理页面（M2，7项）</h2>

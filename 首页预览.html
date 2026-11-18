@@ -1,15 +1,15 @@
-
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light">
-  <meta name="description" content="智能地质导向知识图谱平台首页、数据树与规则判定工作面板。">
+  <meta name="description" content="智能地质导向知识图谱平台：登录、用户组织、角色与项目授权、操作审计、资料及规则判定。">
   <title>智能地质导向知识图谱平台</title>
   <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
   <style>
 /* 参考老师示意图：顶部菜单与个人信息，左侧数据树及属性，右侧工作区。 */
+.hidden,[hidden] {display:none!important;}
 :root {
   --blue:#2563eb; --blue-hover:#1d4ed8; --blue-soft:#eef4ff;
   --ink:#263345; --muted:#7a8798; --border:#e5eaf1; --bg:#f4f6fa;
@@ -71,10 +71,8 @@ input[readonly] {background:#f7f9fc!important;color:#6c7a8b!important;}
 .context-steps button {font-size:10px;border:1px solid #e0e6ef;background:white;border-radius:4px;padding:5px 10px;color:#697a8f;}
 .context-steps .step-current {background:var(--blue-soft);color:var(--blue);border-color:#d6e4ff;}
 .app-body {display:grid;grid-template-columns:var(--sidebar-width) minmax(0,1fr);flex:1;min-height:0;}
-/* 左侧上下区按 6:4 分配高度；各自滚动，避免属性区挤压或遮住数据树。 */
-.data-sidebar {display:grid;grid-template-rows:minmax(0,3fr) minmax(0,2fr);min-height:0;overflow:hidden;background:white;border-right:1px solid var(--border);}
-.tree-pane {display:flex;flex-direction:column;min-height:0;overflow:hidden;}
-.tree-pane > .pane-heading,.tree-search,.tree-import {flex-shrink:0;}
+.data-sidebar {display:flex;flex-direction:column;min-height:0;background:white;border-right:1px solid var(--border);}
+.tree-pane {display:flex;flex-direction:column;flex:1;min-height:180px;overflow:hidden;}
 .pane-heading {display:flex;align-items:center;justify-content:space-between;gap:8px;padding:15px 16px 10px;}
 .pane-heading h2 {font-size:12px;display:flex;align-items:center;gap:7px;font-weight:600;}
 .pane-heading h2>.icon {color:#6b819c;}
@@ -82,7 +80,7 @@ input[readonly] {background:#f7f9fc!important;color:#6c7a8b!important;}
 .tree-search input {width:100%;border:0!important;background:transparent!important;height:30px!important;font-size:11px;padding-left:2px!important;}
 .tree-search:focus-within {border-color:#92b4f7;}
 .tree-search input:focus {outline:none;}
-.tree-list {flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:0 9px 10px;scrollbar-width:thin;}
+.tree-list {flex:1;overflow-y:auto;padding:0 9px 10px;min-height:80px;scrollbar-width:thin;}
 .tree-project {padding:9px 8px;display:flex;align-items:center;gap:6px;color:#455875;background:#f7f9fc;border-radius:5px;margin-bottom:7px;}
 .tree-project strong {font-size:11px;font-weight:600;}
 .tree-project>.icon {color:#5d89cd;}
@@ -104,7 +102,7 @@ input[readonly] {background:#f7f9fc!important;color:#6c7a8b!important;}
 .tree-empty {padding:25px 10px;font-size:11px;color:var(--muted);text-align:center;}
 .tree-import {background:#fff;border:1px dashed #d8e2f0;border-radius:5px;display:flex;align-items:center;justify-content:center;gap:7px;color:#6684b4;font-size:11px;margin:5px 15px 14px;padding:8px;}
 .tree-import:hover {background:#f5f8ff;border-color:#96b6ed;}
-.properties-pane {min-height:0;border-top:1px solid var(--border);background:#fcfdff;padding-bottom:12px;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;}
+.properties-pane {border-top:1px solid var(--border);background:#fcfdff;flex-shrink:0;padding-bottom:12px;max-height:310px;overflow:auto;}
 .property-name {display:flex;align-items:center;gap:8px;margin:5px 17px 12px;font-size:12px;}
 .property-name>.icon {color:#6b94d1;}
 .property-list {margin:0 17px;}
@@ -367,8 +365,8 @@ input[type="checkbox"] {accent-color:var(--blue);}
   .context-bar {padding:9px 12px;min-height:48px;overflow-x:auto;}.context-controls {gap:7px;}
   .context-controls select {max-width:145px;}.context-stat {padding-left:8px;font-size:9px;}.context-stat b {font-size:11px;margin-left:2px;}.context-stat.current-well {display:none;}
   .app-body {display:flex;flex-direction:column;}
-  .data-sidebar {grid-template-columns:1.05fr 1fr;grid-template-rows:minmax(0,1fr);border-bottom:1px solid var(--border);height:250px;flex-shrink:0;}
-  .tree-pane {min-height:0;border-right:1px solid var(--border);}.tree-list {min-height:0;}
+  .data-sidebar {display:grid;grid-template-columns:1.05fr 1fr;border-bottom:1px solid var(--border);height:250px;flex-shrink:0;}
+  .tree-pane {min-height:0;border-right:1px solid var(--border);}.tree-list {min-height:60px;}
   .tree-pane .pane-heading {padding:11px 10px 8px;}.pane-heading h2 {font-size:11px;}
   .tree-search {margin:0 8px 6px;}.tree-search input {font-size:9px;}.tree-project {padding:7px 3px;gap:4px;}.tree-project strong {font-size:9px;}.tree-project small {display:none;}
   .tree-well-row {height:30px;}.tree-node>span {font-size:10px;}.tree-children {padding-left:14px;}.tree-leaf {font-size:9px;padding:6px;}.tree-node>small {font-size:8px;}
@@ -394,6 +392,83 @@ input[type="checkbox"] {accent-color:var(--blue);}
   .modal-body {padding:17px;}.modal-head {padding:14px 17px;}.modal-head h2 {font-size:13px;}
 }
 @media (prefers-reduced-motion:reduce) {* {scroll-behavior:auto!important;transition:none!important;}}
+/* M1：身份与权限，沿用工作台蓝色及浅灰底色。 */
+.admin-layout {grid-template-columns:minmax(0,1fr);}
+.login-page {display:grid;grid-template-columns:1.05fr 1fr;min-height:100dvh;overflow:auto;background:white;}
+.login-story {background:linear-gradient(145deg,#0e233f,#16447b 65%,#17657f);color:#fff;padding:40px 55px;display:flex;flex-direction:column;position:relative;overflow:hidden;}
+.login-story::after {content:'';width:520px;height:520px;border:1px solid #ffffff12;border-radius:50%;position:absolute;right:-290px;top:80px;box-shadow:0 0 0 65px #ffffff03,0 0 0 130px #ffffff03;pointer-events:none;}
+.login-brand {display:flex;align-items:center;gap:12px;color:#d8e8ff;font-size:11px;letter-spacing:2px;}
+.login-brand .brand-mark {background:#ffffff17;border:1px solid #ffffff25;font-size:27px;}
+.login-intro {margin:auto 0;padding:50px 0 20px;z-index:1;}
+.login-eyebrow {font-size:12px;letter-spacing:3px;color:#93c2fa;}
+.login-intro h1 {font-size:clamp(30px,3.2vw,50px);line-height:1.55;font-weight:600;letter-spacing:2px;margin:20px 0;}
+.login-intro>p {font-size:13px;line-height:2.1;color:#b6cae0;}
+.login-orbit {display:grid;grid-template-columns:1fr 1fr 1fr;align-items:center;gap:14px;max-width:380px;margin:40px 0 12px;}
+.login-orbit span,.login-orbit strong {padding:15px 12px;border:1px solid #8ebeff35;border-radius:9px;text-align:center;background:#ffffff08;color:#b7d2f1;font-size:12px;}
+.login-orbit strong {grid-column:2;grid-row:1/3;padding:28px 8px;background:#598fe330;color:white;font-size:14px;box-shadow:0 0 40px #5899fa13;}
+.login-story-foot {font-size:11px;color:#87a6c7;padding-top:20px;}
+.login-side {display:grid;place-items:center;padding:45px 40px;background:radial-gradient(ellipse at 80% 0,#f4f8ff,white 65%);}
+.login-card {width:100%;max-width:380px;}
+.eyebrow {display:block;color:var(--blue);font-size:11px;letter-spacing:2px;line-height:1.8;}
+.login-card h2 {font-size:28px;margin:9px 0 10px;letter-spacing:1px;}
+.login-description {font-size:12px;color:var(--muted);margin-bottom:30px;}
+.login-card .form-field {gap:9px;margin:19px 0;font-size:12px;color:#53647c;}
+.login-card input {width:100%;height:45px!important;border-radius:7px!important;}
+.password-control {display:flex;border:1px solid #dce3ed;border-radius:7px;background:white;}
+.password-control input {border:0!important;flex:1;width:0;}
+.password-control button {border:0;background:none;color:#8395b0;padding:0 13px;font-size:11px;}
+.login-submit {width:100%;height:44px;justify-content:space-between!important;margin:10px 0 25px;padding:0 16px!important;}
+.login-demo {background:#f7f9fd;border:1px solid #e7edf6;border-radius:8px;padding:15px;line-height:1.9;color:#8190a6;font-size:11px;}
+.login-demo strong {color:#4d6481;font-size:11px;font-weight:600;}
+.demo-account-buttons {display:flex;gap:5px;flex-wrap:wrap;margin:10px 0;}
+.demo-account-buttons button {font-size:10px;padding:5px 7px;border:1px solid #d9e4f6;border-radius:4px;background:white;color:#4976b7;}
+.login-foot {color:#a1adbc;font-size:10px;line-height:1.9;margin-top:21px;}
+.auth-message {background:#fff1ef;border:1px solid #f0d4ce;border-radius:6px;color:#a84d40;padding:10px 12px;font-size:12px;line-height:1.8;margin:12px 0;}
+.admin-tabs {display:flex;gap:22px;border-bottom:1px solid var(--border);margin-bottom:22px;overflow:auto;flex-shrink:0;}
+.admin-tabs button {white-space:nowrap;padding:12px 5px;background:none;border:0;border-bottom:2px solid transparent;color:#7d8b9e;font-size:12px;}
+.admin-tabs button.active {color:var(--blue);border-bottom-color:var(--blue);font-weight:600;}
+.admin-summary {display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:20px;}
+.admin-summary>div {background:white;border:1px solid var(--border);border-radius:8px;padding:18px 22px;display:flex;align-items:center;gap:15px;}
+.admin-summary strong {color:var(--blue);font-size:27px;font-weight:600;}
+.admin-summary span {color:#8896a8;font-size:11px;}
+.admin-split {display:grid;grid-template-columns:220px minmax(0,1fr);min-height:420px;}
+.admin-side {border-right:1px solid var(--border);background:#fbfcfe;padding:8px 0;}
+.admin-side-title {padding:15px 17px;color:#72829a;font-size:11px;font-weight:600;}
+.org-tree-row {display:flex;align-items:center;gap:8px;min-height:38px;width:100%;border:0;background:none;color:#62748d;text-align:left;padding:9px 14px;font-size:11px;overflow-wrap:anywhere;}
+.org-tree-row.active {background:#edf3ff;color:var(--blue);border-right:2px solid var(--blue);}
+.org-tree-row:hover {background:#f0f5fd;}
+.org-tree-row small {margin-left:auto;color:#9ca7b8;font-size:10px;}
+.admin-content {min-width:0;}
+.admin-toolbar {display:flex;align-items:center;justify-content:space-between;gap:12px;padding:20px;border-bottom:1px solid #eef1f6;}
+.admin-toolbar h2 {font-size:14px;font-weight:600;}
+.admin-toolbar small {display:block;color:#99a5b6;font-size:10px;margin-top:5px;}
+.admin-tools {display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
+.admin-tools input {width:160px;}
+.table-user {display:flex;align-items:center;gap:10px;}
+.table-user .avatar {width:30px;height:30px;font-size:12px;}
+.table-user strong {display:block;font-size:11px;font-weight:600;}
+.table-user small,.block {display:block;color:#95a2b5;font-size:10px;margin-top:5px;}
+.admin-pagination {display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 20px;font-size:11px;color:#8a97aa;}
+.admin-pagination>div {display:flex;align-items:center;gap:12px;}
+.admin-note {padding:13px 20px;background:#f8faff;color:#7e91ac;font-size:11px;line-height:1.9;border-bottom:1px solid #edf1f7;}
+.org-detail {padding:25px;}
+.org-detail h2 {font-size:20px;margin:8px 0 15px;}
+.org-detail p {font-size:12px;color:#8594a9;}
+.permission-preview {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:25px 0;}
+.permission-preview span {padding:10px;background:#f7f9fc;border:1px solid #eef1f5;color:#a3aebc;border-radius:5px;font-size:11px;}
+.permission-preview .granted {color:#3973c7;border-color:#dfebfd;background:#f1f6ff;}
+.check-grid {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;border:1px solid var(--border);border-radius:6px;padding:16px;margin:20px 0;color:#677990;font-size:12px;}
+.check-grid legend {font-size:11px;padding:0 6px;color:#8b9ab0;}
+.check-grid label {display:flex;align-items:center;gap:7px;}
+.audit-filters {display:flex;align-items:end;gap:10px;padding:18px 20px;flex-wrap:wrap;}
+.audit-filters label {display:grid;gap:7px;font-size:10px;color:#8b9ab0;}
+.audit-filters input {width:140px;}
+.audit-filters input[type=datetime-local] {width:184px;font-size:11px;}
+.danger {color:#bc605a!important;}
+pre.snapshot {font-size:11px;line-height:1.8;background:#f7f9fc;border:1px solid #e3e9f2;border-radius:6px;overflow:auto;padding:14px;white-space:pre-wrap;word-break:break-word;}
+@media(min-width:1500px){.admin-layout .main-content {padding-left:max(30px,calc((100vw - 1440px)/2));padding-right:max(30px,calc((100vw - 1440px)/2));}}
+@media(max-width:1100px){.login-story {padding:30px;}.admin-split {grid-template-columns:180px minmax(0,1fr);}.admin-toolbar {align-items:start;flex-direction:column;}.admin-summary>div {padding:15px;gap:10px;}.admin-summary strong {font-size:23px;}}
+@media(max-width:760px){.login-page {grid-template-columns:1fr;}.login-story {display:none;}.login-side {padding:35px 24px;}.admin-tabs {gap:15px;}.admin-summary {grid-template-columns:repeat(2,1fr);gap:10px;}.admin-split {grid-template-columns:1fr;}.admin-side {border-right:0;border-bottom:1px solid var(--border);max-height:180px;overflow:auto;}.permission-preview,.check-grid {grid-template-columns:repeat(2,minmax(0,1fr));}.admin-tools input {width:130px;}.admin-tools {gap:5px;}.audit-filters input {width:125px;}.admin-summary>div {padding:13px;}.login-card {max-width:400px;}.login-card h2 {font-size:25px;}}
 
 </style>
 </head>
@@ -441,19 +516,29 @@ function icon(name, size = 18) {
 }
 
 
-// ===== src/data.js =====
-// 所有资料均为本地演示样例，不代表真实井、专家规则或正式测试结果。
-const projects = [
+// ===== src/sample-data.js =====
+const seedProjects = [
   { id: 'p1', name: '鄂尔多斯示例工区', block: '示例区块 A', owner: '演示用户', wells: ['w1', 'w2', 'w3'] },
   { id: 'p2', name: '松辽示例工区', block: '示例区块 B', owner: '演示用户', wells: ['w4', 'w5'] },
 ];
-const wells = [
+const seedWells = [
   { id: 'w1', name: '示例井 JH-01', short: 'JH-01', layer: '长 8₁', depth: '3,120–3,128 m', thickness: 8, distance: 0, source: 'JH-01 分层记录', version: 'data-v1.0' },
   { id: 'w2', name: '示例井 JH-02', short: 'JH-02', layer: '长 8₁', depth: '3,108–3,119 m', thickness: 11, distance: 1.6, source: 'JH-02 分层记录', version: 'data-v1.0' },
   { id: 'w3', name: '示例井 JH-03', short: 'JH-03', layer: '长 8₂', depth: '3,096–3,105 m', thickness: 9, distance: 2.8, source: 'JH-03 分层记录', version: 'data-v1.0' },
   { id: 'w4', name: '示例井 SL-01', short: 'SL-01', layer: '扶余油层', depth: '1,420–1,428 m', thickness: 8, distance: 0, source: 'SL-01 分层记录', version: 'data-v1.0' },
   { id: 'w5', name: '示例井 SL-02', short: 'SL-02', layer: '扶余油层', depth: '1,411–1,422 m', thickness: 11, distance: 1.9, source: 'SL-02 分层记录', version: 'data-v1.0' },
 ];
+const seedTasks = [
+  { id: 'demo-task-01', name: '分层资料知识审核', type: '人工校核', wellId: 'w1', state: '待审核', tone: 'amber', time: '演示记录', route: 'construction' },
+  { id: 'demo-task-02', name: '同层位厚度差复核', type: '规则判定', wellId: 'w1', state: '待运行', tone: 'blue', time: '演示记录', route: 'retrieval' },
+  { id: 'demo-task-03', name: '地层关系来源核查', type: '关系校核', wellId: 'w2', state: '待核查', tone: 'amber', time: '演示记录', route: 'graph' },
+];
+
+
+// ===== src/data.js =====
+// 所有资料均为本地演示样例，不代表真实井、专家规则或正式测试结果。
+
+
 const objectTypes = [
   { id: 'stratum', name: '地层分层', icon: 'layers', type: '地层', count: 1 },
   { id: 'log', name: '测井资料', icon: 'file', type: '测井', count: 2 },
@@ -475,11 +560,7 @@ const demoCases = [
   { id: 'basis', name: '基准不一致 · 暂不可比', target: 8, reference: 11, aligned: true, sameBasis: false, conflict: false, expected: 'insufficient' },
   { id: 'conflict', name: '规则冲突 · 待人工处理', target: 8, reference: 11, aligned: true, sameBasis: true, conflict: true, expected: 'conflict' },
 ];
-const initialTasks = [
-  { id: 'demo-task-01', name: '分层资料知识审核', type: '人工校核', wellId: 'w1', state: '待审核', tone: 'amber', time: '演示记录', route: 'construction' },
-  { id: 'demo-task-02', name: '同层位厚度差复核', type: '规则判定', wellId: 'w1', state: '待运行', tone: 'blue', time: '演示记录', route: 'retrieval' },
-  { id: 'demo-task-03', name: '地层关系来源核查', type: '关系校核', wellId: 'w2', state: '待核查', tone: 'amber', time: '演示记录', route: 'graph' },
-];
+
 const moduleDefinitions = {
   data: { name: '数据接入与治理', code: 'M2', description: '浏览当前井的资料清单，查看来源、版本与处理状态。', features: ['连接器与资料导入', '随钻实时接入', '文档解析与 OCR', '主数据归一', '数据质量校验', '血缘与版本', '数据资产目录'] },
   ontology: { name: '本体与 Schema 管理', code: 'M3', description: '定义知识对象、关系、属性与业务约束。', features: ['可视化本体建模', '行业本体模板', '术语与同义词', '版本与变更审批', '数据源映射', '业务动作定义'] },
@@ -529,14 +610,277 @@ function evaluateThicknessRule(input, rule) {
 }
 
 
+// ===== src/access-model.js =====
+
+const permissionCatalog = [
+  ['home','首页'],['data','资料目录'],['ontology','本体管理'],['construction','知识构建'],
+  ['graph','图谱管理'],['retrieval','混合检索'],['reasoning','规则与推理'],['integration','接口联调'],
+  ['users','用户权限'],['operations','运行管理'],['import','导入资料'],['run','运行判定'],
+  ['rule-edit','维护规则'],['export','导出记录'],['review','人工校核'],['publish','发布知识'],
+  ['manage','管理用户与授权'],['audit','查看审计'],
+];
+const fieldCatalog = [['layer','目标层位'],['depth','井段范围'],['thickness','厚度'],['distance','距离'],['source','资料来源']];
+const clone = value => JSON.parse(JSON.stringify(value));
+function fault(message, status=400) {const error=new Error(message);error.status=status;throw error;}
+function makeDatabase() {
+  const all=permissionCatalog.map(([id])=>id);
+  return {version:1, organizations:[{id:'org1',name:'地质研究中心',parentId:'',enabled:true},{id:'org2',name:'地质导向组',parentId:'org1',enabled:true},{id:'org3',name:'专家校核组',parentId:'org1',enabled:true}],
+    roles:[{id:'admin',name:'系统管理员',permissions:all},{id:'manager',name:'项目管理员',permissions:['home','data','graph','retrieval','reasoning','construction','operations','import','run','rule-edit','export','review','publish']},{id:'engineer',name:'地质工程师',permissions:['home','data','graph','retrieval','reasoning','operations','import','run','export']},{id:'expert',name:'校核专家',permissions:['home','data','graph','retrieval','reasoning','construction','operations','run','review']},{id:'reader',name:'只读用户',permissions:['home','data','graph','retrieval']},{id:'auditor',name:'审计员',permissions:['home','users','audit']}],
+    users:[{id:'u1',account:'admin',name:'平台管理员',orgId:'org1',roleId:'admin',enabled:true},{id:'u2',account:'engineer',name:'张工',orgId:'org2',roleId:'engineer',enabled:true},{id:'u3',account:'expert',name:'李专家',orgId:'org3',roleId:'expert',enabled:true},{id:'u4',account:'reader',name:'王访客',orgId:'org2',roleId:'reader',enabled:true},{id:'u5',account:'disabled',name:'已停用用户',orgId:'org2',roleId:'reader',enabled:false},{id:'u6',account:'auditor',name:'陈审计',orgId:'org1',roleId:'auditor',enabled:true}],
+    members:[{id:'m1',projectId:'p1',userId:'u2',roleId:'engineer',wellIds:['w1','w2']},{id:'m2',projectId:'p1',userId:'u3',roleId:'expert',wellIds:['w1','w2','w3']},{id:'m3',projectId:'p1',userId:'u4',roleId:'reader',wellIds:['w1']}],
+    grants:[{id:'g1',userId:'u4',projectId:'p1',resourceType:'well',resourceId:'w1',actions:['view'],hiddenFields:['depth','thickness','distance']}],
+    projects:clone(seedProjects),wells:clone(seedWells),tasks:clone(seedTasks),assets:seedWells.flatMap(w=>objectTypes.flatMap(t=>Array.from({length:t.count},(_,n)=>({id:`${w.id}-${t.id}-${n}`,wellId:w.id,objectType:t.id,name:`${w.short}_${t.name}${t.id==='log'?(n?'_AC':'_GR'):''}`,type:t.type,source:w.source,version:w.version,status:'演示资料',tone:'neutral'})))),rule:clone(defaultRule),runs:[],audit:[],sequence:1};
+}
+function activeUser(db,id) {const u=db.users.find(x=>x.id===id);if(!u?.enabled)fault('登录已失效或账号已停用，请重新登录。',401);return u;}
+function isAdmin(db,user) {return db.roles.find(r=>r.id===user.roleId)?.permissions.includes('manage')===true;}
+function permissionsFor(db,user,projectId) {
+  if(isAdmin(db,user))return db.roles.find(r=>r.id===user.roleId).permissions;
+  const member=db.members.find(m=>m.userId===user.id&&m.projectId===projectId);
+  const role=db.roles.find(r=>r.id===(projectId?member?.roleId:user.roleId));
+  return (role?.permissions||[]).filter(p=>!['manage'].includes(p));
+}
+function can(db,user,permission,projectId) {return permissionsFor(db,user,projectId).includes(permission);}
+function requirePermission(db,user,p,projectId) {if(!can(db,user,p,projectId))fault('无权执行此操作。',403);}
+function permittedWells(db,user,projectId) {
+  const project=db.projects.find(p=>p.id===projectId);if(!project)return [];
+  if(isAdmin(db,user))return project.wells;
+  return db.members.find(m=>m.userId===user.id&&m.projectId===projectId)?.wellIds||[];
+}
+function resourceGrant(db,user,projectId,kind,id,wellId) {
+  const grants=db.grants.filter(g=>g.userId===user.id&&g.projectId===projectId);
+  return grants.find(g=>g.resourceType===kind&&g.resourceId===id)||grants.find(g=>g.resourceType==='well'&&g.resourceId===wellId)||grants.find(g=>g.resourceType==='project'&&g.resourceId===projectId);
+}
+function resourceAllowed(db,user,projectId,kind,id,wellId,action='view') {
+  if(!permittedWells(db,user,projectId).includes(wellId))return false;
+  if(isAdmin(db,user))return true;
+  const grant=resourceGrant(db,user,projectId,kind,id,wellId);
+  return !grant||grant.actions.includes(action);
+}
+function protectFields(db,user,projectId,kind,record,wellId) {
+  const result=clone(record);const grant=isAdmin(db,user)?null:resourceGrant(db,user,projectId,kind,record.id,wellId);
+  const hidden=new Set(grant?.hiddenFields||[]);
+  // 同一井的关联视图也隐藏受限属性，避免从概览、原文摘要或历史快照绕过字段限制。
+  if(!isAdmin(db,user))for(const g of db.grants.filter(g=>g.userId===user.id&&g.projectId===projectId&&((g.resourceType==='object'&&g.resourceId.startsWith(wellId+'-'))||(g.resourceType==='document'&&db.assets.some(a=>a.id===g.resourceId&&a.wellId===wellId)))))for(const field of g.hiddenFields)hidden.add(field);
+  for(const field of hidden)delete result[field];
+  return result;
+}
+function auditEvent(db,user,operation,object,details={},context={}) {
+  const entry={id:`AUD-${db.sequence++}`,time:new Date().toISOString(),userId:user?.id||'',user:user?.name||'未登录',account:user?.account||'',operation,object,result:'成功',projectId:'',wellId:'',requestId:`REQ-${db.sequence++}`,...context,details:clone(details)};
+  db.audit.unshift(entry);return entry;
+}
+function identity(db,user) {return {...clone(user),roleName:db.roles.find(r=>r.id===user.roleId)?.name||'未分配角色',orgName:db.organizations.find(o=>o.id===user.orgId)?.name||'未分配组织',permissions:permissionsFor(db,user)};}
+function workspace(db,user) {
+  const projects=db.projects.filter(p=>permittedWells(db,user,p.id).length).map(p=>({...p,wells:permittedWells(db,user,p.id),permissions:permissionsFor(db,user,p.id)}));
+  const ids=projects.flatMap(p=>p.wells);
+  const wells=db.wells.filter(w=>ids.includes(w.id)).filter(w=>{const p=projects.find(p=>p.wells.includes(w.id));return resourceAllowed(db,user,p.id,'well',w.id,w.id);}).map(w=>{const p=projects.find(p=>p.wells.includes(w.id));return protectFields(db,user,p.id,'well',w,w.id);});
+  const visible=new Set(wells.map(w=>w.id));for(const p of projects)p.wells=p.wells.filter(id=>visible.has(id));
+  const assets=db.assets.filter(a=>visible.has(a.wellId)).filter(a=>{const p=projects.find(p=>p.wells.includes(a.wellId));return resourceAllowed(db,user,p.id,'document',a.id,a.wellId)&&resourceAllowed(db,user,p.id,'object',`${a.wellId}-${a.objectType}`,a.wellId);}).map(a=>{const p=projects.find(p=>p.wells.includes(a.wellId));const result=protectFields(db,user,p.id,'document',a,a.wellId);const well=wells.find(w=>w.id===a.wellId);if(!('source' in well))delete result.source;return result;});
+  const tasks=db.tasks.filter(t=>visible.has(t.wellId)&&projects.some(p=>p.wells.includes(t.wellId)&&can(db,user,t.route,p.id)&&can(db,user,t.type==='规则判定'?'run':t.type==='人工校核'?'review':t.route,p.id)));
+  const runs=db.runs.filter(r=>r.userId===user.id&&visible.has(r.wellId)&&(!r.referenceWellId||visible.has(r.referenceWellId))).filter(r=>{const p=projects.find(p=>p.id===r.projectId);return ['depth','thickness','source'].every(f=>r.inputWellIds?.every(id=>f in (wells.find(w=>w.id===id)||{})))&&p&&can(db,user,'reasoning',p.id)&&r.inputWellIds.every(id=>resourceAllowed(db,user,p.id,'object',`${id}-stratum`,id)&&assets.some(a=>a.wellId===id&&a.objectType==='stratum'&&'source' in a));});
+  const capabilities=Object.fromEntries(wells.map(w=>{const p=projects.find(p=>p.wells.includes(w.id));return [w.id,['import','run','export','rule-edit'].filter(action=>can(db,user,action,p.id)&&resourceAllowed(db,user,p.id,'well',w.id,w.id,action)&&(action!=='run'||('thickness' in w&&'depth' in w&&'source' in w&&assets.some(a=>a.wellId===w.id&&a.objectType==='stratum'&&'source' in a))))];}));
+  return {projects:projects.filter(p=>p.wells.length),wells,assets,tasks,runs:clone(runs),rule:clone(db.rule),capabilities};
+}
+function adminView(db,user) {
+  if(!can(db,user,'manage')&&!can(db,user,'audit'))fault('无权查看用户管理。',403);
+  if(!can(db,user,'manage'))return {audit:clone(db.audit),users:[],organizations:[],roles:[],members:[],grants:[],projects:[],wells:[],assets:[],permissionCatalog,fieldCatalog};
+  const {users,organizations,roles,members,grants,projects,wells,assets,audit}=db;
+  return clone({users,organizations,roles,members,grants,projects,wells,assets,audit,permissionCatalog,fieldCatalog});
+}
+function textValue(value,label) {const result=String(value??'').trim();if(!result||result.length>100)fault(`${label}不能为空，且不能超过100字。`);return result;}
+function findRecord(list,id,label) {const item=list.find(x=>x.id===id);if(!item)fault(`${label}不存在。`,404);return item;}
+function adminSurvives(db,nextUsers,nextRoles=db.roles) {if(!nextUsers.some(u=>u.enabled&&nextRoles.find(r=>r.id===u.roleId)?.permissions.includes('manage')))fault('必须保留至少一位启用的系统管理员。');}
+function mutate(db,user,entity,body,context={}) {
+  requirePermission(db,user,'manage');const before=clone(db);const id=body.id||`${entity}-${db.sequence++}`;
+  if(entity==='users') {
+    const existing=body.id?findRecord(db.users,body.id,'用户'):null;
+    const account=textValue(body.account,'账号');if(!/^[a-zA-Z0-9_.-]{3,40}$/.test(account))fault('账号需为3～40位字母、数字、点、下划线或连字符。');
+    if(db.users.some(u=>u.account===account&&u.id!==id))fault('账号已存在。');
+    const org=findRecord(db.organizations,body.orgId,'组织');if(!org.enabled)fault('请选择启用的组织。');findRecord(db.roles,body.roleId,'角色');
+    const entry={id,account,name:textValue(body.name,'姓名'),orgId:body.orgId,roleId:body.roleId,enabled:body.enabled!==false,lastLogin:existing?.lastLogin||''};
+    const next=db.users.filter(u=>u.id!==id).concat(entry);adminSurvives(db,next);db.users=next;
+  } else if(entity==='organizations') {
+    if(body.id)findRecord(db.organizations,id,'组织');
+    const parent=body.parentId||'';if(parent){if(!findRecord(db.organizations,parent,'上级组织').enabled)fault('上级组织已停用。');let cursor=parent;const seen=new Set([id]);while(cursor){if(seen.has(cursor))fault('组织层级不能形成循环。');seen.add(cursor);cursor=db.organizations.find(o=>o.id===cursor)?.parentId;}}
+    if(body.enabled===false&&(db.users.some(u=>u.orgId===id&&u.enabled)||db.organizations.some(o=>o.parentId===id&&o.enabled)))fault('请先迁移或停用该组织的用户及子组织。');
+    db.organizations=db.organizations.filter(o=>o.id!==id).concat({id,name:textValue(body.name,'组织名称'),parentId:parent,enabled:body.enabled!==false});
+  } else if(entity==='roles') {
+    if(body.id)findRecord(db.roles,id,'角色');const known=permissionCatalog.map(([key])=>key);
+    const permissions=[...new Set(body.permissions||[])];if(permissions.some(p=>!known.includes(p)))fault('包含未知权限。');
+    if(id==='admin'&&!permissions.includes('manage'))fault('内置管理员角色必须保留管理权限。');
+    const roles=db.roles.filter(r=>r.id!==id).concat({id,name:textValue(body.name,'角色名称'),permissions});adminSurvives(db,db.users,roles);db.roles=roles;
+  } else if(entity==='members') {
+    const p=findRecord(db.projects,body.projectId,'项目');findRecord(db.users,body.userId,'用户');const role=findRecord(db.roles,body.roleId,'角色');if(role.permissions.includes('manage'))fault('系统管理员角色不能作为项目角色。');
+    if((body.wellIds||[]).some(w=>!p.wells.includes(w)))fault('井不属于此项目。');
+    if(body.remove) {db.members=db.members.filter(m=>!(m.projectId===p.id&&m.userId===body.userId));db.grants=db.grants.filter(g=>!(g.projectId===p.id&&g.userId===body.userId));}
+    else {const existing=db.members.find(m=>m.projectId===p.id&&m.userId===body.userId);db.members=db.members.filter(m=>m!==existing).concat({id:existing?.id||id,projectId:p.id,userId:body.userId,roleId:role.id,wellIds:[...new Set(body.wellIds||[])]});}
+  } else if(entity==='grants') {
+    const p=findRecord(db.projects,body.projectId,'项目');const member=db.members.find(m=>m.userId===body.userId&&m.projectId===p.id);if(!member)fault('请先将用户加入项目。');
+    const kind=body.resourceType;let wellId='';
+    if(kind==='project'){if(body.resourceId!==p.id)fault('项目范围不匹配。');}
+    else if(kind==='well'){wellId=findRecord(db.wells,body.resourceId,'井').id;}
+    else if(kind==='document'){wellId=findRecord(db.assets,body.resourceId,'文档').wellId;}
+    else if(kind==='object'){const parts=String(body.resourceId).split('-');wellId=parts[0];if(!objectTypes.some(t=>t.id===parts.slice(1).join('-')))fault('图谱对象不存在。');}
+    else fault('不支持的对象类型。');
+    if(wellId&&(!p.wells.includes(wellId)||!member.wellIds.includes(wellId)))fault('对象超出成员的井授权范围。');
+    const actions=[...new Set(body.actions||[])];if(actions.some(a=>!['view','import','run','export','rule-edit','review','publish'].includes(a)))fault('操作权限无效。');
+    const hiddenFields=[...new Set(body.hiddenFields||[])];if(hiddenFields.some(f=>!fieldCatalog.some(([key])=>f===key)))fault('字段无效。');
+    if(body.remove){db.grants=db.grants.filter(g=>g.id!==body.id);}else {db.grants=db.grants.filter(g=>g.id!==id&&!(g.userId===body.userId&&g.projectId===p.id&&g.resourceType===kind&&g.resourceId===body.resourceId)).concat({id,userId:body.userId,projectId:p.id,resourceType:kind,resourceId:body.resourceId,actions,hiddenFields});}
+  } else fault('未知管理操作。',404);
+  const collection=entity==='organizations'?'organizations':entity;
+  auditEvent(db,user,body.remove?'移除授权':body.id?'修改'+entity:'新增'+entity,id,{before:before[collection]?.find(x=>x.id===id)||null,after:db[collection]?.find(x=>x.id===id)||null},{...context,projectId:body.projectId||''});
+  return {id};
+}
+function business(db,user,action,body,context={}) {
+  const p=findRecord(db.projects,body.projectId,'项目');requirePermission(db,user,action,p.id);
+  const well=findRecord(db.wells,body.wellId,'井');if(!resourceAllowed(db,user,p.id,'well',well.id,well.id,action))fault('无权访问此井或执行此操作。',403);
+  if(action==='import') {
+    const type=objectTypes.find(t=>t.type===body.type);if(!type)fault('资料类型无效。');
+    const item={id:`import-${db.sequence++}`,wellId:well.id,objectType:type.id,name:textValue(body.name,'资料名称'),type:type.type,source:'本地文件清单登记',version:'待解析',status:'待解析',tone:'amber'};db.assets.unshift(item);auditEvent(db,user,'登记资料',item.id,{}, {...context,projectId:p.id,wellId:well.id});return item;
+  }
+  if(action==='rule-edit') {const threshold=Number(body.threshold);if(!Number.isFinite(threshold)||threshold<=0)fault('阈值必须大于零。');const before=clone(db.rule);db.rule={...db.rule,threshold,enabled:body.enabled===true,version:`demo-${db.sequence++}`};auditEvent(db,user,'修改规则',db.rule.id,{before,after:db.rule},{...context,projectId:p.id,wellId:well.id});return db.rule;}
+  if(action==='run') {
+    const reference=findRecord(db.wells,body.referenceWellId,'参考井');if(!resourceAllowed(db,user,p.id,'well',reference.id,reference.id,'view'))fault('参考井未授权。',403);
+    if(reference.id===well.id)fault('目标井与参考井必须不同。');
+    if(!resourceAllowed(db,user,p.id,'object',`${well.id}-stratum`,well.id)||!resourceAllowed(db,user,p.id,'object',`${reference.id}-stratum`,reference.id))fault('分层对象未授权。',403);
+    for(const w of [well,reference]){const protectedWell=protectFields(db,user,p.id,'well',w,w.id);if(!('thickness' in protectedWell)||!('depth' in protectedWell)||!('source' in protectedWell))fault('厚度、井段或来源字段受限，无法运行判定。',403);}
+    for(const w of [well,reference]){const document=db.assets.find(a=>a.wellId===w.id&&a.objectType==='stratum');if(!document||!resourceAllowed(db,user,p.id,'document',document.id,w.id))fault('分层证据未授权。',403);const protectedDoc=protectFields(db,user,p.id,'document',document,w.id);if(!('source' in protectedDoc))fault('证据来源字段受限，无法运行判定。',403);}
+    const input={scenario:body.scenario,aligned:body.aligned===true,sameBasis:body.sameBasis===true,conflict:body.conflict===true,targetThickness:body.targetThickness,referenceThickness:body.referenceThickness,evidenceIds:[`${well.id}-stratum`,`${reference.id}-stratum`],wellId:well.id,referenceWellId:reference.id,dataVersion:well.version};
+    const run={id:`RUN-${db.sequence++}`,time:new Date().toLocaleString('zh-CN',{timeZone:'Asia/Shanghai',hour12:false}),userId:user.id,projectId:p.id,wellId:well.id,referenceWellId:reference.id,inputWellIds:[well.id,reference.id],wellName:well.short,referenceWellName:reference.short,measurementSource:'演示输入（服务端判定）',result:evaluateThicknessRule(input,db.rule)};
+    db.runs.unshift(run);auditEvent(db,user,'运行规则判定',run.id,{}, {...context,projectId:p.id,wellId:well.id});return run;
+  }
+  if(action==='export') {const run=db.runs.find(r=>r.id===body.runId&&r.userId===user.id&&r.projectId===p.id&&r.wellId===well.id);if(!run||!workspace(db,user).runs.some(r=>r.id===run.id))fault('记录不存在或已无权访问。',403);for(const id of run.inputWellIds){const doc=db.assets.find(a=>a.wellId===id&&a.objectType==='stratum');if(!resourceAllowed(db,user,p.id,'well',id,id,'export')||!resourceAllowed(db,user,p.id,'object',`${id}-stratum`,id,'export')||!doc||!resourceAllowed(db,user,p.id,'document',doc.id,id,'export'))fault('输入对象或证据不允许导出。',403);}auditEvent(db,user,'导出判定记录',run.id,{}, {...context,projectId:p.id,wellId:well.id});return clone(run);}
+  fault('业务操作未实现。',404);
+}
+
+
+// ===== src/offline-service.js =====
+function createOfflineService() {
+  let db;try{db=JSON.parse(localStorage.getItem('geokg-offline-users-v1'));}catch{}if(!db?.users)db=makeDatabase();
+  let session;try{session=JSON.parse(sessionStorage.getItem('geokg-offline-session-v1'));}catch{}
+  const save=()=>{localStorage.setItem('geokg-offline-users-v1',JSON.stringify(db));if(session)sessionStorage.setItem('geokg-offline-session-v1',JSON.stringify(session));else sessionStorage.removeItem('geokg-offline-session-v1');};
+  return async(pathname,body)=>{
+    if(pathname==='/auth/login') {const user=db.users.find(u=>u.account===body.account);if(!user||body.password!=='GeoDemo!2026')fault('账号或密码不正确。',401);if(!user.enabled)fault('账号已停用，请联系管理员。',403);session={userId:user.id,expires:Date.now()+30*60*1000};user.lastLogin=new Date().toISOString();auditEvent(db,user,'登录（离线演示）','会话');save();return {user:identity(db,user),expires:session.expires};}
+    if(!session||session.expires<=Date.now())fault('登录已失效，请重新登录。',401);const user=activeUser(db,session.userId);
+    if(pathname==='/auth/me')return {user:identity(db,user),expires:session.expires};
+    if(pathname==='/auth/logout'){auditEvent(db,user,'退出登录（离线演示）','会话');session=null;save();return {ok:true};}
+    if(pathname==='/workspace')return workspace(db,user);
+    if(pathname==='/admin')return adminView(db,user);
+    if(pathname.startsWith('/business/')){const result=business(db,user,pathname.split('/').pop(),body);save();return result;}
+    const entity=pathname.slice(1);const clean={...body};delete clean.password;const result=mutate(db,user,entity,clean);save();return result;
+  };
+}
+
+
+// ===== src/api.js =====
+const offlineMode=location.protocol==='file:';
+let csrfToken='';let offlineRequest;
+async function api(pathname,body) {
+  try {
+    let data;
+    if(offlineMode){offlineRequest??=(await Promise.resolve({createOfflineService})).createOfflineService();data=await offlineRequest(pathname,body);}
+    else {const response=await fetch('/api'+pathname,{method:body===undefined?'GET':'POST',credentials:'same-origin',headers:body===undefined?{}:{'Content-Type':'application/json','X-CSRF-Token':csrfToken},body:body===undefined?undefined:JSON.stringify(body)});data=await response.json();if(!response.ok){const error=new Error(data.message);error.status=response.status;error.requestId=data.requestId;throw error;}}
+    if(data.csrf)csrfToken=data.csrf;return data;
+  }catch(error){if(error.status===401&&pathname!=='/auth/login'&&pathname!=='/auth/me')window.dispatchEvent(new CustomEvent('session-expired'));throw error;}
+}
+
+
+// ===== src/users.js =====
+const userEscape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const userTime=value=>value?new Date(value).toLocaleString('zh-CN',{timeZone:'Asia/Shanghai',hour12:false}):'尚未登录';
+const userTabs=[['users','用户'],['organizations','组织'],['roles','角色'],['members','项目成员'],['grants','权限配置'],['audit','审计']];
+function loginHtml(message='') {
+  return `<main class="login-page" id="main-content"><section class="login-story"><a class="login-brand" href="#/login"><span class="brand-mark">◈</span>GEOSTEERING / KNOWLEDGE</a><div class="login-intro"><span class="login-eyebrow">智能地质导向 · 知识工作平台</span><h1>连接地质知识<br>让分析有据可循</h1><p>从专业资料到知识关联，<br>在统一的工作空间中开展检索、判定与校核。</p><div class="login-orbit" aria-hidden="true"><span>地层</span><span>测井</span><strong>知识图谱</strong><span>轨迹</span><span>模型</span></div></div><div class="login-story-foot">专业资料 · 权限可控 · 全程可追溯</div></section><section class="login-side"><div class="login-card"><span class="eyebrow">欢迎使用</span><h2>登录工作平台</h2><p class="login-description">使用分配给您的平台账号继续工作</p><div class="auth-message ${message?'':'hidden'}" id="login-message" role="alert">${userEscape(message)}</div><form id="login-form"><label class="form-field">账号<input name="account" id="login-account" autocomplete="username" placeholder="请输入账号" required maxlength="40"></label><label class="form-field">密码<div class="password-control"><input name="password" id="login-password" type="password" autocomplete="current-password" placeholder="请输入密码" required maxlength="128"><button type="button" data-auth="password" aria-label="显示密码">显示</button></div></label><button class="button primary login-submit" type="submit">登录平台 <span>→</span></button></form><div class="login-demo"><strong>${offlineMode?'离线交互演示':'本机开发环境'} · 示例账号</strong><div class="demo-account-buttons">${[['admin','管理员'],['engineer','工程师'],['expert','校核专家'],['reader','只读用户'],['auditor','审计员']].map(([id,name])=>`<button type="button" data-auth="account" data-account="${id}">${name}</button>`).join('')}</div><p>账号：admin / engineer / expert / reader / auditor<br>初始密码：<code>GeoDemo!2026</code></p></div><p class="login-foot">${offlineMode?'离线模式仅供演示，数据保存在此浏览器。':'当前为本机验证版本，使用虚构井资料。'}<br>无法登录时，请联系平台管理员。</p></div></section></main>`;
+}
+function createUsersUI({modal,toast,refresh,getUser}) {
+  let model=null,query='',orgFilter='',selectedOrg='',selectedRole='',projectFilter='p1',pageNumber=1,error='',loading=false;
+  const tab=()=>new URLSearchParams(location.hash.split('?')[1]||'').get('tab')||(getUser()?.permissions.includes('manage')?'users':'audit');
+  const manage=()=>getUser()?.permissions.includes('manage');
+  const titleName=(collection,id)=>model?.[collection]?.find(x=>x.id===id)?.name||id||'—';
+  const options=(collection,value,filter=()=>true)=>model[collection].filter(filter).map(x=>`<option value="${userEscape(x.id)}" ${x.id===value?'selected':''}>${userEscape(x.name||x.account)}</option>`).join('');
+  const actionButton=(entity,id,label='编辑')=>`<button class="text-button" data-user-action="edit" data-entity="${entity}" data-id="${userEscape(id)}">${label}</button>`;
+  const status=value=>`<span class="badge ${value?'teal':'neutral'}">${value?'启用':'停用'}</span>`;
+  const field=(label,input)=>`<label class="form-field">${label}${input}</label>`;
+  const input=(name,value='',required=true)=>`<input name="${name}" value="${userEscape(value)}" ${required?'required':''} maxlength="100">`;
+  const table=(headers,rows)=>`<div class="table-scroll"><table><thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.join('')||`<tr><td colspan="${headers.length}"><div class="empty-state"><h3>暂无匹配记录</h3><p>调整筛选条件，或新增一条记录。</p></div></td></tr>`}</tbody></table></div>`;
+  const orgTree=(parent='',depth=0)=>model.organizations.filter(o=>o.parentId===parent).map(o=>`<button class="org-tree-row ${selectedOrg===o.id?'active':''}" style="padding-left:${14+depth*16}px" data-user-action="org" data-id="${userEscape(o.id)}"><span>▧</span>${userEscape(o.name)}${!o.enabled?'<small>停用</small>':''}</button>${orgTree(o.id,depth+1)}`).join('');
+  async function load(){loading=true;error='';try{model=await api('/admin');}catch(e){error=e.message;}finally{loading=false;}return model;}
+  function shell(content){const visible=userTabs.filter(([key])=>manage()||key==='audit');return `<div class="page-heading"><div><div class="breadcrumb">工作台 <span>/</span> M1 · 用户权限</div><h1>用户与权限管理</h1><p>管理组织、成员与访问范围，让每项操作可追溯。</p></div><span class="badge blue">${offlineMode?'离线演示':'本机会话验证'}</span></div><div class="admin-tabs" role="tablist" aria-label="用户权限">${visible.map(([key,name])=>`<button role="tab" aria-selected="${tab()===key}" class="${tab()===key?'active':''}" data-user-action="tab" data-tab="${key}">${name}</button>`).join('')}</div>${content}`;}
+  function html(){
+    if(error)return shell(`<section class="panel empty-state"><h3>加载失败</h3><p>${userEscape(error)}</p><button class="button" data-user-action="retry">重新加载</button></section>`);
+    if(loading||!model)return shell('<section class="panel empty-state"><h3>正在加载用户与权限…</h3></section>');
+    const current=tab();if(!manage()&&current!=='audit')return shell('<section class="panel empty-state"><h3>无权限访问此页签</h3><p>当前账号仅可查看审计记录。</p><button class="button" data-user-action="tab" data-tab="audit">查看审计</button></section>');
+    if(current==='users')return shell(usersPage());
+    if(current==='organizations')return shell(organizationsPage());
+    if(current==='roles')return shell(rolesPage());
+    if(current==='members')return shell(membersPage());
+    if(current==='grants')return shell(grantsPage());
+    if(current==='audit')return shell(auditPage());
+    return shell('<section class="panel empty-state">页签不存在</section>');
+  }
+  function toolbar(label,entity,filters=''){return `<div class="admin-toolbar"><div><h2>${label}</h2><small>${entity==='audit'?'所有时间采用北京时间':'配置保存后即时生效'}</small></div><div class="admin-tools">${filters}${entity!=='audit'?`<button class="button primary" data-user-action="edit" data-entity="${entity}">＋ 新增${{users:'用户',organizations:'组织',roles:'角色',members:'成员',grants:'授权'}[entity]}</button>`:'<button class="button" data-user-action="retry">刷新记录</button>'}</div></div>`;}
+  function searchInput(){return `<input id="admin-search" value="${userEscape(query)}" placeholder="账号或姓名" aria-label="搜索用户"><button class="button" data-user-action="search">查询</button>`;}
+  function usersPage(){const users=model.users.filter(u=>(!orgFilter||u.orgId===orgFilter)&&(!query||`${u.account} ${u.name}`.toLowerCase().includes(query.toLowerCase())));const pages=Math.max(1,Math.ceil(users.length/8));pageNumber=Math.min(pageNumber,pages);return `<div class="admin-summary"><div><strong>${model.users.length}</strong><span>平台用户</span></div><div><strong>${model.users.filter(u=>u.enabled).length}</strong><span>启用账号</span></div><div><strong>${model.organizations.length}</strong><span>组织节点</span></div><div><strong>${model.roles.length}</strong><span>角色模板</span></div></div><section class="panel admin-split"><aside class="admin-side"><div class="admin-side-title">组织目录</div><button class="org-tree-row ${!orgFilter?'active':''}" data-user-action="all-org">全部用户</button>${orgTree()}</aside><div class="admin-content">${toolbar('用户列表','users',searchInput())}${table(['用户','组织','角色','状态','最近登录（北京时间）','操作'],users.slice((pageNumber-1)*8,pageNumber*8).map(u=>`<tr><td><div class="table-user"><span class="avatar">${userEscape(u.name.slice(0,1))}</span><div><strong>${userEscape(u.name)}</strong><small>${userEscape(u.account)}</small></div></div></td><td>${userEscape(titleName('organizations',u.orgId))}</td><td>${userEscape(titleName('roles',u.roleId))}</td><td>${status(u.enabled)}</td><td>${userTime(u.lastLogin)}</td><td class="nowrap">${actionButton('users',u.id)} <button class="text-button ${u.enabled?'danger':''}" data-user-action="toggle-user" data-id="${userEscape(u.id)}">${u.enabled?'停用':'启用'}</button></td></tr>`))}<div class="admin-pagination"><span>共 ${users.length} 条</span><div><button class="button" data-user-action="page" data-delta="-1" ${pageNumber<=1?'disabled':''}>上一页</button><span>${pageNumber} / ${pages}</span><button class="button" data-user-action="page" data-delta="1" ${pageNumber>=pages?'disabled':''}>下一页</button></div></div></div></section>`;}
+  function organizationsPage(){const org=model.organizations.find(o=>o.id===selectedOrg)||model.organizations[0];return `<section class="panel admin-split"><aside class="admin-side"><div class="admin-side-title">组织结构</div>${orgTree()}</aside><div class="admin-content">${toolbar('组织管理','organizations')}${org?`<div class="org-detail"><span class="eyebrow">当前组织</span><h2>${userEscape(org.name)}</h2><p>上级：${userEscape(titleName('organizations',org.parentId))}　${status(org.enabled)}</p><div class="modal-actions">${actionButton('organizations',org.id,'编辑组织')}</div></div>${table(['姓名','账号','状态'],model.users.filter(u=>u.orgId===org.id).map(u=>`<tr><td>${userEscape(u.name)}</td><td>${userEscape(u.account)}</td><td>${status(u.enabled)}</td></tr>`))}`:''}</div></section>`;}
+  function rolesPage(){const role=model.roles.find(r=>r.id===selectedRole)||model.roles[0];return `<section class="panel admin-split"><aside class="admin-side"><div class="admin-side-title">角色列表</div>${model.roles.map(r=>`<button class="org-tree-row ${(role?.id===r.id)?'active':''}" data-user-action="role" data-id="${userEscape(r.id)}">♙ ${userEscape(r.name)}<small>${r.permissions.length}</small></button>`).join('')}</aside><div class="admin-content">${toolbar('角色与功能权限','roles')}${role?`<div class="org-detail"><h2>${userEscape(role.name)}</h2><p>关联用户 ${model.users.filter(u=>u.roleId===role.id).length} 人 · 项目成员 ${model.members.filter(m=>m.roleId===role.id).length} 人</p><div class="permission-preview">${model.permissionCatalog.map(([id,name])=>`<span class="${role.permissions.includes(id)?'granted':''}">${role.permissions.includes(id)?'✓':'—'} ${name}</span>`).join('')}</div>${actionButton('roles',role.id,'编辑此角色权限')}</div>`:''}</div></section>`;}
+  function projectSelect(){return `<select id="admin-project" aria-label="筛选项目">${options('projects',projectFilter)}</select>`;}
+  function membersPage(){return `<section class="panel">${toolbar('项目成员','members',projectSelect())}<div class="admin-note">项目角色决定操作能力；井范围决定可访问的数据。系统角色不自动授予项目数据。</div>${table(['成员','项目角色','授权井','操作'],model.members.filter(m=>m.projectId===projectFilter).map(m=>`<tr><td>${userEscape(titleName('users',m.userId))}</td><td>${userEscape(titleName('roles',m.roleId))}</td><td>${m.wellIds.map(id=>userEscape(titleName('wells',id))).join('、')||'无授权井'}</td><td>${actionButton('members',m.id)} <button class="text-button danger" data-user-action="remove" data-entity="members" data-id="${userEscape(m.id)}">移除</button></td></tr>`))}</section>`;}
+  function grantsPage(){return `<section class="panel">${toolbar('对象与字段授权','grants',projectSelect())}<div class="admin-note">先在“项目成员”分配井范围，再配置对象限制。优先级：具体文档／图谱对象 → 井 → 项目；对象规则限制角色已有能力，不提升角色权限。</div>${table(['授权用户','对象类型／对象','允许操作','隐藏字段','操作'],model.grants.filter(g=>g.projectId===projectFilter).map(g=>`<tr><td>${userEscape(titleName('users',g.userId))}</td><td>${{project:'项目',well:'井',document:'文档',object:'图谱对象'}[g.resourceType]}<small class="block">${userEscape(resourceName(g))}</small></td><td>${g.actions.map(a=>userEscape(actionLabel(a))).join('、')||'不允许访问'}</td><td>${g.hiddenFields.map(f=>userEscape(model.fieldCatalog.find(([id])=>id===f)?.[1]||f)).join('、')||'无'}</td><td>${actionButton('grants',g.id)} <button class="text-button danger" data-user-action="remove" data-entity="grants" data-id="${userEscape(g.id)}">撤销限制</button></td></tr>`))}</section>`;}
+  function actionLabel(id){return {view:'查看',import:'导入',run:'判定',export:'导出','rule-edit':'修改规则',review:'校核',publish:'发布'}[id]||id;}
+  function resourceName(g){return model.projects.find(x=>x.id===g.resourceId)?.name||model.wells.find(x=>x.id===g.resourceId)?.name||model.assets.find(x=>x.id===g.resourceId)?.name||g.resourceId;}
+  function auditPage(){return `<section class="panel">${toolbar('操作审计','audit')}<form class="audit-filters" id="audit-filter-form"><label>用户<input name="user" placeholder="姓名或账号"></label><label>井号<input name="well" placeholder="w1 / JH-01"></label><label>操作<input name="operation" placeholder="登录／修改／导出"></label><label>请求编号<input name="request" placeholder="REQ-…"></label><label>开始时间<input name="start" type="datetime-local"></label><label>结束时间<input name="end" type="datetime-local"></label><button class="button primary">筛选</button><button type="reset" class="button">重置</button></form><div id="audit-results">${auditRows(model.audit)}</div></section>`;}
+  function auditRows(rows){return table(['时间（北京时间）','操作者','操作／对象','结果','请求编号','详情'],rows.slice(0,200).map(a=>`<tr><td class="nowrap">${userTime(a.time)}</td><td>${userEscape(a.user)}<small class="block">${userEscape(a.account)}</small></td><td>${userEscape(a.operation)}<small class="block">${userEscape(a.object)}${a.wellId?' · '+userEscape(a.wellId):''}</small></td><td><span class="badge ${a.result==='成功'?'teal':'amber'}">${userEscape(a.result)}</span></td><td class="mono">${userEscape(a.requestId)}</td><td><button class="text-button" data-user-action="audit-detail" data-id="${userEscape(a.id)}">查看</button></td></tr>`))+`<div class="admin-note">共 ${rows.length} 条；本页显示最新 ${Math.min(rows.length,200)} 条。</div>`;}
+  function resourceOptions(kind,projectId,userId,value){const p=model.projects.find(p=>p.id===projectId);const member=model.members.find(m=>m.projectId===projectId&&m.userId===userId);const ids=member?.wellIds||[];let list=[];if(kind==='project')list=p?[p]:[];if(kind==='well')list=model.wells.filter(w=>ids.includes(w.id));if(kind==='document')list=model.assets.filter(a=>ids.includes(a.wellId));if(kind==='object')list=model.wells.filter(w=>ids.includes(w.id)).flatMap(w=>['stratum','log','trajectory','model','instruction'].map(t=>({id:`${w.id}-${t}`,name:`${w.short} / ${t}`})));return list.map(x=>`<option value="${userEscape(x.id)}" ${x.id===value?'selected':''}>${userEscape(x.name)}</option>`).join('');}
+  function edit(entity,id){
+    const item=model[entity].find(x=>x.id===id)||{};let fields='';
+    if(entity==='users')fields=field('账号',input('account',item.account))+field('姓名',input('name',item.name))+field('所属组织',`<select name="orgId">${options('organizations',item.orgId,o=>o.enabled)}</select>`)+field('系统角色',`<select name="roleId">${options('roles',item.roleId)}</select>`)+field(offlineMode?'演示密码固定为 GeoDemo!2026':id?'重置密码（留空保持不变）':'初始密码（至少10位）',`<input name="password" type="password" autocomplete="new-password" minlength="10" maxlength="128" ${!id&&!offlineMode?'required':''} ${offlineMode?'disabled':''}>`)+`<label class="checkbox-label"><input name="enabled" type="checkbox" ${item.enabled!==false?'checked':''}>启用账号</label>`;
+    if(entity==='organizations')fields=field('组织名称',input('name',item.name))+field('上级组织',`<select name="parentId"><option value="">顶级组织</option>${options('organizations',item.parentId,o=>o.id!==id&&o.enabled)}</select>`)+`<label class="checkbox-label"><input name="enabled" type="checkbox" ${item.enabled!==false?'checked':''}>启用组织</label>`;
+    if(entity==='roles')fields=field('角色名称',input('name',item.name))+`<fieldset class="check-grid"><legend>功能与操作权限</legend>${model.permissionCatalog.map(([key,name])=>`<label><input type="checkbox" name="permissions" value="${key}" ${item.permissions?.includes(key)?'checked':''}>${name}</label>`).join('')}</fieldset>`;
+    if(entity==='members'){const projectId=item.projectId||projectFilter;fields=field('项目',`<select name="projectId" ${id?'disabled':''}>${options('projects',projectId)}</select>`)+field('用户',`<select name="userId" ${id?'disabled':''}>${options('users',item.userId)}</select>`)+field('项目角色',`<select name="roleId">${options('roles',item.roleId,r=>!r.permissions.includes('manage'))}</select>`)+`<fieldset class="check-grid" id="member-wells"><legend>允许访问的井</legend>${memberWells(projectId,item.wellIds||[])}</fieldset>`;}
+    if(entity==='grants'){const projectId=item.projectId||projectFilter;const userId=item.userId||model.members.find(m=>m.projectId===projectId)?.userId||'';const kind=item.resourceType||'well';fields=field('项目',`<select name="projectId">${options('projects',projectId)}</select>`)+field('授权用户',`<select name="userId">${options('users',userId,u=>model.members.some(m=>m.projectId===projectId&&m.userId===u.id))}</select>`)+field('对象类型',`<select name="resourceType">${[['project','项目'],['well','井'],['document','文档'],['object','图谱对象']].map(([key,name])=>`<option value="${key}" ${kind===key?'selected':''}>${name}</option>`).join('')}</select>`)+field('对象',`<select name="resourceId" required>${resourceOptions(kind,projectId,userId,item.resourceId)}</select>`)+`<fieldset class="check-grid"><legend>对象允许的操作（仍受角色权限限制）</legend>${['view','import','run','export','rule-edit','review','publish'].map(key=>`<label><input name="actions" type="checkbox" value="${key}" ${(item.actions||['view']).includes(key)?'checked':''}>${actionLabel(key)}</label>`).join('')}</fieldset><fieldset class="check-grid"><legend>隐藏字段</legend>${model.fieldCatalog.map(([key,name])=>`<label><input name="hiddenFields" type="checkbox" value="${key}" ${item.hiddenFields?.includes(key)?'checked':''}>${name}</label>`).join('')}</fieldset><div class="admin-note">不勾选任何允许操作时，该对象不可访问。取消隐藏字段后，字段恢复可见。</div>`;}
+    modal(`${id?'编辑':'新增'}${{users:'用户',organizations:'组织',roles:'角色',members:'项目成员',grants:'对象授权'}[entity]}`,`<form id="admin-edit-form" data-entity="${entity}" data-id="${userEscape(id||'')}">${fields}<div id="admin-form-message" role="alert" class="auth-message hidden"></div><div class="modal-actions"><button type="button" class="button" data-action="close-modal">取消</button><button type="submit" class="button primary">保存配置</button></div></form>`,{wide:entity==='grants'||entity==='roles'});
+  }
+  function memberWells(projectId,selected){return model.wells.filter(w=>model.projects.find(p=>p.id===projectId)?.wells.includes(w.id)).map(w=>`<label><input type="checkbox" name="wellIds" value="${w.id}" ${selected.includes(w.id)?'checked':''}>${userEscape(w.short)}</label>`).join('');}
+  async function save(entity,body){const result=await api('/'+entity,body);if(entity==='organizations')selectedOrg=result.id;if(entity==='roles')selectedRole=result.id;await load();await refresh();toast('配置已保存，权限已更新。');}
+  async function click(event){const button=event.target.closest('[data-user-action]');if(!button)return false;const {userAction:action,entity,id}=button.dataset;try{
+    if(action==='tab'){query='';location.hash=`/users?tab=${button.dataset.tab}`;return true;}
+    if(action==='retry'){await load();await refresh();}
+    if(action==='org'){selectedOrg=id;orgFilter=id;pageNumber=1;await refresh(false);}
+    if(action==='all-org'){selectedOrg='';orgFilter='';pageNumber=1;await refresh(false);}
+    if(action==='role'){selectedRole=id;await refresh(false);}
+    if(action==='search'){query=document.querySelector('#admin-search').value.trim();pageNumber=1;await refresh(false);}
+    if(action==='page'){pageNumber+=Number(button.dataset.delta);await refresh(false);}
+    if(action==='edit')edit(entity,id);
+    if(action==='toggle-user'){const user=model.users.find(u=>u.id===id);modal(user.enabled?'停用账号':'启用账号',`<p>确认${user.enabled?'停用':'启用'} ${userEscape(user.name)}（${userEscape(user.account)}）？${user.enabled?'停用后该账号的登录会话将失效。':''}</p><div class="modal-actions"><button class="button" data-action="close-modal">取消</button><button class="button primary" data-user-action="confirm-toggle" data-id="${id}">确认</button></div>`);}
+    if(action==='confirm-toggle'){const user=model.users.find(u=>u.id===id);await save('users',{...user,enabled:!user.enabled});document.querySelector('dialog')?.close();}
+    if(action==='remove'){modal('确认移除',`<p>${entity==='members'?'移除成员将同时撤销该项目的对象授权。':'撤销后恢复继承井或项目的默认权限。'}</p><div class="modal-actions"><button class="button" data-action="close-modal">取消</button><button class="button primary" data-user-action="confirm-remove" data-entity="${entity}" data-id="${id}">确认移除</button></div>`);}
+    if(action==='confirm-remove'){await save(entity,{...model[entity].find(x=>x.id===id),remove:true});document.querySelector('dialog')?.close();}
+    if(action==='audit-detail'){const record=model.audit.find(a=>a.id===id);modal('操作审计详情',`<dl class="evidence-attributes">${[['操作者',record.user],['操作',record.operation],['对象',record.object],['时间（北京时间）',userTime(record.time)],['请求编号',record.requestId],['项目／井',`${record.projectId||'—'} / ${record.wellId||'—'}`]].map(([key,value])=>`<div><dt>${key}</dt><dd>${userEscape(value)}</dd></div>`).join('')}</dl><h3>变更明细</h3><pre class="snapshot">${userEscape(JSON.stringify(record.details,null,2))}</pre>`,{wide:true});}
+  }catch(e){toast(e.message);}return true;}
+  function change(event){if(event.target.id==='admin-project'){projectFilter=event.target.value;refresh(false);return;}const form=event.target.closest('#admin-edit-form');if(!form)return;const entity=form.dataset.entity;
+    if(entity==='members'&&event.target.name==='projectId')form.querySelector('#member-wells').innerHTML='<legend>允许访问的井</legend>'+memberWells(event.target.value,[]);
+    if(entity==='grants'&&['projectId','userId','resourceType'].includes(event.target.name)){if(event.target.name==='projectId')form.elements.userId.innerHTML=options('users','',u=>model.members.some(m=>m.projectId===form.elements.projectId.value&&m.userId===u.id));form.elements.resourceId.innerHTML=resourceOptions(form.elements.resourceType.value,form.elements.projectId.value,form.elements.userId.value);}
+  }
+  async function submit(event){const form=event.target;if(form.id==='audit-filter-form'){event.preventDefault();const f=Object.fromEntries(new FormData(form));const rows=model.audit.filter(a=>(!f.user||`${a.user} ${a.account}`.includes(f.user))&&(!f.well||`${a.wellId} ${model.wells.find(w=>w.id===a.wellId)?.short||''}`.includes(f.well))&&(!f.operation||a.operation.includes(f.operation))&&(!f.request||a.requestId.includes(f.request))&&(!f.start||new Date(a.time)>=new Date(f.start+'+08:00'))&&(!f.end||new Date(a.time)<=new Date(f.end+'+08:00')));document.querySelector('#audit-results').innerHTML=auditRows(rows);return true;}
+    if(form.id!=='admin-edit-form')return false;event.preventDefault();const button=form.querySelector('[type="submit"]');button.disabled=true;const fd=new FormData(form);const body=Object.fromEntries(fd);body.id=form.dataset.id||undefined;for(const key of ['permissions','wellIds','actions','hiddenFields'])body[key]=fd.getAll(key);for(const key of ['enabled'])body[key]=fd.has(key);
+    if(form.dataset.entity==='members'&&body.id){const old=model.members.find(m=>m.id===body.id);body.projectId=old.projectId;body.userId=old.userId;}
+    try {await save(form.dataset.entity,body);document.querySelector('dialog')?.close();}catch(e){const message=form.querySelector('#admin-form-message');message.textContent=e.message;message.classList.remove('hidden');button.disabled=false;}return true;
+  }
+  document.addEventListener('reset',event=>{if(event.target.id==='audit-filter-form')document.querySelector('#audit-results').innerHTML=auditRows(model.audit);});
+  return {load,html,click,change,submit,clear(){model=null;query='';error='';}};
+}
+
+
 // ===== src/main.js =====
+let projects=[],wells=[],initialTasks=[],authorizedAssets=[],allowedActions={},currentUser=null,authLoading=true,loginNotice='',sessionTimer;
+const permitted=(permission)=>['import','run','export','rule-edit'].includes(permission)?(allowedActions[state.wellId]||[]).includes(permission):currentUser?.permissions.includes('manage')||((projects.find(p=>p.id===state.projectId)?.permissions||currentUser?.permissions||[]).includes(permission));
 
 const $ = (selector, parent = document) => parent.querySelector(selector);
 const escape = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
-function readSaved() {try {return JSON.parse(localStorage.getItem('geokg-workbench-v1') || '{}');} catch {return {};}}
+function readSaved() {return {};} // 业务数据从当前身份的服务端授权结果加载。
+// 保留旧版浏览器数据，但不将其自动归属到任何登录账号。
 const saved = readSaved();
 const state = {
-  projectId: projects.some(p => p.id === saved.projectId) ? saved.projectId : 'p1',
+  projectId: '',
   wellId: saved.wellId || 'w1', selectedType: saved.selectedType || 'well',
   expanded: new Set([saved.wellId || 'w1']), treeFilter: '', homeTab:'overview',
   sampleId:'triggered', scenario:'strata', activeResult:null, formDirty:false,
@@ -550,29 +894,20 @@ const navigation = [
   ['construction','build','知识构建'],['graph','graph','图谱管理'],['retrieval','search','混合检索'],
   ['reasoning','rule','规则与推理'],['integration','plug','接口联调'],['users','users','用户权限'],['operations','settings','运行管理'],
 ];
-const currentProject = () => projects.find(p => p.id === state.projectId);
+const currentProject = () => projects.find(p => p.id === state.projectId)||{id:'',name:'未分配项目',block:'暂无授权范围',wells:[]};
 const projectWells = () => wells.filter(w => currentProject().wells.includes(w.id));
-if (!currentProject().wells.includes(state.wellId)) state.wellId=currentProject().wells[0];
-const currentWell = () => wells.find(w => w.id === state.wellId);
+if (!currentProject().wells.includes(state.wellId)) state.wellId=projectWells()[0]?.id||'';
+const currentWell = () => wells.find(w => w.id === state.wellId)||{id:'',name:'未选择井',short:'—',layer:'受限或未提供',depth:'受限或未提供',source:'受限或未提供',version:'—'};
 const referenceWell = () => projectWells().find(w => w.id !== state.wellId) || currentWell();
 const route = () => (location.hash.match(/^#\/([a-z]+)/)?.[1] || 'home');
-function persist() {
-  try {localStorage.setItem('geokg-workbench-v1',JSON.stringify({projectId:state.projectId,wellId:state.wellId,selectedType:state.selectedType,rule:state.rule,runs:state.runs.slice(0,30),imported:state.imported}));}
-  catch {toast('浏览器存储不可用，本次修改仅在当前页面保留。');}
-}
+function persist() {} // 数据通过鉴权接口保存，不共享浏览器业务缓存。
 function toast(message) {const target=$('#toast');target.textContent=message;target.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>target.classList.remove('show'),4200);}
 function badge(text,tone='blue') {return `<span class="badge ${tone}">${escape(text)}</span>`;}
 function go(page,scenario) {
   if(scenario) {state.scenario=scenario;state.activeResult=null;}
   if(route()===page) render(); else location.hash=`/${page}`;
 }
-function getAssets() {
-  const rows=[];
-  for(const well of projectWells()) for(const type of objectTypes) {
-    for(let n=0;n<type.count;n++) rows.push({id:`${well.id}-${type.id}-${n}`,wellId:well.id,name:`${well.short}_${type.name}${type.id==='log' ? (n ? '_AC':'_GR'):''}`,type:type.type,source:well.source,version:well.version,status:'演示资料',tone:'neutral'});
-  }
-  return [...state.imported.filter(a=>projectWells().some(w=>w.id===a.wellId)),...rows];
-}
+function getAssets() {return authorizedAssets.filter(a=>projectWells().some(w=>w.id===a.wellId));}
 function modal(title,body,{wide=false}={}) {
   $('#overlay-root').innerHTML=`<dialog class="modal ${wide?'wide':''}" aria-labelledby="dialog-title"><div class="modal-head"><h2 id="dialog-title">${escape(title)}</h2><button class="icon-button" data-action="close-modal" aria-label="关闭弹窗">${icon('close')}</button></div><div class="modal-body">${body}</div></dialog>`;
   const dialog=$('dialog');dialog.addEventListener('click',event=>{if(event.target===dialog) dialog.close();});dialog.showModal();
@@ -582,36 +917,42 @@ function downloadJson(data,name) {
   const link=document.createElement('a');link.href=url;link.download=name;link.click();setTimeout(()=>URL.revokeObjectURL(url),10000);
 }
 function render() {
-  const page=route();
+  if(authLoading){$('#app').innerHTML='<main class="empty-state" id="main-content"><h2>正在恢复登录会话…</h2></main>';return;}
+  if(!currentUser){$('#app').innerHTML=loginHtml(loginNotice);return;}
+  const page=route()==='login'?'home':route();
   $('#app').innerHTML=`
   <header class="app-header">
     <a class="brand" href="#/home"><span class="brand-mark">${icon('graph',26)}</span><span><strong>智能地质导向知识图谱平台</strong><small>专业资料 · 知识关联 · 辅助分析</small></span></a>
-    <div class="header-right"><span class="demo-indicator"><i></i>本地演示</span><span class="update-time">更新于 <span id="updated-time">${state.updatedAt.toLocaleTimeString('zh-CN',{hour12:false})}</span></span><span class="header-divider"></span><button class="icon-button" data-action="notifications" aria-label="查看待办通知">${icon('bell')}</button><button class="icon-button" data-action="help" aria-label="查看使用说明">${icon('info')}</button><button class="user-button" data-action="profile" aria-label="查看个人信息"><span class="avatar">演</span><span><strong>演示用户</strong><small>地质工程师</small></span>${icon('down',14)}</button></div>
+    <div class="header-right"><span class="demo-indicator"><i></i>${offlineMode?'离线演示':'本机会话'}</span><span class="update-time">更新于 <span id="updated-time">${state.updatedAt.toLocaleTimeString('zh-CN',{hour12:false})}</span></span><span class="header-divider"></span><button class="icon-button" data-action="notifications" aria-label="查看待办通知">${icon('bell')}</button><button class="icon-button" data-action="help" aria-label="查看使用说明">${icon('info')}</button><button class="user-button" data-action="profile" aria-label="查看个人信息"><span class="avatar">${escape(currentUser.name.slice(0,1))}</span><span><strong>${escape(currentUser.name)}</strong><small>${escape(currentUser.roleName)}</small></span>${icon('down',14)}</button></div>
   </header>
-  <nav class="main-nav" aria-label="主菜单">${navigation.map(([id,glyph,label])=>`<button data-route="${id}" class="nav-item ${page===id?'active':''}" ${page===id?'aria-current="page"':''}>${icon(glyph,17)}<span>${label}</span></button>`).join('')}</nav>
+  <nav class="main-nav" aria-label="主菜单">${navigation.filter(([id])=>permitted(id)).map(([id,glyph,label])=>`<button data-route="${id}" class="nav-item ${page===id?'active':''}" ${page===id?'aria-current="page"':''}>${icon(glyph,17)}<span>${label}</span></button>`).join('')}</nav>
   <div class="context-bar"><div class="context-controls"><label for="project-select">当前项目</label><select id="project-select">${projects.map(p=>`<option value="${p.id}" ${p.id===state.projectId?'selected':''}>${p.name}</option>`).join('')}</select><span class="context-stat">井数 <b>${projectWells().length}</b></span><span class="context-stat">资料 <b>${getAssets().length}</b></span><span class="context-stat current-well">当前井 <b>${currentWell().short}</b></span></div><div class="context-steps"><span>工作流程</span><button data-action="import">1 导入资料</button>${icon('chevron',12)}<button data-route="construction">2 构建知识</button>${icon('chevron',12)}<button class="step-current" data-route="retrieval">3 检索与推理</button></div></div>
-  <div class="app-body"><aside class="data-sidebar" aria-label="数据树与属性"><section class="tree-pane"><div class="pane-heading"><h2>${icon('folder',17)}数据资源</h2><button class="icon-button small" data-action="expand-tree" aria-label="展开全部井">${icon('layers',16)}</button></div><label class="tree-search">${icon('search',15)}<input id="tree-search" placeholder="搜索井、资料或对象" aria-label="搜索数据树" value="${escape(state.treeFilter)}"></label><div id="tree-list" class="tree-list">${treeHtml()}</div><button class="tree-import" data-action="import">${icon('upload',15)}导入资料</button></section><section id="properties" class="properties-pane">${propertiesHtml()}</section></aside><main class="main-content" id="main-content" tabindex="-1">${pageHtml(page)}</main></div>
+  <div class="app-body ${page==='users'?'admin-layout':''}"><aside class="data-sidebar" aria-label="数据树与属性"><section class="tree-pane"><div class="pane-heading"><h2>${icon('folder',17)}数据资源</h2><button class="icon-button small" data-action="expand-tree" aria-label="展开全部井">${icon('layers',16)}</button></div><label class="tree-search">${icon('search',15)}<input id="tree-search" placeholder="搜索井、资料或对象" aria-label="搜索数据树" value="${escape(state.treeFilter)}"></label><div id="tree-list" class="tree-list">${treeHtml()}</div><button class="tree-import" data-action="import">${icon('upload',15)}导入资料</button></section><section id="properties" class="properties-pane">${propertiesHtml()}</section></aside><main class="main-content" id="main-content" tabindex="-1">${pageHtml(page)}</main></div>
   <footer class="status-bar"><span><i class="status-dot"></i>示例数据 · ${currentProject().block} / ${currentWell().short}</span><span>资料版本 ${currentWell().version}<span class="footer-separator">|</span>知识可追溯 · 结果可校核</span></footer>`;
+  applyPermissions();
 }
 function treeHtml() {
   const filter=state.treeFilter.toLowerCase();
   let count=0;
   const rows=projectWells().map(well=>{
     const wellMatch=well.name.toLowerCase().includes(filter);
-    const types=objectTypes.filter(t=>wellMatch || t.name.includes(filter) || t.type.includes(filter));
+    const types=objectTypes.filter(t=>authorizedAssets.some(a=>a.wellId===well.id&&a.objectType===t.id)).filter(t=>wellMatch || t.name.includes(filter) || t.type.includes(filter));
     if(!wellMatch&&!types.length) return '';
     count++;
     const expanded=state.expanded.has(well.id)||Boolean(filter);
-    return `<div class="well-group"><div class="tree-well-row ${well.id===state.wellId&&state.selectedType==='well'?'selected':''}"><button class="tree-toggle ${expanded?'expanded':''}" data-action="toggle-well" data-well="${well.id}" aria-label="${expanded?'折叠':'展开'}${well.name}" aria-expanded="${expanded}">${icon('chevron',13)}</button><button class="tree-node" data-action="select-node" data-well="${well.id}" data-type="well">${icon('well',16)}<span>${well.short}</span><small>${objectTypes.reduce((n,t)=>n+t.count,0)} 份</small></button></div>${expanded?`<div class="tree-children">${types.map(type=>`<button class="tree-leaf ${state.wellId===well.id&&state.selectedType===type.id?'selected':''}" data-action="select-node" data-well="${well.id}" data-type="${type.id}">${icon(type.icon,14)}<span>${type.name}</span><small>${type.count}</small></button>`).join('')}</div>`:''}</div>`;
+    return `<div class="well-group"><div class="tree-well-row ${well.id===state.wellId&&state.selectedType==='well'?'selected':''}"><button class="tree-toggle ${expanded?'expanded':''}" data-action="toggle-well" data-well="${well.id}" aria-label="${expanded?'折叠':'展开'}${well.name}" aria-expanded="${expanded}">${icon('chevron',13)}</button><button class="tree-node" data-action="select-node" data-well="${well.id}" data-type="well">${icon('well',16)}<span>${well.short}</span><small>${authorizedAssets.filter(a=>a.wellId===well.id).length} 份</small></button></div>${expanded?`<div class="tree-children">${types.map(type=>`<button class="tree-leaf ${state.wellId===well.id&&state.selectedType===type.id?'selected':''}" data-action="select-node" data-well="${well.id}" data-type="${type.id}">${icon(type.icon,14)}<span>${type.name}</span><small>${authorizedAssets.filter(a=>a.wellId===well.id&&a.objectType===type.id).length}</small></button>`).join('')}</div>`:''}</div>`;
   }).join('');
   return `<div class="tree-project">${icon('folder',16)}<strong>${currentProject().name}</strong><small>${projectWells().length} 井</small></div>${rows || '<div class="tree-empty">没有匹配的井或资料。</div>'}${count?'<div class="tree-note">选择对象可查看下方属性</div>':''}`;
 }
 function propertiesHtml() {
   const well=currentWell();const type=objectTypes.find(t=>t.id===state.selectedType);
-  return `<div class="pane-heading"><h2>${icon('panel',16)}对象属性</h2>${badge(type?.type || '井','neutral')}</div><div class="property-name">${icon(type?.icon||'well',20)}<strong>${type ? type.name : well.name}</strong></div><dl class="property-list"><div><dt>所属项目</dt><dd>${currentProject().name}</dd></div><div><dt>井号</dt><dd>${well.short}</dd></div><div><dt>目标层位</dt><dd>${well.layer}</dd></div><div><dt>井段范围</dt><dd>${well.depth}</dd></div><div><dt>深度基准</dt><dd>MD · m</dd></div><div><dt>资料版本</dt><dd>${well.version}</dd></div><div><dt>来源</dt><dd>${well.source}</dd></div></dl><button class="text-button property-link" data-action="evidence" data-evidence="target">查看来源记录 ${icon('arrow',14)}</button>`;
+  return `<div class="pane-heading"><h2>${icon('panel',16)}对象属性</h2>${badge(type?.type || '井','neutral')}</div><div class="property-name">${icon(type?.icon||'well',20)}<strong>${type ? type.name : well.name}</strong></div><dl class="property-list"><div><dt>所属项目</dt><dd>${currentProject().name}</dd></div><div><dt>井号</dt><dd>${well.short}</dd></div><div><dt>目标层位</dt><dd>${escape(well.layer??'受限或未提供')}</dd></div><div><dt>井段范围</dt><dd>${escape(well.depth??'受限或未提供')}</dd></div><div><dt>深度基准</dt><dd>MD · m</dd></div><div><dt>资料版本</dt><dd>${well.version}</dd></div><div><dt>来源</dt><dd>${escape(well.source??'受限或未提供')}</dd></div></dl><button class="text-button property-link" data-action="evidence" data-evidence="target">查看来源记录 ${icon('arrow',14)}</button>`;
 }
 function heading(eyebrow,title,description,actions='') {return `<div class="page-heading"><div><div class="breadcrumb">工作台 <span>/</span> ${escape(eyebrow)}</div><h1>${escape(title)}</h1><p>${escape(description)}</p></div><div class="heading-actions">${actions}</div></div>`;}
 function pageHtml(page) {
+  if(!permitted(page)&&navigation.some(([id])=>id===page))return heading('访问受限','无权限访问','请联系管理员调整角色或项目授权。',`<button class="button" data-route="home">返回首页</button>`);
+  if(page==='users')return usersUI.html();
+  if(!projects.length)return heading('工作空间','暂无可访问项目','您的账号尚未分配项目或井，请联系管理员。');
   if(page==='home') return homeHtml();
   if(page==='retrieval') return retrievalHtml();
   if(page==='reasoning') return reasoningHtml();
@@ -629,11 +970,11 @@ function homeHtml() {
   ${state.homeTab==='assets'?assetTable():state.homeTab==='relations'?`<section class="panel graph-full"><div class="panel-heading"><h2>当前井知识关联</h2>${badge('五类对象','blue')}</div>${graphHtml()}${graphLegend()}</section>`:state.homeTab==='history'?historyHtml():`
   <div class="metric-grid">${[
     ['folder','资料资产',assets.length,'按井组织的专业资料','data','blue'],
-    ['graph','知识实体',count*(objectTypes.length+1),'井与五类知识对象','graph','indigo'],
+    ['graph','知识实体',count+assets.length,'井与五类知识对象','graph','indigo'],
     ['rule','待校核事项',initialTasks.filter(t=>currentProject().wells.includes(t.wellId)).length,'候选知识与结果核查','construction','amber'],
     ['clock','已保存判定',state.runs.filter(r=>r.projectId===state.projectId).length,'本地规则运行记录','operations','teal'],
   ].map(([glyph,label,value,detail,page,tone])=>`<button class="metric-card" data-route="${page}"><span class="metric-icon ${tone}">${icon(glyph,21)}</span><span class="metric-copy"><span>${label}</span><strong>${value}<small>项</small></strong><small>${detail}</small></span>${icon('chevron',14)}</button>`).join('')}</div>
-  <div class="home-columns"><section class="panel knowledge-panel"><div class="panel-heading"><h2>${icon('graph',18)}知识关联概览</h2><button class="text-button" data-route="graph">查看图谱 ${icon('arrow',14)}</button></div><div class="panel-subtitle">${currentWell().short} · ${currentWell().layer} <span>点击节点查看对象属性</span></div>${graphHtml()}${graphLegend()}</section><section class="panel tasks-panel"><div class="panel-heading"><h2>${icon('rule',18)}我的待办</h2><span class="count-label">${initialTasks.filter(t=>currentProject().wells.includes(t.wellId)).length} 项</span></div><div class="task-list">${taskList()}</div><div class="task-bottom">${icon('info',14)}校核意见与结果版本一并留存</div><div class="panel-heading recent-heading"><h2>${icon('clock',16)}最近规则判定</h2><button class="text-button" data-route="operations">全部记录</button></div>${state.runs.length?state.runs.filter(r=>r.projectId===state.projectId).slice(0,2).map(run=>`<button class="recent-run" data-action="run-detail" data-run="${escape(run.id)}"><span>${escape(run.result.title)}</span><small>${escape(run.time)}</small>${icon('chevron',13)}</button>`).join('')||'<div class="compact-empty">当前项目暂无判定记录</div>':`<div class="compact-empty">暂无运行记录<button class="text-button" data-route="retrieval">运行第一次规则判定 ${icon('arrow',13)}</button></div>`}</section></div>
+  <div class="home-columns"><section class="panel knowledge-panel"><div class="panel-heading"><h2>${icon('graph',18)}知识关联概览</h2><button class="text-button" data-route="graph">查看图谱 ${icon('arrow',14)}</button></div><div class="panel-subtitle">${currentWell().short} · ${escape(currentWell().layer??'受限或未提供')} <span>点击节点查看对象属性</span></div>${graphHtml()}${graphLegend()}</section><section class="panel tasks-panel"><div class="panel-heading"><h2>${icon('rule',18)}我的待办</h2><span class="count-label">${initialTasks.filter(t=>currentProject().wells.includes(t.wellId)).length} 项</span></div><div class="task-list">${taskList()}</div><div class="task-bottom">${icon('info',14)}校核意见与结果版本一并留存</div><div class="panel-heading recent-heading"><h2>${icon('clock',16)}最近规则判定</h2><button class="text-button" data-route="operations">全部记录</button></div>${state.runs.length?state.runs.filter(r=>r.projectId===state.projectId).slice(0,2).map(run=>`<button class="recent-run" data-action="run-detail" data-run="${escape(run.id)}"><span>${escape(run.result.title)}</span><small>${escape(run.time)}</small>${icon('chevron',13)}</button>`).join('')||'<div class="compact-empty">当前项目暂无判定记录</div>':`<div class="compact-empty">暂无运行记录<button class="text-button" data-route="retrieval">${permitted('run')?'运行第一次规则判定':'查看检索页面'} ${icon('arrow',13)}</button></div>`}</section></div>
   <section class="panel scenario-panel"><div class="panel-heading"><h2>${icon('layers',18)}典型场景</h2><span class="subtle">从检索结果发起分析，保留事实、规则与证据</span></div><div class="scenario-grid"><button class="scenario-card" data-action="scenario" data-scenario="neighbor"><span class="scenario-icon">${icon('well',24)}</span><span><strong>邻井推荐</strong><small>筛选候选井，查看匹配依据与差异</small></span>${icon('arrow',18)}</button><button class="scenario-card" data-action="scenario" data-scenario="strata"><span class="scenario-icon teal">${icon('layers',24)}</span><span><strong>地层对比</strong><small>比较已知层位，核查厚度差与证据</small></span>${icon('arrow',18)}</button></div></section>
   ${assetTable(4)}`}`;
 }
@@ -642,13 +983,13 @@ function graphHtml() {
   const w=currentWell();
   const nodes=[
     ['well',320,142,`井 ${w.short}`,'目标井','blue'],
-    ['stratum',130,68,w.layer,'地层 / 层位','teal'],
+    ['stratum',130,68,w.layer??'字段受限','地层 / 层位','teal'],
     ['log',500,66,'GR / AC','测井资料','purple'],
     ['trajectory',116,220,'井段轨迹','井轨迹','blue'],
     ['model',504,221,'区块模型','地质模型','amber'],
     ['instruction',322,271,'历史指令','依据记录','slate'],
-  ];
-  return `<div class="graph-canvas"><svg class="knowledge-graph" viewBox="0 0 640 330" role="group" aria-label="${escape(w.short)}五类知识对象关联图"><defs><pattern id="graph-dot" width="18" height="18" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r=".8" fill="#e0e7f0"/></pattern></defs><rect width="640" height="330" fill="url(#graph-dot)"/>${nodes.slice(1).map(([id,x,y],i)=>{const labels=['钻遇','包含','关联','适用','依据'];return `<path class="graph-edge" d="M320 142L${x} ${y}"/><text class="edge-label" x="${(320+x)/2}" y="${(142+y)/2-8}" text-anchor="middle">${labels[i]}</text>`;}).join('')}${nodes.map(([id,x,y,title,subtitle,tone])=>`<g class="graph-node ${tone} ${state.selectedType===id?'selected':''}" data-action="select-node" data-well="${w.id}" data-type="${id}" role="button" tabindex="0" aria-label="查看${subtitle}属性" transform="translate(${x},${y})"><rect x="-65" y="-24" width="130" height="48" rx="8"/><circle cx="-48" cy="-3" r="4"/><text class="node-title" x="-35" y="1">${escape(title)}</text><text class="node-subtitle" x="0" y="39" text-anchor="middle">${subtitle}</text></g>`).join('')}</svg></div>`;
+  ].filter(([id])=>id==='well'||authorizedAssets.some(a=>a.wellId===w.id&&a.objectType===id));
+  return `<div class="graph-canvas"><svg class="knowledge-graph" viewBox="0 0 640 330" role="group" aria-label="${escape(w.short)}五类知识对象关联图"><defs><pattern id="graph-dot" width="18" height="18" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r=".8" fill="#e0e7f0"/></pattern></defs><rect width="640" height="330" fill="url(#graph-dot)"/>${nodes.slice(1).map(([id,x,y],i)=>{const labels=nodes.slice(1).map(([key])=>({stratum:'钻遇',log:'包含',trajectory:'关联',model:'适用',instruction:'依据'}[key]));return `<path class="graph-edge" d="M320 142L${x} ${y}"/><text class="edge-label" x="${(320+x)/2}" y="${(142+y)/2-8}" text-anchor="middle">${labels[i]}</text>`;}).join('')}${nodes.map(([id,x,y,title,subtitle,tone])=>`<g class="graph-node ${tone} ${state.selectedType===id?'selected':''}" data-action="select-node" data-well="${w.id}" data-type="${id}" role="button" tabindex="0" aria-label="查看${subtitle}属性" transform="translate(${x},${y})"><rect x="-65" y="-24" width="130" height="48" rx="8"/><circle cx="-48" cy="-3" r="4"/><text class="node-title" x="-35" y="1">${escape(title)}</text><text class="node-subtitle" x="0" y="39" text-anchor="middle">${subtitle}</text></g>`).join('')}</svg></div>`;
 }
 function graphLegend(){return `<div class="graph-legend"><span><i class="legend-dot blue"></i>井／轨迹</span><span><i class="legend-dot teal"></i>地层</span><span><i class="legend-dot purple"></i>测井</span><span><i class="legend-dot amber"></i>模型</span><span><i class="legend-dot slate"></i>历史指令</span><small>示例关系 · 可回查来源</small></div>`;}
 function assetTable(limit) {
@@ -661,10 +1002,10 @@ function retrievalHtml() {
   const sample=demoCases.find(c=>c.id===state.sampleId);const target=currentWell();const ref=referenceWell();
   return heading('混合检索','检索与规则判定','查到哪些资料、为什么选这条规则、各项条件如何判断，在同一面板中逐项核查。',`<button class="button" data-route="reasoning">${icon('rule',15)}规则库与运行记录</button>`)+`
   <div class="notice demo-note">${icon('info',16)}当前使用演示资料与规则。厚度差阈值 ${escape(state.rule.threshold)} m 为演示值，正式规则需经专家确认。</div>
-  <section class="panel analysis-context"><div class="panel-heading"><h2><span class="section-index">01</span>选择分析对象</h2>${badge('规则判定','blue')}</div><div class="analysis-fields"><label>目标井<select id="analysis-well">${projectWells().map(w=>`<option value="${w.id}" ${w.id===state.wellId?'selected':''}>${w.name}</option>`).join('')}</select></label><label>参考井<input value="${ref.name}" readonly></label><label>分析场景<select id="scenario-select"><option value="strata" ${state.scenario==='strata'?'selected':''}>地层对比</option><option value="neighbor" ${state.scenario==='neighbor'?'selected':''}>邻井推荐</option></select></label><label>井段 / 层位<input value="${target.layer} · ${target.depth}" readonly></label></div><div class="sample-controls"><label for="sample-select">演示样例</label><select id="sample-select">${demoCases.map(c=>`<option value="${c.id}" ${c.id===state.sampleId?'selected':''}>${c.name}</option>`).join('')}</select><button class="button primary" id="run-rule" data-action="run-rule">${icon('play',15)}运行规则判定</button><span class="subtle">T3：检索 → 规则关联 → 确定性判断</span></div></section>
-  <div class="analysis-grid"><section class="panel retrieved-panel"><div class="panel-heading"><h2><span class="section-index">02</span>检索到的资料</h2>${badge('A07','neutral')}</div><div class="source-card"><div class="source-icon">${icon('file',19)}</div><div><strong>${target.short} 分层记录</strong><small>${target.layer} · ${target.depth} · MD / m</small><p>用于确认目标层位、厚度与来源。</p><button class="text-button" data-action="evidence" data-evidence="target">查看原始记录 ${icon('link',13)}</button></div></div><div class="source-card"><div class="source-icon teal">${icon('file',19)}</div><div><strong>${ref.short} 参考分层记录</strong><small>${ref.layer} · ${ref.depth} · MD / m</small><p>用于核对参考层位、厚度及对应关系。</p><button class="text-button" data-action="evidence" data-evidence="reference">查看原始记录 ${icon('link',13)}</button></div></div><div class="evidence-footnote">${icon('link',14)}井 → 井段 → 地层 → 分层记录；资料版本 ${target.version}</div></section>
+  <section class="panel analysis-context"><div class="panel-heading"><h2><span class="section-index">01</span>选择分析对象</h2>${badge('规则判定','blue')}</div><div class="analysis-fields"><label>目标井<select id="analysis-well">${projectWells().map(w=>`<option value="${w.id}" ${w.id===state.wellId?'selected':''}>${w.name}</option>`).join('')}</select></label><label>参考井<input value="${ref.name}" readonly></label><label>分析场景<select id="scenario-select"><option value="strata" ${state.scenario==='strata'?'selected':''}>地层对比</option><option value="neighbor" ${state.scenario==='neighbor'?'selected':''}>邻井推荐</option></select></label><label>井段 / 层位<input value="${escape(target.layer??'字段受限')} · ${escape(target.depth??'字段受限')}" readonly></label></div><div class="sample-controls"><label for="sample-select">演示样例</label><select id="sample-select">${demoCases.map(c=>`<option value="${c.id}" ${c.id===state.sampleId?'selected':''}>${c.name}</option>`).join('')}</select><button class="button primary" id="run-rule" data-action="run-rule">${icon('play',15)}运行规则判定</button><span class="subtle">T3：检索 → 规则关联 → 确定性判断</span></div></section>
+  <div class="analysis-grid"><section class="panel retrieved-panel"><div class="panel-heading"><h2><span class="section-index">02</span>检索到的资料</h2>${badge('A07','neutral')}</div>${[target,ref].filter((w,i,list)=>list.findIndex(x=>x.id===w.id)===i).map(w=>{const asset=authorizedAssets.find(a=>a.wellId===w.id&&a.objectType==='stratum');return asset?`<div class="source-card"><div class="source-icon">${icon('file',19)}</div><div><strong>${escape(w.short)} 分层记录</strong><small>${escape(w.layer??'字段受限')} · ${escape(w.depth??'字段受限')} · MD / m</small><p>${escape(asset.source??'来源字段受限')}</p><button class="text-button" data-action="evidence" data-evidence="${w.id===target.id?'target':'reference'}">查看原始记录</button></div></div>`:`<div class="admin-note">${escape(w.short)} 分层证据不可访问。</div>`;}).join('')}<div class="evidence-footnote">${icon('link',14)}井 → 井段 → 地层 → 分层记录；资料版本 ${target.version}</div></section>
   <section class="panel selected-rule"><div class="panel-heading"><h2><span class="section-index">03</span>系统选择的规则</h2>${badge('A08','neutral')}</div>${!sample.aligned||state.scenario!=='strata'||!state.rule.enabled?`<div class="rule-empty">${icon('info',24)}<strong>无适用规则</strong><p>${!state.rule.enabled?'演示规则已停用。':state.scenario!=='strata'?'当前厚度差规则仅适用于地层对比；邻井推荐规则待专家提供。':'尚未确认两井层位对应，本规则不适用。'}</p></div>`:`<div class="rule-detail"><div class="rule-name"><strong>${escape(state.rule.name)}</strong>${badge(sample.conflict?'存在冲突':'适用',sample.conflict?'amber':'teal')}</div><div class="rule-code mono">${state.rule.id} · ${escape(state.rule.version)}</div><p>${escape(state.rule.description)}</p><dl><div><dt>选用理由</dt><dd>已选择地层对比；演示样例标记层位已确认对应。</dd></div><div><dt>判定条件</dt><dd>两井厚度差绝对值 &gt; ${escape(state.rule.threshold)} m</dd></div><div><dt>规则来源</dt><dd>${escape(state.rule.source)}</dd></div></dl>${sample.conflict?'<div class="inline-warning">样例模拟同一工况存在相反规则结论，需人工处理。</div>':''}</div>`}</section></div>
-  <section class="panel judgement-panel"><div class="panel-heading"><h2><span class="section-index">04</span>逐项判定与最终结论</h2>${badge('A09','neutral')}</div><div class="measurement-row"><label>目标井厚度 <span>m</span><input id="target-thickness" type="number" min="0" step="0.1" value="${sample.target??''}" placeholder="缺失"></label><label>参考井厚度 <span>m</span><input id="reference-thickness" type="number" min="0" step="0.1" value="${sample.reference??''}" placeholder="缺失"></label><div class="measurement-basis"><span>本次实测输入</span><strong id="measurement-origin">演示样例 · ${sample.sameBasis?'同一基准':'基准未统一'}</strong><small>输入值和来源会保存在运行快照中</small></div></div><div id="judgement-result">${state.activeResult?resultHtml(state.activeResult):'<div class="judgement-empty">'+icon('rule',28)+'<strong>等待运行规则判定</strong><p>上方查看资料和适用规则，点击“运行规则判定”后查看计算过程、结论与证据。</p></div>'}</div></section>
+  <section class="panel judgement-panel"><div class="panel-heading"><h2><span class="section-index">04</span>逐项判定与最终结论</h2>${badge('A09','neutral')}</div><div class="measurement-row"><label>目标井厚度 <span>m</span><input id="target-thickness" type="number" min="0" step="0.1" value="${permitted('run')?(sample.target??''):''}" placeholder="${permitted('run')?'缺失':'无判定权限或字段受限'}" ${permitted('run')?'':'disabled'}></label><label>参考井厚度 <span>m</span><input id="reference-thickness" type="number" min="0" step="0.1" value="${permitted('run')?(sample.reference??''):''}" placeholder="${permitted('run')?'缺失':'无判定权限或字段受限'}" ${permitted('run')?'':'disabled'}></label><div class="measurement-basis"><span>本次实测输入</span><strong id="measurement-origin">演示样例 · ${sample.sameBasis?'同一基准':'基准未统一'}</strong><small>输入值和来源会保存在运行快照中</small></div></div><div id="judgement-result">${state.activeResult?resultHtml(state.activeResult):'<div class="judgement-empty">'+icon('rule',28)+'<strong>等待运行规则判定</strong><p>上方查看资料和适用规则，点击“运行规则判定”后查看计算过程、结论与证据。</p></div>'}</div></section>
   <section class="panel joint-panel"><div><h2>${icon('graph',18)}图谱与大模型联合分析 <span class="badge neutral">A10 / T4</span></h2><p>在规则判定后，将事实、规则结果和引用作为分析输入。</p></div><button class="button" data-action="joint-analysis" ${!state.activeResult||state.formDirty?'disabled':''}>${icon('play',15)}生成联合分析</button></section>`;
 }
 function resultHtml(run) {
@@ -683,16 +1024,14 @@ function historyHtml() {
 }
 function evidenceModal(which) {
   const well=which==='reference'?referenceWell():currentWell();
-  modal('资料来源 · 分层记录',`<div class="source-dialog-title">${icon('file',23)}<div><h3>${well.source}</h3><p>${badge('虚构演示资料','neutral')} ${well.version}</p></div></div><dl class="evidence-attributes"><div><dt>井号</dt><dd>${well.short}</dd></div><div><dt>层位</dt><dd>${well.layer}</dd></div><div><dt>井段</dt><dd>${well.depth}</dd></div><div><dt>厚度</dt><dd>${well.thickness} m</dd></div><div><dt>定位</dt><dd>演示分层表 · 第1行</dd></div><div><dt>基准</dt><dd>MD / m</dd></div></dl><div class="source-quote">“${well.short}，${well.layer}，井段 ${well.depth}，厚度 ${well.thickness} m。”</div><p class="subtle">规则面板的演示样例或手工厚度值可能与此原始样例不同；实际判定所用数值及来源请查看本次输入快照。</p>`);
+  if(!authorizedAssets.some(a=>a.wellId===well.id&&a.objectType==='stratum')){toast('无权查看该分层证据。');return;}
+  modal('资料来源 · 分层记录',`<div class="source-dialog-title">${icon('file',23)}<div><h3>${escape(well.source??'受限或未提供')}</h3><p>${badge('虚构演示资料','neutral')} ${well.version}</p></div></div><dl class="evidence-attributes"><div><dt>井号</dt><dd>${well.short}</dd></div><div><dt>层位</dt><dd>${escape(well.layer??'受限或未提供')}</dd></div><div><dt>井段</dt><dd>${escape(well.depth??'受限或未提供')}</dd></div><div><dt>厚度</dt><dd>${escape(well.thickness??'字段受限')} m</dd></div><div><dt>定位</dt><dd>演示分层表 · 第1行</dd></div><div><dt>基准</dt><dd>MD / m</dd></div></dl><div class="source-quote">“${well.short}，${escape(well.layer??'受限或未提供')}，井段 ${escape(well.depth??'受限或未提供')}，厚度 ${escape(well.thickness??'字段受限')} m。”</div><p class="subtle">规则面板的演示样例或手工厚度值可能与此原始样例不同；实际判定所用数值及来源请查看本次输入快照。</p>`);
 }
-function runRule() {
+async function runRule() {
   const sample=demoCases.find(c=>c.id===state.sampleId);
-  const input={scenario:state.scenario,aligned:sample.aligned,sameBasis:sample.sameBasis,conflict:sample.conflict,targetThickness:$('#target-thickness').value,referenceThickness:$('#reference-thickness').value,evidenceIds:[`${state.wellId}-stratum`,`${referenceWell().id}-stratum`],wellId:state.wellId,referenceWellId:referenceWell().id,dataVersion:currentWell().version};
-  const result=evaluateThicknessRule(input,state.rule);
-  const now=new Date();const id='RUN-'+now.getTime().toString(36).toUpperCase()+'-'+Math.random().toString(36).slice(2,5).toUpperCase();
-  const run={id,time:now.toLocaleString('zh-CN',{hour12:false}),projectId:state.projectId,wellId:state.wellId,wellName:currentWell().short,referenceWellName:referenceWell().short,measurementSource:state.formDirty?'手工输入（演示）':`演示样例：${sample.name}`,result};
-  state.activeResult=run;state.runs.unshift(run);state.runs=state.runs.slice(0,30);state.formDirty=false;persist();
-  $('#judgement-result').innerHTML=resultHtml(run);$('.joint-panel button').disabled=false;toast('判定完成，运行输入、规则版本与结果已保存。');
+  const run=await api('/business/run',{projectId:state.projectId,wellId:state.wellId,referenceWellId:referenceWell().id,scenario:state.scenario,aligned:sample.aligned,sameBasis:sample.sameBasis,conflict:sample.conflict,targetThickness:$('#target-thickness').value,referenceThickness:$('#reference-thickness').value});
+  state.activeResult=run;state.runs.unshift(run);state.formDirty=false;
+  $('#judgement-result').innerHTML=resultHtml(run);$('.joint-panel button').disabled=false;applyPermissions();toast('判定已保存，输入、规则版本与审计记录可回查。');
 }
 function invalidateResult() {
   state.formDirty=true;state.activeResult=null;
@@ -700,7 +1039,14 @@ function invalidateResult() {
   $('#measurement-origin').textContent='手工输入（演示）';$('.joint-panel button').disabled=true;
 }
 
-document.addEventListener('click',event=>{
+document.addEventListener('click',async event=>{
+  if(event.target.closest('[data-auth]')){await handleAuthAction(event);return;}
+  if(await usersUI.click(event))return;
+  if(!currentUser)return;
+  const permissionButton=event.target.closest('[data-action]');
+  const actionPermission={import:'import','run-rule':'run','export-run':'export','joint-analysis':'run'}[permissionButton?.dataset.action];
+  if(actionPermission&&!permitted(actionPermission)){toast('无权执行此操作。');return;}
+  try {
   const routeButton=event.target.closest('[data-route]');
   if(routeButton){go(routeButton.dataset.route);return;}
   const control=event.target.closest('[data-action]');if(!control)return;
@@ -710,15 +1056,15 @@ document.addEventListener('click',event=>{
   if(action==='expand-tree'){projectWells().forEach(w=>state.expanded.add(w.id));$('#tree-list').innerHTML=treeHtml();return;}
   if(action==='select-node'){const changed=state.wellId!==well;state.wellId=well;state.selectedType=type;state.expanded.add(well);if(changed)state.activeResult=null;persist();render();return;}
   if(action==='home-tab'){state.homeTab=control.dataset.tab;render();return;}
-  if(action==='refresh'){state.updatedAt=new Date();render();toast('已刷新当前工作范围。');return;}
+  if(action==='refresh'){state.updatedAt=new Date();await refreshWorkspace();toast('已重新读取当前身份与授权范围。');return;}
   if(action==='scenario'){go('retrieval',control.dataset.scenario);return;}
-  if(action==='run-rule'){runRule();return;}
+  if(action==='run-rule'){await runRule();return;}
   if(action==='evidence'){evidenceModal(control.dataset.evidence);return;}
   if(action==='run-detail'||action==='run-evidence'){
     const run=state.runs.find(r=>r.id===runId)||state.activeResult;if(!run)return;
     modal(action==='run-evidence'?'本次判定依据与输入快照':'规则判定记录',`<p>${escape(run.wellName)} / ${escape(run.referenceWellName)} · ${escape(run.time)}</p>${resultHtml(run)}<details class="snapshot"><summary>查看完整输入与版本快照</summary><pre>${escape(JSON.stringify(run,null,2))}</pre></details>`,{wide:true});return;
   }
-  if(action==='export-run'){const run=state.runs.find(r=>r.id===runId)||state.activeResult;if(run)downloadJson(run,run.id+'.json');return;}
+  if(action==='export-run'){const existing=state.runs.find(r=>r.id===runId)||state.activeResult;if(existing){const run=await api('/business/export',{projectId:existing.projectId,wellId:existing.wellId,runId:existing.id});downloadJson(run,run.id+'.json');}return;}
   if(action==='joint-analysis'){
     if(!state.activeResult||state.formDirty){toast('请先完成有效的规则判定。');return;}
     modal('生成联合分析',`<div class="notice">${icon('info',18)}尚未配置大模型分析服务，本次没有生成联合分析结果。</div><p>当前已整理好可供分析使用的资料与证据包，可导出交由后续服务接入。</p><ul><li>场景：${state.scenario==='strata'?'地层对比':'邻井推荐'}</li><li>对象：${currentWell().short} / ${referenceWell().short}</li><li>规则：${escape(state.activeResult.result.rule.name)}（${escape(state.activeResult.result.rule.version)}）</li><li>判定：${escape(state.activeResult.result.title)}</li><li>内容：资料标识、实测输入、逐项判断、结论及来源快照</li></ul><button class="button primary" data-action="export-run" data-run="${state.activeResult.id}">${icon('download',15)}导出分析输入包</button>`);return;
@@ -731,10 +1077,12 @@ document.addEventListener('click',event=>{
     modal('导入资料 · 登记清单',`<form id="import-form"><p class="subtle">将文件登记到当前井的待处理清单。当前演示不保存原文件内容，也不执行解析。</p><label class="form-field">归属井<input value="${currentWell().name}" readonly></label><label class="form-field">选择文件<input id="import-file" type="file" accept=".pdf,.docx,.las,.csv,.xlsx,.json" required></label><label class="form-field">资料类型<select id="import-type">${objectTypes.map(t=>`<option value="${t.type}">${t.type}</option>`).join('')}</select></label><div class="modal-actions"><button type="button" class="button" data-action="close-modal">取消</button><button class="button primary" type="submit">登记资料</button></div></form>`);return;
   }
   if(action==='notifications'){modal('我的待办',`<div class="task-list">${taskList()}</div><p class="subtle">当前展示示例校核任务。</p>`);return;}
-  if(action==='profile'){modal('个人信息',`<div class="profile-card"><span class="avatar large">演</span><h3>演示用户</h3><p>地质工程师</p>${badge('本地演示账号','blue')}</div><dl class="evidence-attributes"><div><dt>工作范围</dt><dd>${currentProject().name}</dd></div><div><dt>角色</dt><dd>资料浏览、结果分析与校核演示</dd></div></dl><p class="subtle">正式账号、登录和权限校验将在用户模块接入。</p>`);return;}
+  if(action==='profile'){modal('个人信息',`<div class="profile-card"><span class="avatar large">${escape(currentUser.name.slice(0,1))}</span><h3>${escape(currentUser.name)}</h3><p>${escape(currentUser.roleName)}</p></div><dl class="evidence-attributes"><div><dt>账号</dt><dd>${escape(currentUser.account)}</dd></div><div><dt>组织</dt><dd>${escape(currentUser.orgName)}</dd></div><div><dt>可访问项目</dt><dd>${projects.map(p=>escape(p.name)).join('、')||'尚未分配'}</dd></div></dl><div class="modal-actions"><button class="button danger" data-auth="logout">退出登录</button></div>`);return;}
   if(action==='help') modal('工作台使用说明','<ol><li>从左侧数据树选择井或知识对象，下方查看属性。</li><li>在首页查看资料、知识关联和待办，顶部菜单切换模块。</li><li>进入混合检索，选择演示样例并运行规则判定。</li><li>结果包含资料、规则、计算过程和引用，可保存与导出。</li><li>“规则与推理”中维护演示阈值并回看历史结果。</li></ol><p class="subtle">本版本为首页与规则判定交互原型；数据均为演示样例。</p>');
+  }catch(error){toast(error.message);}
 });
 document.addEventListener('change',event=>{
+  usersUI.change(event);
   if(event.target.id==='project-select'){state.projectId=event.target.value;state.wellId=currentProject().wells[0];state.selectedType='well';state.expanded=new Set([state.wellId]);state.activeResult=null;state.treeFilter='';persist();render();}
   if(event.target.id==='analysis-well'){state.wellId=event.target.value;state.selectedType='well';state.expanded.add(state.wellId);state.activeResult=null;persist();render();}
   if(event.target.id==='sample-select'){state.sampleId=event.target.value;state.formDirty=false;state.activeResult=null;render();}
@@ -744,19 +1092,52 @@ document.addEventListener('input',event=>{
   if(event.target.id==='tree-search'){state.treeFilter=event.target.value;$('#tree-list').innerHTML=treeHtml();}
   if(['target-thickness','reference-thickness'].includes(event.target.id))invalidateResult();
 });
-document.addEventListener('submit',event=>{
+document.addEventListener('submit',async event=>{
+  if(['login-form','admin-edit-form','audit-filter-form','rule-form','import-form'].includes(event.target.id))event.preventDefault();
+  if(event.target.id==='login-form'){event.preventDefault();await login(event.target);return;}
+  if(await usersUI.submit(event))return;
+  if(!currentUser)return;
+  try {
   if(event.target.id==='rule-form'){
     event.preventDefault();const threshold=Number($('#rule-threshold').value);if(!Number.isFinite(threshold)||threshold<=0){toast('请输入大于零的阈值。');return;}
-    state.rule={...state.rule,threshold,enabled:$('#rule-enabled').checked,version:'demo-'+Date.now().toString(36)};state.activeResult=null;persist();render();toast('演示规则已保存，历史运行版本保持不变。');
+    state.rule=await api('/business/rule-edit',{projectId:state.projectId,wellId:state.wellId,threshold,enabled:$('#rule-enabled').checked});state.activeResult=null;await refreshWorkspace();toast('规则已保存，历史记录保留原版本。');
   }
   if(event.target.id==='import-form'){
     event.preventDefault();const file=$('#import-file').files[0];if(!file)return;
-    state.imported.unshift({id:'import-'+Date.now(),wellId:state.wellId,name:file.name,type:$('#import-type').value,source:'本地文件清单登记',version:'待解析',status:'待解析',tone:'amber'});persist();$('dialog').close();render();toast('已加入当前井的待处理资料清单。');
+    await api('/business/import',{projectId:state.projectId,wellId:state.wellId,name:file.name,type:$('#import-type').value});$('dialog').close();await refreshWorkspace();toast('资料已登记，尚未保存原文件或解析。');
   }
+  }catch(error){toast(error.message);}
 });
 document.addEventListener('keydown',event=>{if((event.key==='Enter'||event.key===' ')&&event.target.matches('.graph-node')){event.preventDefault();event.target.dispatchEvent(new MouseEvent('click',{bubbles:true}));}});
-window.addEventListener('hashchange',()=>{$('dialog')?.close();render();});
-render();
+const usersUI=createUsersUI({modal,toast,refresh:refreshWorkspace,getUser:()=>currentUser});
+function applyPermissions(){
+  for(const button of document.querySelectorAll('[data-route]'))if(!permitted(button.dataset.route))button.disabled=true;
+  for(const button of document.querySelectorAll('[data-action]')){const key={import:'import','run-rule':'run','export-run':'export','joint-analysis':'run'}[button.dataset.action];if(key&&!permitted(key))button.hidden=true;}
+  if(!permitted('rule-edit'))for(const input of document.querySelectorAll('#rule-form input,#rule-form button'))input.disabled=true;
+  if(!projects.length||route()==='users'){document.querySelector('.context-bar')?.classList.add('hidden');document.querySelector('.data-sidebar')?.classList.add('hidden');document.querySelector('.app-body')?.classList.add('admin-layout');}
+}
+function clearSession(message=''){
+  currentUser=null;projects=[];wells=[];initialTasks=[];authorizedAssets=[];allowedActions={};state.runs=[];state.imported=[];state.activeResult=null;state.projectId='';state.wellId='';state.homeTab='overview';state.treeFilter='';state.selectedType='well';state.expanded=new Set();usersUI.clear();clearTimeout(sessionTimer);$('#overlay-root').innerHTML='';loginNotice=message;authLoading=false;location.hash='/login';render();
+}
+async function refreshWorkspace(fetchData=true){
+  if(fetchData){const me=await api('/auth/me');currentUser=me.user;const data=await api('/workspace');projects=data.projects;wells=data.wells;initialTasks=data.tasks;authorizedAssets=data.assets;allowedActions=data.capabilities||{};state.runs=data.runs;state.rule=data.rule;if(!projects.some(p=>p.id===state.projectId))state.projectId=projects[0]?.id||'';if(!projectWells().some(w=>w.id===state.wellId))state.wellId=projectWells()[0]?.id||'';state.expanded.add(state.wellId);state.activeResult=null;clearTimeout(sessionTimer);sessionTimer=setTimeout(()=>clearSession('登录已失效，请重新登录。'),Math.max(1,me.expires-Date.now()));}
+  render();
+}
+async function login(form){
+  const button=form.querySelector('[type="submit"]');button.disabled=true;button.textContent='正在登录…';
+  try{const result=await api('/auth/login',{account:form.elements.account.value.trim(),password:form.elements.password.value});currentUser=result.user;loginNotice='';await refreshWorkspace();location.hash='/home';render();}
+  catch(error){currentUser=null;const message=$('#login-message');if(message){message.textContent=error.message;message.classList.remove('hidden');}else clearSession(error.message);}
+  finally{button.disabled=false;button.textContent='登录平台 →';}
+}
+async function handleAuthAction(event){const control=event.target.closest('[data-auth]');if(control.dataset.auth==='password'){const password=$('#login-password');password.type=password.type==='password'?'text':'password';control.textContent=password.type==='password'?'显示':'隐藏';control.setAttribute('aria-label',password.type==='password'?'显示密码':'隐藏密码');}
+  if(control.dataset.auth==='account'){$('#login-account').value=control.dataset.account;$('#login-password').value='GeoDemo!2026';$('#login-account').focus();}
+  if(control.dataset.auth==='logout'){try{await api('/auth/logout',{});clearSession('您已退出登录。');}catch(error){toast(error.message);}}
+}
+window.addEventListener('session-expired',()=>clearSession('登录已失效或账号已停用，请重新登录。'));
+window.addEventListener('hashchange',async()=>{$('dialog')?.close();if(currentUser&&route()==='users')await usersUI.load();render();});
+window.addEventListener('focus',async()=>{if(!currentUser)return;try{await refreshWorkspace();}catch(error){if(error.status!==401)toast(error.message);}});
+async function start(){render();try{await refreshWorkspace();if(route()==='users')await usersUI.load();authLoading=false;render();}catch(error){if(error.status===401)clearSession();else {authLoading=false;clearSession('无法连接服务，请确认本机服务已启动后刷新。');}}}
+start();
 
 </script>
 </body>

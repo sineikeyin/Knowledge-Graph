@@ -1,15 +1,6 @@
 // 所有资料均为本地演示样例，不代表真实井、专家规则或正式测试结果。
-export const projects = [
-  { id: 'p1', name: '鄂尔多斯示例工区', block: '示例区块 A', owner: '演示用户', wells: ['w1', 'w2', 'w3'] },
-  { id: 'p2', name: '松辽示例工区', block: '示例区块 B', owner: '演示用户', wells: ['w4', 'w5'] },
-];
-export const wells = [
-  { id: 'w1', name: '示例井 JH-01', short: 'JH-01', layer: '长 8₁', depth: '3,120–3,128 m', thickness: 8, distance: 0, source: 'JH-01 分层记录', version: 'data-v1.0' },
-  { id: 'w2', name: '示例井 JH-02', short: 'JH-02', layer: '长 8₁', depth: '3,108–3,119 m', thickness: 11, distance: 1.6, source: 'JH-02 分层记录', version: 'data-v1.0' },
-  { id: 'w3', name: '示例井 JH-03', short: 'JH-03', layer: '长 8₂', depth: '3,096–3,105 m', thickness: 9, distance: 2.8, source: 'JH-03 分层记录', version: 'data-v1.0' },
-  { id: 'w4', name: '示例井 SL-01', short: 'SL-01', layer: '扶余油层', depth: '1,420–1,428 m', thickness: 8, distance: 0, source: 'SL-01 分层记录', version: 'data-v1.0' },
-  { id: 'w5', name: '示例井 SL-02', short: 'SL-02', layer: '扶余油层', depth: '1,411–1,422 m', thickness: 11, distance: 1.9, source: 'SL-02 分层记录', version: 'data-v1.0' },
-];
+
+
 export const objectTypes = [
   { id: 'stratum', name: '地层分层', icon: 'layers', type: '地层', count: 1 },
   { id: 'log', name: '测井资料', icon: 'file', type: '测井', count: 2 },
@@ -31,11 +22,7 @@ export const demoCases = [
   { id: 'basis', name: '基准不一致 · 暂不可比', target: 8, reference: 11, aligned: true, sameBasis: false, conflict: false, expected: 'insufficient' },
   { id: 'conflict', name: '规则冲突 · 待人工处理', target: 8, reference: 11, aligned: true, sameBasis: true, conflict: true, expected: 'conflict' },
 ];
-export const initialTasks = [
-  { id: 'demo-task-01', name: '分层资料知识审核', type: '人工校核', wellId: 'w1', state: '待审核', tone: 'amber', time: '演示记录', route: 'construction' },
-  { id: 'demo-task-02', name: '同层位厚度差复核', type: '规则判定', wellId: 'w1', state: '待运行', tone: 'blue', time: '演示记录', route: 'retrieval' },
-  { id: 'demo-task-03', name: '地层关系来源核查', type: '关系校核', wellId: 'w2', state: '待核查', tone: 'amber', time: '演示记录', route: 'graph' },
-];
+
 export const moduleDefinitions = {
   data: { name: '数据接入与治理', code: 'M2', description: '浏览当前井的资料清单，查看来源、版本与处理状态。', features: ['连接器与资料导入', '随钻实时接入', '文档解析与 OCR', '主数据归一', '数据质量校验', '血缘与版本', '数据资产目录'] },
   ontology: { name: '本体与 Schema 管理', code: 'M3', description: '定义知识对象、关系、属性与业务约束。', features: ['可视化本体建模', '行业本体模板', '术语与同义词', '版本与变更审批', '数据源映射', '业务动作定义'] },

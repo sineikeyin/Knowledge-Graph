@@ -6,9 +6,9 @@ const root=path.dirname(fileURLToPath(import.meta.url));
 let html=await fs.readFile(path.join(root,'index.html'),'utf8');
 const css=await fs.readFile(path.join(root,'src/styles.css'),'utf8');
 const parts=[];
-for(const name of ['icons.js','data.js','rules.js','main.js']) {
+for(const name of ['icons.js','sample-data.js','data.js','rules.js','access-model.js','offline-service.js','api.js','users.js','main.js']) {
   const source=await fs.readFile(path.join(root,'src',name),'utf8');
-  parts.push(`// ===== src/${name} =====\n`+source.replace(/^import .+;\r?\n/gm,'').replace(/^export /gm,''));
+  parts.push(`// ===== src/${name} =====\n`+source.replace(/^\uFEFF/,'').replace(/^import .+;\r?\n/gm,'').replace(/^export /gm,'').replace("await import('./offline-service.js')",'await Promise.resolve({createOfflineService})'));
 }
 html=html.replace('<link rel="stylesheet" href="./src/styles.css">',()=>'<style>\n'+css+'\n</style>');
 html=html.replace('<script type="module" src="./src/main.js"></script>',()=>'<script type="module">\n'+parts.join('\n\n')+'\n</script>');
