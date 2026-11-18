@@ -93,11 +93,11 @@ function pageHtml(page) {
   if(page==='operations') return heading('运行管理','运行记录','查看本次工作台中的规则判定记录及其输入快照。')+historyHtml()+moduleRoadmap(page);
   const definition=moduleDefinitions[page];
   if(!definition) return heading('页面不存在','未找到该页面','请通过顶部菜单返回工作台。',`<button class="button primary" data-route="home">返回首页</button>`);
-  return heading(definition.name,definition.name,definition.description||'查看模块功能与相关业务入口。',`<a class="button" href="./docs/页面搭建步骤.html" target="_blank" rel="noopener">${icon('book',15)}查看页面开发说明</a>`)+`<div class="notice">${icon('info',16)}该模块已建立页面入口，下方列出后续开发内容；当前可操作范围为首页、资料目录、图谱示意与规则判定。</div>`+moduleRoadmap(page);
+  return heading(definition.name,definition.name,definition.description||'查看模块功能与相关业务入口。')+`<div class="notice">${icon('info',16)}此功能暂未开放，请联系平台管理员了解可用范围。</div>`+moduleRoadmap(page);
 }
 function homeHtml() {
   const assets=getAssets();const count=projectWells().length;
-  return heading('首页','项目工作台','连接专业资料与知识证据，让每一次辅助分析都有据可查。',`<a class="button" href="./docs/页面搭建步骤.html" target="_blank" rel="noopener">${icon('book',15)}开发说明</a><button class="button primary" data-action="import">${icon('upload',15)}导入资料</button>`)+`
+  return heading('首页','项目工作台','连接专业资料与知识证据，让每一次辅助分析都有据可查。',`<button class="button primary" data-action="import">${icon('upload',15)}导入资料</button>`)+`
   <div class="workspace-tabs" role="tablist" aria-label="首页内容">${[['overview','数据总览'],['assets','资料目录'],['relations','知识关联'],['history','运行记录']].map(([id,name])=>`<button role="tab" aria-selected="${state.homeTab===id}" class="${state.homeTab===id?'active':''}" data-action="home-tab" data-tab="${id}">${name}</button>`).join('')}<button class="refresh-button" data-action="refresh">${icon('refresh',14)}刷新</button></div>
   ${state.homeTab==='assets'?assetTable():state.homeTab==='relations'?`<section class="panel graph-full"><div class="panel-heading"><h2>当前井知识关联</h2>${badge('五类对象','blue')}</div>${graphHtml()}${graphLegend()}</section>`:state.homeTab==='history'?historyHtml():`
   <div class="metric-grid">${[
@@ -128,7 +128,7 @@ function assetTable(limit) {
   const rows=getAssets().filter(a=>limit?true:a.wellId===state.wellId);const shown=limit?rows.slice(0,limit):rows;
   return `<section class="panel asset-panel"><div class="panel-heading"><h2>${icon('folder',17)}${limit?'最近资料':'当前井资料'}</h2>${limit?'<button class="text-button" data-route="data">全部资料 '+icon('arrow',14)+'</button>':badge(`${shown.length} 份`,'neutral')}</div><div class="table-scroll"><table><thead><tr><th>资料名称</th><th>类型</th><th>所属井</th><th>资料版本</th><th>状态</th><th class="align-right">操作</th></tr></thead><tbody>${shown.map(row=>`<tr><td><span class="file-name">${icon('file',15)}${escape(row.name)}</span></td><td>${escape(row.type)}</td><td>${wells.find(w=>w.id===row.wellId)?.short||'—'}</td><td class="mono">${escape(row.version)}</td><td>${badge(row.status,row.tone)}</td><td class="align-right"><button class="text-button" data-action="asset-detail" data-asset="${escape(row.id)}">查看</button></td></tr>`).join('')}</tbody></table></div></section>`;
 }
-function moduleRoadmap(page){const def=moduleDefinitions[page];return `<section class="panel roadmap"><div class="panel-heading"><h2>${def.code} · 页面功能清单</h2>${badge('后续开发范围','neutral')}</div><div class="feature-grid">${def.features.map((name,i)=>`<div><span>${String(i+1).padStart(2,'0')}</span><strong>${name}</strong><small>待接入业务功能</small></div>`).join('')}</div></section>`;}
+function moduleRoadmap(page){const def=moduleDefinitions[page];return `<section class="panel roadmap"><div class="panel-heading"><h2>${def.code} · 功能概览</h2>${badge('功能准备中','neutral')}</div><div class="feature-grid">${def.features.map((name,i)=>`<div><span>${String(i+1).padStart(2,'0')}</span><strong>${name}</strong><small>暂未开放</small></div>`).join('')}</div></section>`;}
 
 function retrievalHtml() {
   const sample=demoCases.find(c=>c.id===state.sampleId);const target=currentWell();const ref=referenceWell();
@@ -148,7 +148,7 @@ function reasoningHtml() {
   return heading('规则与推理','规则库与判定记录','维护规则适用范围与版本，在检索结果页执行规则判定。',`<button class="button primary" data-route="retrieval">${icon('play',15)}打开规则判定面板</button>`)+`
   <section class="panel rule-library"><div class="panel-heading"><h2>${icon('rule',18)}专家规则库</h2>${badge('演示规则 · 待专家确认','amber')}</div><div class="rule-library-body"><div><h3>${escape(state.rule.name)}</h3><p>${escape(state.rule.description)}</p><dl class="rule-attributes"><div><dt>规则编号</dt><dd class="mono">${state.rule.id}</dd></div><div><dt>适用场景</dt><dd>地层对比 / 已确认同层位</dd></div><div><dt>版本</dt><dd>${escape(state.rule.version)}</dd></div><div><dt>来源</dt><dd>${escape(state.rule.source)}</dd></div></dl></div><form id="rule-form" class="rule-settings"><label for="rule-threshold">厚度差阈值（m）</label><input id="rule-threshold" type="number" min="0.000001" step="any" value="${escape(state.rule.threshold)}" required><label class="checkbox-label"><input id="rule-enabled" type="checkbox" ${state.rule.enabled?'checked':''}>启用演示规则</label><button class="button primary" type="submit">保存演示规则</button><small>修改生成新演示版本，历史运行保留原规则快照。</small></form></div></section>
   ${historyHtml()}
-  <section class="panel typical-well"><div class="panel-heading"><h2>${icon('well',18)}典型井与整改回归</h2>${badge('页面入口','neutral')}</div><div class="typical-body"><p>案例运行、专家意见、问题登记、整改版本、原失败及受影响用例回归、人工确认关闭。</p><a class="text-button" href="./docs/页面搭建步骤.html#section-10" target="_blank" rel="noopener">查看子页面开发步骤 ${icon('arrow',14)}</a><span class="subtle">该子页面的业务操作待后续开发。</span></div></section>`;
+  <section class="panel typical-well"><div class="panel-heading"><h2>${icon('well',18)}典型井与整改回归</h2>${badge('暂未开放','neutral')}</div><div class="typical-body"><p>案例运行、专家意见、问题登记、整改版本、原失败及受影响用例回归、人工确认关闭。</p><span class="subtle">案例管理、结果校核与整改回归功能暂未开放。</span></div></section>`;
 }
 function historyHtml() {
   const runs=state.runs.filter(r=>r.projectId===state.projectId);
