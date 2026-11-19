@@ -740,8 +740,8 @@ pre.snapshot {font-size:11px;line-height:1.8;background:#f7f9fc;border:1px solid
 .gm-table .button {white-space:nowrap;font-size:12px;}
 .gm-pagination {display:flex;justify-content:center;align-items:center;gap:16px;padding:15px;font-size:13px;}
 .gm-canvas {width:100%;height:auto;min-height:240px;max-height:380px;}
-.gm-canvas [role=button] {cursor:pointer;}
-.gm-canvas [role=button]:focus rect {stroke:#2458ac;stroke-width:3;}
+.gm-canvas [role=button],.gm-canvas [role=button]:focus {cursor:pointer;outline:none;}
+.gm-canvas [role=button]:focus-visible rect {stroke:#2563eb;stroke-width:2.4;}
 .gm-canvas text {font-size:12px;fill:#253d63;}
 .gm-canvas .gm-node-type {font-size:10px;fill:#77879e;}
 .gm-path {padding:18px 20px;border-top:1px solid #edf1f7;line-height:2;}
@@ -2714,7 +2714,7 @@ function createGraphUI({getContext,repaint,modal,toast,go,onContext,onSelect,ope
   function miniGraph(){
     const focus=selected(),id=focus?.kind==='relation'?focus.subjectId:focus?.id,edges=model.edges.filter(e=>e.subjectId===id||e.objectId===id).slice(0,20),ids=[...new Set([id,...edges.flatMap(e=>[e.subjectId,e.objectId])])].filter(Boolean).slice(0,15),nodes=ids.map(x=>model.nodes.find(n=>n.id===x)).filter(Boolean);if(!nodes.length)return `<p class="ing-empty">${filter.well?`${gmEsc(wellName(filter.well))}${filter.type?` 的${gmEsc(gmTypes[filter.type]||filter.type)}`:''}${dataset==='published'?'暂无可访问的已发布知识，请先在知识构建中完成校核与发布。':'在当前筛选条件下暂无可访问的知识。'}`:'当前筛选条件下没有可选对象，请调整筛选。'}</p>`;
     const pos=new Map(nodes.map((n,i)=>[n.id,i===0?[300,170]:[300+220*Math.cos(2*Math.PI*(i-1)/Math.max(1,nodes.length-1)),170+125*Math.sin(2*Math.PI*(i-1)/Math.max(1,nodes.length-1))]]));
-    return `<svg class="gm-canvas" viewBox="0 0 600 340" role="group" aria-label="所选知识的实际关联图">${edges.filter(e=>pos.has(e.subjectId)&&pos.has(e.objectId)).map(e=>{const a=pos.get(e.subjectId),b=pos.get(e.objectId);return `<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" stroke="${e.computed?'#a8b7cc':'#648dd5'}" ${e.computed?'stroke-dasharray="5 4"':''}/>`;}).join('')}${nodes.map((n,i)=>{const [x,y]=pos.get(n.id);return `<g data-gm="select" data-id="${gmEsc(n.id)}" role="button" tabindex="0" aria-label="查看 ${gmEsc(n.name)}" transform="translate(${x},${y})"><title>${gmEsc(n.name)} · ${gmEsc(n.id)}</title><rect x="-64" y="-23" width="128" height="46" rx="8" fill="${i?'#f3f7ff':'#e0edff'}" stroke="#7d9ccc"/><text text-anchor="middle" y="-2">${gmEsc(n.name.slice(0,13))}</text><text class="gm-node-type" text-anchor="middle" y="14">${gmEsc(gmTypes[n.typeId]||n.typeName)}</text></g>`;}).join('')}</svg><p class="gm-note">虚线为按同井或同基准井段计算的关联；实线为当前数据范围中的关系。</p>`;
+    return `<svg class="gm-canvas" viewBox="0 0 600 340" role="group" aria-label="所选知识的实际关联图">${edges.filter(e=>pos.has(e.subjectId)&&pos.has(e.objectId)).map(e=>{const a=pos.get(e.subjectId),b=pos.get(e.objectId);return `<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" stroke="${e.computed?'#a8b7cc':'#648dd5'}" ${e.computed?'stroke-dasharray="5 4"':''}/>`;}).join('')}${nodes.map((n,i)=>{const [x,y]=pos.get(n.id);return `<g data-gm="select" data-id="${gmEsc(n.id)}" role="button" tabindex="0" aria-label="查看 ${gmEsc(n.name)}" transform="translate(${x},${y})"><rect x="-64" y="-23" width="128" height="46" rx="8" fill="${i?'#f3f7ff':'#e0edff'}" stroke="#7d9ccc"/><text text-anchor="middle" y="-2">${gmEsc(n.name.slice(0,13))}</text><text class="gm-node-type" text-anchor="middle" y="14">${gmEsc(gmTypes[n.typeId]||n.typeName)}</text></g>`;}).join('')}</svg><p class="gm-note">虚线为按同井或同基准井段计算的关联；实线为当前数据范围中的关系。</p>`;
   }
   function detailHtml(node){
     if(!node)return '<h2>对象详情与来源</h2><p class="gm-note">请选择实体或关系。</p>';

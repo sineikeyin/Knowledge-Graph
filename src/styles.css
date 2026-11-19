@@ -730,8 +730,8 @@ pre.snapshot {font-size:11px;line-height:1.8;background:#f7f9fc;border:1px solid
 .gm-table .button {white-space:nowrap;font-size:12px;}
 .gm-pagination {display:flex;justify-content:center;align-items:center;gap:16px;padding:15px;font-size:13px;}
 .gm-canvas {width:100%;height:auto;min-height:240px;max-height:380px;}
-.gm-canvas [role=button] {cursor:pointer;}
-.gm-canvas [role=button]:focus rect {stroke:#2458ac;stroke-width:3;}
+.gm-canvas [role=button],.gm-canvas [role=button]:focus {cursor:pointer;outline:none;}
+.gm-canvas [role=button]:focus-visible rect {stroke:#2563eb;stroke-width:2.4;}
 .gm-canvas text {font-size:12px;fill:#253d63;}
 .gm-canvas .gm-node-type {font-size:10px;fill:#77879e;}
 .gm-path {padding:18px 20px;border-top:1px solid #edf1f7;line-height:2;}
