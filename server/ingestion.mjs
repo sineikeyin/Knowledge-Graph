@@ -4,10 +4,21 @@ import {randomUUID,createHash} from 'node:crypto';
 import {activeUser,fault,auditEvent} from '../src/access-model.js';
 import {ingLimits,ingParse} from '../src/ingestion-core.js';
 import {ingEnsure,ingScope,ingFindAsset,ingRecordUpload,ingSetParsed,ingDashboard,ingDetail,ingMutation} from '../src/ingestion-model.js';
+import {ingDemoFixtures,ingSeedDemo,ingDemoSeedVersion} from '../src/ingestion-demo.js';
 
 export async function createIngestion({directory,getDb,commit}){
   const files=path.join(directory,'files');await fs.mkdir(files,{recursive:true});let working=false,stopped=false;
   await commit(db=>{const ig=ingEnsure(db);for(const job of ig.jobs)if(['解析中','待解析'].includes(job.status))ingSetParsed(db,job.id,null,'服务重启中断了任务，请点击重试。');});
+  const fixtures=ingDemoFixtures(getDb()),manifest={};
+  for(const fixture of fixtures){
+    const digest=createHash('sha256').update(`${ingDemoSeedVersion}:${fixture.key}`).digest('hex');
+    const fileId=`${digest.slice(0,8)}-${digest.slice(8,12)}-${digest.slice(12,16)}-${digest.slice(16,20)}-${digest.slice(20,32)}`;
+    const bytes=Buffer.from(fixture.text,'utf8');
+    manifest[fixture.key]={fileId,hash:createHash('sha256').update(bytes).digest('hex'),size:bytes.length};
+    const target=path.join(files,`${fileId}.bin`);
+    try{await fs.writeFile(target,bytes,{flag:'wx'});}catch(error){if(error.code!=='EEXIST')throw error;const existing=await fs.readFile(target);if(createHash('sha256').update(existing).digest('hex')!==manifest[fixture.key].hash)throw new Error('演示原件摘要不一致，请检查运行目录中的样例文件。');}
+  }
+  await commit(db=>ingSeedDemo(db,manifest,fixtures));
   const referenced=new Set(getDb().ingestion.versions.map(version=>version.fileId));
   for(const filename of await fs.readdir(files))if(/^[0-9a-f-]{36}\.bin$/.test(filename)&&!referenced.has(filename.slice(0,-4))){const target=path.join(files,filename);const info=await fs.stat(target);if(Date.now()-info.mtimeMs>24*60*60*1000)await fs.unlink(target);}
   const drain=async()=>{

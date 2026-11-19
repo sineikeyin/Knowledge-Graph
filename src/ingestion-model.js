@@ -2,7 +2,7 @@ import {objectTypes} from './data.js';
 import {workspace,can,requirePermission,resourceAllowed,protectFields,auditEvent,clone,fault} from './access-model.js';
 import {ingKey,ingParse,ingGuess,ingNormalize,ingValidate,ingFieldSets,ingRuleCatalog} from './ingestion-core.js';
 
-export function ingEnsure(db){db.ingestion??={schema:1,versions:[],jobs:[],aliases:[],handoffs:[],mappingRevisions:{}};return db.ingestion;}
+export function ingEnsure(db){db.ingestion??={schema:1,versions:[],jobs:[],aliases:[],handoffs:[],mappingRevisions:{}};db.ingestion.demoMappingRevisions??={};return db.ingestion;}
 export function ingId(db,prefix){return `${prefix}-${db.sequence++}`;}
 export function ingScope(db,user,projectId,wellId,action='view',asset){
   const project=db.projects.find(item=>item.id===projectId);const well=db.wells.find(item=>item.id===wellId);
@@ -24,9 +24,9 @@ export function ingFindAsset(db,user,id,action='view',content=false){
   if(content&&!ingContentAllowed(db,user,{...asset,projectId}))fault('资料包含受限字段，不能访问原件、解析内容或治理结果。',403);
   return asset;
 }
-export function ingMappingRevision(db,asset){return ingEnsure(db).mappingRevisions[`${asset.projectId}:${asset.wellId}`]||0;}
+export function ingMappingRevision(db,asset){const ig=ingEnsure(db);return (asset.demo?ig.demoMappingRevisions:ig.mappingRevisions)[`${asset.projectId}:${asset.wellId}`]||0;}
 export function ingStandards(db,asset){
-  const aliases=ingEnsure(db).aliases.filter(item=>item.projectId===asset.projectId&&item.wellId===asset.wellId);
+  const aliases=ingEnsure(db).aliases.filter(item=>item.projectId===asset.projectId&&item.wellId===asset.wellId&&Boolean(item.demo)===Boolean(asset.demo));
   const well=db.wells.find(item=>item.id===asset.wellId);
   return {well,aliases,block:db.projects.find(project=>project.id===asset.projectId)?.block,layers:[...new Set([well.layer,...aliases.filter(item=>item.kind==='layer').map(item=>item.standardName)].filter(Boolean))]};
 }
@@ -50,9 +50,9 @@ export function ingRecordUpload(db,user,input,context={}){
   const previous=asset.currentVersionId||'';const number=ig.versions.filter(version=>version.assetId===asset.id).length+1;
   const initialConfig={fields:{},defaults:{},patches:[]};
   for(const [key]of ingFieldSets[type.id]||[]){for(const kind of ['fields','defaults']){const value=String(input.config?.[kind]?.[key]??'');if(value.length>100)fault('字段或默认值不能超过 100 字。');initialConfig[kind][key]=value;}}
-  const version={id:ingId(db,'VER'),assetId:asset.id,number,parentId:previous,fileId:input.fileId,fileName:input.name,size:input.size,hash:input.hash,encoding:input.encoding,createdAt:new Date().toISOString(),createdBy:user.name,status:'待解析',config:input.config?initialConfig:{},qualityRuns:[],mappingRevision:ingMappingRevision(db,asset),reason:previous?'上传新原件':'首次上传'};
+  const version={id:ingId(db,'VER'),assetId:asset.id,number,parentId:previous,fileId:input.fileId,fileName:input.name,size:input.size,hash:input.hash,encoding:input.encoding,createdAt:new Date().toISOString(),createdBy:user.name,status:'待解析',config:input.config?initialConfig:{},qualityRuns:[],mappingRevision:ingMappingRevision(db,asset),reason:previous?'上传新原件':'首次上传',...(asset.demo?{demo:true,seedVersion:asset.seedVersion}:{})};
   ig.versions.push(version);asset.currentVersionId=version.id;ingSyncAsset(db,asset);
-  const job={id:ingId(db,'PARSE'),assetId:asset.id,versionId:version.id,status:'待解析',attempt:1,createdAt:version.createdAt,error:''};ig.jobs.unshift(job);
+  const job={id:ingId(db,'PARSE'),assetId:asset.id,versionId:version.id,status:'待解析',attempt:1,createdAt:version.createdAt,error:'',...(asset.demo?{demo:true,seedVersion:asset.seedVersion}:{})};ig.jobs.unshift(job);
   auditEvent(db,user,'上传资料',asset.id,{versionId:version.id,fileName:input.name,size:input.size},{...context,projectId:project.id,wellId:well.id});
   return {assetId:asset.id,versionId:version.id,jobId:job.id,duplicate:false};
 }
@@ -86,12 +86,15 @@ export function ingMutation(db,user,action,body,context={}){
     const rawName=String(body.rawName||'').trim(),standardName=String(body.standardName||'').trim();if(!rawName||!standardName||rawName.length>100||standardName.length>100)fault('原始名与标准名需为 1～100 字。');
     if(body.kind==='well'&&![well.id,well.name,well.short].some(name=>ingKey(name)===ingKey(standardName)))fault('井别名只能指向本次归属井。');
     if(body.kind==='block'&&ingKey(standardName)!==ingKey(db.projects.find(project=>project.id===body.projectId).block))fault('区块别名只能指向当前项目区块。');
-    const key=`${body.projectId}:${well.id}`;const existing=ig.aliases.find(item=>item.projectId===body.projectId&&item.wellId===well.id&&item.kind===body.kind&&ingKey(item.rawName)===ingKey(rawName));
+    const key=`${body.projectId}:${well.id}`;
+    const existing=body.id?ig.aliases.find(item=>item.id===body.id&&item.projectId===body.projectId&&item.wellId===well.id&&item.kind===body.kind&&ingKey(item.rawName)===ingKey(rawName)):ig.aliases.find(item=>!item.demo&&item.projectId===body.projectId&&item.wellId===well.id&&item.kind===body.kind&&ingKey(item.rawName)===ingKey(rawName));
+    if(body.id&&!existing)fault('映射不存在或归属不匹配。',404);
     if(existing&&existing.standardName!==standardName&&body.expectedRevision!==existing.revision)fault('此别名已存在其他映射，请打开原记录编辑并确认。',409);
     if(existing&&existing.standardName===standardName)return clone(existing);
-    const entry={id:existing?.id||ingId(db,'MAP'),projectId:body.projectId,wellId:well.id,kind:body.kind,rawName,standardName,revision:(existing?.revision||0)+1,updatedAt:new Date().toISOString(),updatedBy:user.name};
-    ig.aliases=ig.aliases.filter(item=>item.id!==entry.id).concat(entry);ig.mappingRevisions[key]=(ig.mappingRevisions[key]||0)+1;
-    for(const asset of db.assets.filter(item=>item.managed&&item.projectId===body.projectId&&item.wellId===well.id))ingSyncAsset(db,asset);
+    const entry={id:existing?.id||ingId(db,'MAP'),projectId:body.projectId,wellId:well.id,kind:body.kind,rawName,standardName,revision:(existing?.revision||0)+1,updatedAt:new Date().toISOString(),updatedBy:user.name,...(existing?.demo?{demo:true,demoKey:existing.demoKey,seedVersion:existing.seedVersion}:{})};
+    const revisions=entry.demo?ig.demoMappingRevisions:ig.mappingRevisions;
+    ig.aliases=ig.aliases.filter(item=>item.id!==entry.id).concat(entry);revisions[key]=(revisions[key]||0)+1;
+    for(const asset of db.assets.filter(item=>item.managed&&item.projectId===body.projectId&&item.wellId===well.id&&Boolean(item.demo)===Boolean(entry.demo)))ingSyncAsset(db,asset);
     auditEvent(db,user,'确认主数据映射',entry.id,{before:existing||null,after:entry},{...context,projectId:body.projectId,wellId:well.id});return clone(entry);
   }
   const asset=ingFindAsset(db,user,body.assetId,'import',true);const version=ig.versions.find(item=>item.id===asset.currentVersionId);
