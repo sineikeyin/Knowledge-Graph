@@ -1,0 +1,4 @@
+﻿"WELL_CODE","ZONE_NAME","DEPTH_FROM","DEPTH_TO","UOM","DEPTH_KIND","DEPTH_DATUM","ROCK_CODE","BLOCK_CODE"
+"JH-03","长 8₂","3096","3099","m","MD","KB","泥岩","示例区块 A"
+"JH-03","长 8₂","3099","3102","m","MD","KB","粉砂岩","示例区块 A"
+"JH-03","长 8₂","3102","3105","m","MD","KB","细砂岩","示例区块 A"
