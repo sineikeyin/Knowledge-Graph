@@ -1,4 +1,61 @@
 /* 参考老师示意图：顶部菜单与个人信息，左侧数据树及属性，右侧工作区。 */
+/* Step 04 — ontology workspace. */
+.onto-version-bar {display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:15px 18px;background:#fff;border:1px solid var(--border);border-radius:9px;margin:20px 0 8px;}
+.onto-version-bar>div,.onto-inline {display:flex;gap:9px;align-items:center;flex-wrap:wrap;}
+.onto-version-bar select {max-width:360px;min-width:180px;}
+.onto-version-bar select,.onto-binding select,.onto-search input,.onto-filters input {border:1px solid #d5dfed;border-radius:5px;background:white;padding:9px 12px;color:#425b79;font:inherit;}
+.onto-dirty {font-size:12px;color:#b37a15;}
+.onto-tabs {overflow-x:auto;overflow-y:hidden;white-space:nowrap;}
+.onto-tabs button {flex-shrink:0;}
+.onto-model {display:grid;grid-template-columns:190px minmax(300px,1fr) 260px;min-height:620px;overflow:hidden;}
+.onto-type-pane {border-right:1px solid var(--border);background:#fcfdff;display:flex;flex-direction:column;min-width:0;}
+.onto-pane-head {display:flex;align-items:center;justify-content:space-between;padding:16px;border-bottom:1px solid var(--border);gap:8px;min-height:65px;}
+.onto-pane-head strong {font-size:14px;}.onto-pane-head small {font-size:12px;color:#8a9cb4;font-weight:400;margin-left:4px;}
+.onto-pane-head .button {padding:6px 10px;font-size:12px;}
+.onto-search {padding:14px 12px;display:block;}.onto-search input {width:100%;min-width:0;font-size:12px;}
+.onto-type-list {padding:0 8px 15px;flex:1;}
+.onto-type-list>button {display:flex;gap:10px;padding:12px 10px;text-align:left;border:1px solid transparent;background:none;border-radius:6px;width:100%;margin-bottom:5px;align-items:center;}
+.onto-type-list>button:hover {background:#f1f6ff;}.onto-type-list>button.active {background:#eaf2ff;border-color:#ccdcfb;}
+.onto-type-list strong {font-size:13px;font-weight:500;display:block;}.onto-type-list small {font-size:11px;color:#8796ac;display:block;margin-top:5px;overflow-wrap:anywhere;}
+.onto-type-dot {width:8px;height:8px;border-radius:3px;background:#5286e7;flex-shrink:0;}
+.onto-pane-foot {font-size:11px;line-height:1.8;color:#8a9bb1;padding:12px;border-top:1px solid var(--border);}
+.onto-canvas-pane {min-width:0;background:#fafcff;display:flex;flex-direction:column;}
+.onto-canvas-toolbar {display:flex;align-items:center;justify-content:space-between;gap:8px;padding:15px 16px;flex-wrap:wrap;min-height:65px;border-bottom:1px solid var(--border);background:#fff;}
+.onto-canvas-toolbar strong {font-size:14px;}.onto-canvas-toolbar>div {display:flex;gap:6px;flex-wrap:wrap;}
+.onto-canvas-toolbar .button {padding:6px 9px;font-size:12px;}
+.onto-canvas-help {padding:10px 16px;font-size:11px;color:#8094ae;border-bottom:1px solid #edf1f6;}
+.onto-canvas-scroll {flex:1;overflow:auto;min-height:480px;max-height:670px;}
+.onto-canvas {display:block;min-width:580px;width:100%;min-height:480px;touch-action:none;}
+.onto-node {cursor:pointer;}.onto-node>rect {fill:white;stroke:#cfdbec;stroke-width:1.4;filter:drop-shadow(0 3px 4px #d4deec55);}
+.onto-node .onto-node-accent {fill:#6390df;stroke:none;}.onto-node.active>rect:first-child {stroke:#3773dc;stroke-width:2;fill:#f3f7ff;}
+.onto-node-title {font-size:15px;fill:#344f72;font-weight:600;}.onto-node-subtitle {font-size:11px;fill:#8295af;}
+.onto-edge {cursor:pointer;}.onto-edge path {stroke:#a5b8d1;stroke-width:1.6;fill:none;pointer-events:stroke;}.onto-edge text {font-size:11px;fill:#7d92ad;paint-order:stroke;stroke:#fafcff;stroke-width:5px;stroke-linejoin:round;}
+.onto-edge.active path {stroke:#2563eb;stroke-width:3;}.onto-edge.active text {fill:#2563eb;}
+.onto-canvas-caption {padding:12px 16px;border-top:1px solid var(--border);background:#fff;color:#7e90a9;font-size:11px;}.onto-canvas-caption span {margin:0 9px;}
+.onto-property-pane {border-left:1px solid var(--border);min-width:0;overflow:auto;max-height:820px;}
+.onto-object-summary {padding:20px;}.onto-object-summary h2 {font-size:19px;margin:12px 0 8px;}.onto-object-summary code {color:#7a90ae;font-size:12px;}
+.onto-object-summary p {font-size:12px;line-height:1.9;color:#7d8fa7;margin:12px 0;}
+.onto-fields {padding:0 18px;}.onto-fields>div {padding:13px 0;border-top:1px solid #edf1f6;}.onto-fields>div>div {display:flex;justify-content:space-between;gap:8px;align-items:center;}
+.onto-fields strong {font-size:12px;font-weight:500;}.onto-fields code {display:block;font-size:11px;color:#8094b0;margin-top:6px;}.onto-fields small {display:block;color:#8c9bb0;font-size:11px;line-height:1.9;overflow-wrap:anywhere;}
+.onto-required {font-size:10px;padding:2px 5px;color:#b97820;background:#fff6e7;border-radius:3px;}
+.onto-constraint {margin:10px 18px;padding:10px;background:#f4f8ff;color:#5d7caa;font-size:11px;line-height:1.7;overflow-wrap:anywhere;}.onto-property-actions {padding:18px;}
+.onto-template-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;}.onto-template {padding:26px;display:flex;flex-direction:column;align-items:start;gap:17px;}
+.onto-template h2 {font-size:21px;}.onto-template p {color:#768aa4;line-height:1.9;}.onto-template-types {display:flex;gap:8px;flex-wrap:wrap;flex:1;}
+.onto-template-types span {padding:7px 11px;border-radius:5px;background:#f1f6ff;color:#5677a7;font-size:12px;}.onto-template-meta {font-size:12px;color:#8b9db4;}
+.onto-empty {text-align:center;padding:65px 24px;}.onto-empty h2 {font-size:22px;}.onto-empty p {margin:16px 0 24px;color:#8091a7;}.onto-empty-icon {font-size:54px;color:#6798e6;margin-bottom:15px;}
+.onto-filters {display:flex;align-items:center;gap:20px;flex-wrap:wrap;padding:0 20px 20px;}.onto-filters input {min-width:240px;}
+.onto-version-actions {display:flex;gap:10px;padding:0 20px 20px;flex-wrap:wrap;}.onto-history {padding:24px;}.onto-history h3 {font-size:14px;}.onto-history p {font-size:12px;color:#778aa4;line-height:2;margin-top:12px;}
+.onto-form-heading {display:flex;justify-content:space-between;align-items:center;gap:15px;margin:20px 0;}.onto-form-heading h3,.onto-section-title {font-size:15px;}
+.onto-field-row {padding:15px;background:#f7faff;border:1px solid #e0e8f4;border-radius:7px;margin-bottom:16px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;align-items:end;}
+.onto-field-row .form-field {margin:0;}.onto-field-row input,.onto-field-row select {width:100%;min-width:0;}.onto-field-row .checkbox-label {padding-bottom:10px;}
+.onto-map-fields>div {display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1fr);align-items:center;gap:20px;border-top:1px solid var(--border);padding:12px 0;}.onto-map-fields strong {font-size:13px;overflow-wrap:anywhere;}.onto-map-fields small {font-size:11px;color:#889ab1;margin-top:5px;}
+.onto-section-title {margin:24px 0 15px;}.onto-json {white-space:pre-wrap;overflow-wrap:anywhere;font:11px/1.9 Consolas,monospace;color:#547092;margin:10px 0;max-height:250px;overflow:auto;max-width:350px;}
+.onto-error-text {color:#b85a46;font-size:12px;line-height:1.9;}.onto-impact-grid {display:grid;grid-template-columns:1fr 1fr;gap:15px;margin:20px 0;}.onto-impact-grid>div {padding:18px;background:#f6f9ff;border-radius:6px;}.onto-impact-grid p {font-size:12px;color:#7187a4;line-height:1.9;margin-top:9px;}
+.modal:has([id^="onto-"]) .form-field {font-size:13px;}.modal:has([id^="onto-"]) textarea {font:13px/1.8 Consolas,"Microsoft YaHei",sans-serif;resize:vertical;width:100%;padding:12px;border:1px solid #d5dfed;border-radius:5px;}
+.onto-binding {display:flex;gap:6px;flex-wrap:wrap;min-width:230px;}.onto-binding select {max-width:240px;width:100%;font-size:12px;}.onto-binding small {display:block;width:100%;color:#6a8d7d;}
+@media(min-width:1600px){.onto-model {grid-template-columns:210px minmax(0,1fr) 290px;}}
+@media(max-width:1250px){.onto-model {grid-template-columns:160px minmax(280px,1fr);}.onto-property-pane {grid-column:1/-1;border-left:0;border-top:1px solid var(--border);max-height:400px;}.onto-fields {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 20px;}.onto-canvas-scroll {max-height:530px;}.onto-version-bar select {max-width:250px;}}
+@media(max-width:760px){.onto-model {grid-template-columns:135px minmax(0,1fr);}.onto-pane-head {padding:12px 9px;}.onto-type-list {padding:0 4px;}.onto-type-list>button {padding:10px 5px;gap:7px;}.onto-canvas-toolbar {padding:12px;}.onto-canvas-scroll {min-height:400px;}.onto-template-grid {grid-template-columns:1fr;}.onto-fields {grid-template-columns:repeat(2,minmax(0,1fr));}.onto-version-bar {padding:12px;}.onto-version-bar select {max-width:200px;}.onto-field-row {grid-template-columns:repeat(2,minmax(0,1fr));}.onto-map-fields>div {gap:10px;}.onto-impact-grid {grid-template-columns:1fr;}.onto-filters input {min-width:0;width:100%;}}
 .hidden,[hidden] {display:none!important;}
 :root {
   --blue:#2563eb; --blue-hover:#1d4ed8; --blue-soft:#eef4ff;

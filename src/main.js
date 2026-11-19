@@ -3,6 +3,7 @@ import {objectTypes, defaultRule, demoCases, moduleDefinitions} from './data.js'
 import {api,offlineMode} from './api.js';
 import {createUsersUI,loginHtml} from './users.js';
 import {createIngestionUI} from './ingestion.js';
+import {createOntologyUI} from './ontology.js';
 let projects=[],wells=[],initialTasks=[],authorizedAssets=[],allowedActions={},currentUser=null,authLoading=true,loginNotice='',sessionTimer;
 const permitted=(permission)=>['import','run','export','rule-edit'].includes(permission)?(allowedActions[state.wellId]||[]).includes(permission):currentUser?.permissions.includes('manage')||((projects.find(p=>p.id===state.projectId)?.permissions||currentUser?.permissions||[]).includes(permission));
 import {evaluateThicknessRule} from './rules.js';
@@ -106,6 +107,7 @@ function pageHtml(page) {
   if(page==='reasoning') return reasoningHtml();
   if(page==='graph') return heading('图谱管理','知识关联与来源','围绕当前井查看五类知识对象及其关联依据。',`<button class="button primary" data-route="retrieval">${icon('search',15)}进入混合检索</button>`)+`<section class="panel graph-full"><div class="panel-heading"><h2>${icon('graph',18)}当前井知识关联</h2>${badge('示例图谱','neutral')}</div>${graphHtml()}${graphLegend()}</section>`+assetTable();
   if(page==='data') return ingestionUI.html();
+  if(page==='ontology') return ontologyUI.html();
   if(page==='construction') return heading('知识构建','知识构建与校核','接收治理后的固定资料版本，准备实体与关系抽取。')+ingestionUI.constructionHtml()+moduleRoadmap(page);
   if(page==='operations') return heading('运行管理','运行记录','查看本次工作台中的规则判定记录及其输入快照。')+historyHtml()+moduleRoadmap(page);
   const definition=moduleDefinitions[page];
@@ -203,6 +205,7 @@ document.addEventListener('click',async event=>{
   const actionPermission={import:'import','run-rule':'run','export-run':'export','joint-analysis':'run'}[permissionButton?.dataset.action];
   if(actionPermission&&!permitted(actionPermission)){toast('无权执行此操作。');return;}
   try {
+  if(await ontologyUI.click(event))return;
   if(await ingestionUI.click(event))return;
   const routeButton=event.target.closest('[data-route]');
   if(routeButton){go(routeButton.dataset.route);return;}
@@ -247,16 +250,21 @@ document.addEventListener('click',async event=>{
 });
 document.addEventListener('change',event=>{
   usersUI.change(event);
+  ontologyUI.change(event);
+  if(event.target.id==='project-select'&&ontologyUI.hasUnsaved()&&!window.confirm('当前本体有未保存修改，切换项目将放弃这些修改。是否继续？')){event.target.value=state.projectId;return;}
   if(event.target.id==='project-select'){state.selectedAssetId='';state.projectId=event.target.value;state.wellId=currentProject().wells[0];state.selectedType='well';state.expanded=new Set([state.wellId]);state.activeResult=null;state.treeFilter='';persist();render();}
   if(event.target.id==='analysis-well'){state.wellId=event.target.value;state.selectedType='well';state.expanded.add(state.wellId);state.activeResult=null;persist();render();}
   if(event.target.id==='sample-select'){state.sampleId=event.target.value;state.formDirty=false;state.activeResult=null;render();}
   if(event.target.id==='scenario-select'){state.scenario=event.target.value;state.activeResult=null;render();}
 });
 document.addEventListener('input',event=>{
+  ontologyUI.input(event);
   if(event.target.id==='tree-search'){state.treeFilter=event.target.value;$('#tree-list').innerHTML=treeHtml();}
   if(['target-thickness','reference-thickness'].includes(event.target.id))invalidateResult();
 });
 document.addEventListener('submit',async event=>{
+  if(event.target.id.startsWith('onto-')||event.target.id.startsWith('ing-')||['login-form','admin-edit-form','audit-filter-form','rule-form'].includes(event.target.id))event.preventDefault();
+  if(await ontologyUI.submit(event))return;
   if(event.target.id.startsWith('ing-')||['login-form','admin-edit-form','audit-filter-form','rule-form'].includes(event.target.id))event.preventDefault();
   if(await ingestionUI.submit(event))return;
   if(['login-form','admin-edit-form','audit-filter-form','rule-form'].includes(event.target.id))event.preventDefault();
@@ -272,7 +280,17 @@ document.addEventListener('submit',async event=>{
 });
 document.addEventListener('keydown',event=>{if((event.key==='Enter'||event.key===' ')&&event.target.matches('.graph-node')){event.preventDefault();event.target.dispatchEvent(new MouseEvent('click',{bubbles:true}));}});
 const usersUI=createUsersUI({modal,toast,refresh:refreshWorkspace,getUser:()=>currentUser});
-const ingestionUI=createIngestionUI({getContext:()=>({projectId:state.projectId,wellId:state.wellId,block:currentProject().block,canData:permitted('data'),canImport:permitted('import'),route:route()}),repaint:render,refresh:refreshWorkspace,modal,toast,go,selectAsset:asset=>{state.wellId=asset.wellId;state.selectedType=asset.objectType;state.selectedAssetId=asset.id;state.expanded.add(asset.wellId);}});
+const ingestionUI=createIngestionUI({getContext:()=>({projectId:state.projectId,wellId:state.wellId,block:currentProject().block,canData:permitted('data'),canImport:permitted('import'),route:route()}),repaint:render,refresh:refreshWorkspace,modal,toast,go,constructionSelector:id=>ontologyUI.constructionSelector(id),selectAsset:asset=>{state.wellId=asset.wellId;state.selectedType=asset.objectType;state.selectedAssetId=asset.id;state.expanded.add(asset.wellId);}});
+const ontologyUI=createOntologyUI({getContext:()=>({projectId:state.projectId,canOntology:permitted('ontology'),canConstruction:permitted('construction'),assets:getAssets()}),repaint:render,modal,toast,go});
+document.addEventListener('dragstart',event=>ontologyUI.dragstart(event));
+document.addEventListener('dragover',event=>{if(event.target.closest('.onto-canvas'))event.preventDefault();});
+document.addEventListener('drop',event=>ontologyUI.drop(event));
+document.addEventListener('pointerdown',event=>ontologyUI.pointerdown(event));
+document.addEventListener('pointermove',event=>ontologyUI.pointermove(event));
+document.addEventListener('pointerup',event=>ontologyUI.pointerup(event));
+document.addEventListener('pointercancel',event=>ontologyUI.pointerup(event));
+document.addEventListener('keydown',event=>{if((event.key==='Enter'||event.key===' ')&&event.target.matches('.onto-node,.onto-edge')){event.preventDefault();event.target.dispatchEvent(new MouseEvent('click',{bubbles:true}));}});
+window.addEventListener('beforeunload',event=>{if(ontologyUI.hasUnsaved()){event.preventDefault();event.returnValue='';}});
 function applyPermissions(){
   for(const button of document.querySelectorAll('[data-route]'))if(!permitted(button.dataset.route))button.disabled=true;
   for(const button of document.querySelectorAll('[data-action]')){const key={import:'import','run-rule':'run','export-run':'export','joint-analysis':'run'}[button.dataset.action];if(key&&!permitted(key))button.hidden=true;}
@@ -281,6 +299,7 @@ function applyPermissions(){
 }
 function clearSession(message=''){
   ingestionUI.clear();
+  ontologyUI.clear();
   state.selectedAssetId='';
   currentUser=null;projects=[];wells=[];initialTasks=[];authorizedAssets=[];allowedActions={};state.runs=[];state.imported=[];state.activeResult=null;state.projectId='';state.wellId='';state.homeTab='overview';state.treeFilter='';state.selectedType='well';state.expanded=new Set();usersUI.clear();clearTimeout(sessionTimer);$('#overlay-root').innerHTML='';loginNotice=message;authLoading=false;location.hash='/login';render();
 }

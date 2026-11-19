@@ -1,11 +1,12 @@
-import {makeDatabase,activeUser,identity,workspace,adminView,mutate,business,auditEvent,fault} from './access-model.js';
+import {makeDatabase,activeUser,identity,workspace,adminView,mutate,business,auditEvent,fault,clone} from './access-model.js';
 import {ingEnsure,ingRecordUpload,ingSetParsed,ingDashboard,ingDetail,ingMutation,ingId} from './ingestion-model.js';
 import {ingParse} from './ingestion-core.js';
 import {ingSeedDemo} from './ingestion-demo.js';
+import {ontoEnsure,ontoDashboard,ontoPublished,ontoMutation,ontoImpact} from './ontology-model.js';
 export function createOfflineService() {
   let db;try{db=JSON.parse(localStorage.getItem('geokg-offline-users-v1'));}catch{}if(!db?.users)db=makeDatabase();
   let session;try{session=JSON.parse(sessionStorage.getItem('geokg-offline-session-v1'));}catch{}
-  ingEnsure(db);
+  ingEnsure(db);ontoEnsure(db);
   const save=()=>{localStorage.setItem('geokg-offline-users-v1',JSON.stringify(db));if(session)sessionStorage.setItem('geokg-offline-session-v1',JSON.stringify(session));else sessionStorage.removeItem('geokg-offline-session-v1');};
   if(ingSeedDemo(db).changed)save();
   return async(pathname,body)=>{
@@ -14,6 +15,13 @@ export function createOfflineService() {
     if(pathname==='/auth/me')return {user:identity(db,user),expires:session.expires};
     if(pathname==='/auth/logout'){auditEvent(db,user,'退出登录（离线演示）','会话');session=null;save();return {ok:true};}
     if(pathname==='/workspace')return workspace(db,user);
+    if(pathname.startsWith('/ontology')){
+      const [endpoint,query='']=pathname.split('?');const params=new URLSearchParams(query),projectId=params.get('projectId');
+      if(endpoint==='/ontology')return ontoDashboard(db,user,projectId);
+      if(endpoint==='/ontology/published')return ontoPublished(db,user,projectId);
+      if(endpoint==='/ontology/impact'){const dashboard=ontoDashboard(db,user,projectId);const version=dashboard.versions.find(v=>v.id===params.get('versionId'));if(!version)fault('本体版本不存在。',404);return ontoImpact(db,version,user);}
+      const before=clone(db);try{const result=ontoMutation(db,user,endpoint.split('/').pop(),body);save();return result;}catch(error){db=before;throw error;}
+    }
     if(pathname.startsWith('/ingestion')){
       const [endpoint,query='']=pathname.split('?');const params=new URLSearchParams(query);
       if(endpoint==='/ingestion')return ingDashboard(db,user,params.get('projectId'));

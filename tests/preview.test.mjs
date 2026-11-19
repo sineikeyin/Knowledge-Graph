@@ -25,5 +25,16 @@ test('离线预览语法完整，离线登录、管理页数据及退出可用',
   const sample=await vm.runInContext("api('/ingestion/sample',{projectId:'p1',wellId:'w1'})",ctx);assert.ok(sample.assetId);
   const detail=await vm.runInContext(`api('/ingestion/assets/${sample.assetId}')`,ctx);assert.equal(detail.versions[0].rows.length,1);
   const quality=await vm.runInContext(`api('/ingestion/validate',{assetId:'${sample.assetId}',versionId:'${sample.versionId}'})`,ctx);assert.equal(quality.status,'通过');
+  const draft=await vm.runInContext("api('/ontology/create',{projectId:'p1',templateId:'geosteering'})",ctx);assert.equal(draft.status,'draft');
+  ctx.testOntologyVersion=draft;
+  for(const action of ['submit','approve','publish']){ctx.testOntologyVersion=await vm.runInContext(`api('/ontology/${action}',{projectId:'p1',versionId:testOntologyVersion.id,expectedRevision:testOntologyVersion.revision,note:'离线校验通过',confirmImpact:true})`,ctx);}
+  assert.equal(ctx.testOntologyVersion.status,'published');
+  const published=await vm.runInContext("api('/ontology/published?projectId=p1')",ctx);assert.equal(published.versions[0].id,draft.id);
+  await vm.runInContext('offlineRequest=null',ctx);const restoredOntology=await vm.runInContext("api('/ontology?projectId=p1')",ctx);assert.equal(restoredOntology.versions[0].status,'published');
+  await vm.runInContext(`let ontologyRepaints=0,ontologyDialog='',ontologyToast='';const ontologyTestUI=createOntologyUI({getContext:()=>({projectId:'p1',canOntology:true,canConstruction:true}),repaint:()=>ontologyRepaints++,modal:(_,html)=>{ontologyDialog=html;},toast:message=>{ontologyToast=message;},go(){}});ontologyTestUI.load();`,ctx);
+  const ontoHtml=vm.runInContext('ontologyTestUI.html()',ctx);assert.match(ontoHtml,/本体与 Schema/);assert.match(ontoHtml,/本体类型关系画布/);assert.match(ontoHtml,/已发布/);assert.ok(!ontoHtml.includes('data-onto="save"'));
+  for(const id of ['terms','mappings','actions','versions']){await vm.runInContext(`ontologyTestUI.click({target:{closest:()=>({dataset:{onto:'tab',id:'${id}'}})}})`,ctx);assert.ok(vm.runInContext('ontologyTestUI.html()',ctx).length>200);}
+  await vm.runInContext(`ontologyTestUI.click({target:{closest:()=>({dataset:{onto:'mapping-preview',id:'map_strata'}})}})`,ctx);assert.match(vm.runInContext('ontologyDialog',ctx),/映射结果/);assert.match(vm.runInContext('ontologyDialog',ctx),/通过/);
+  await vm.runInContext(`ontologyTestUI.click({target:{closest:()=>({dataset:{onto:'action-preview',id:'register_instruction'}})}})`,ctx);assert.match(vm.runInContext('ontologyDialog',ctx),/字段、约束与关联均通过/);
   await vm.runInContext("api('/auth/logout',{})",ctx);await assert.rejects(()=>vm.runInContext("api('/auth/me')",ctx),/失效/);
 });

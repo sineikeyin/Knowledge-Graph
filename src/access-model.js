@@ -8,6 +8,7 @@ export const permissionCatalog = [
   ['users','用户权限'],['operations','运行管理'],['import','导入资料'],['run','运行判定'],
   ['rule-edit','维护规则'],['export','导出记录'],['review','人工校核'],['publish','发布知识'],
   ['manage','管理用户与授权'],['audit','查看审计'],
+  ['ontology-edit','编辑本体'],['ontology-review','审批本体'],['ontology-publish','发布本体'],
 ];
 export const fieldCatalog = [['layer','目标层位'],['depth','井段范围'],['thickness','厚度'],['distance','距离'],['source','资料来源']];
 export const clone = value => JSON.parse(JSON.stringify(value));

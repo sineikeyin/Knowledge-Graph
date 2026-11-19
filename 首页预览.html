@@ -9,6 +9,63 @@
   <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
   <style>
 /* 参考老师示意图：顶部菜单与个人信息，左侧数据树及属性，右侧工作区。 */
+/* Step 04 — ontology workspace. */
+.onto-version-bar {display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:15px 18px;background:#fff;border:1px solid var(--border);border-radius:9px;margin:20px 0 8px;}
+.onto-version-bar>div,.onto-inline {display:flex;gap:9px;align-items:center;flex-wrap:wrap;}
+.onto-version-bar select {max-width:360px;min-width:180px;}
+.onto-version-bar select,.onto-binding select,.onto-search input,.onto-filters input {border:1px solid #d5dfed;border-radius:5px;background:white;padding:9px 12px;color:#425b79;font:inherit;}
+.onto-dirty {font-size:12px;color:#b37a15;}
+.onto-tabs {overflow-x:auto;overflow-y:hidden;white-space:nowrap;}
+.onto-tabs button {flex-shrink:0;}
+.onto-model {display:grid;grid-template-columns:190px minmax(300px,1fr) 260px;min-height:620px;overflow:hidden;}
+.onto-type-pane {border-right:1px solid var(--border);background:#fcfdff;display:flex;flex-direction:column;min-width:0;}
+.onto-pane-head {display:flex;align-items:center;justify-content:space-between;padding:16px;border-bottom:1px solid var(--border);gap:8px;min-height:65px;}
+.onto-pane-head strong {font-size:14px;}.onto-pane-head small {font-size:12px;color:#8a9cb4;font-weight:400;margin-left:4px;}
+.onto-pane-head .button {padding:6px 10px;font-size:12px;}
+.onto-search {padding:14px 12px;display:block;}.onto-search input {width:100%;min-width:0;font-size:12px;}
+.onto-type-list {padding:0 8px 15px;flex:1;}
+.onto-type-list>button {display:flex;gap:10px;padding:12px 10px;text-align:left;border:1px solid transparent;background:none;border-radius:6px;width:100%;margin-bottom:5px;align-items:center;}
+.onto-type-list>button:hover {background:#f1f6ff;}.onto-type-list>button.active {background:#eaf2ff;border-color:#ccdcfb;}
+.onto-type-list strong {font-size:13px;font-weight:500;display:block;}.onto-type-list small {font-size:11px;color:#8796ac;display:block;margin-top:5px;overflow-wrap:anywhere;}
+.onto-type-dot {width:8px;height:8px;border-radius:3px;background:#5286e7;flex-shrink:0;}
+.onto-pane-foot {font-size:11px;line-height:1.8;color:#8a9bb1;padding:12px;border-top:1px solid var(--border);}
+.onto-canvas-pane {min-width:0;background:#fafcff;display:flex;flex-direction:column;}
+.onto-canvas-toolbar {display:flex;align-items:center;justify-content:space-between;gap:8px;padding:15px 16px;flex-wrap:wrap;min-height:65px;border-bottom:1px solid var(--border);background:#fff;}
+.onto-canvas-toolbar strong {font-size:14px;}.onto-canvas-toolbar>div {display:flex;gap:6px;flex-wrap:wrap;}
+.onto-canvas-toolbar .button {padding:6px 9px;font-size:12px;}
+.onto-canvas-help {padding:10px 16px;font-size:11px;color:#8094ae;border-bottom:1px solid #edf1f6;}
+.onto-canvas-scroll {flex:1;overflow:auto;min-height:480px;max-height:670px;}
+.onto-canvas {display:block;min-width:580px;width:100%;min-height:480px;touch-action:none;}
+.onto-node {cursor:pointer;}.onto-node>rect {fill:white;stroke:#cfdbec;stroke-width:1.4;filter:drop-shadow(0 3px 4px #d4deec55);}
+.onto-node .onto-node-accent {fill:#6390df;stroke:none;}.onto-node.active>rect:first-child {stroke:#3773dc;stroke-width:2;fill:#f3f7ff;}
+.onto-node-title {font-size:15px;fill:#344f72;font-weight:600;}.onto-node-subtitle {font-size:11px;fill:#8295af;}
+.onto-edge {cursor:pointer;}.onto-edge path {stroke:#a5b8d1;stroke-width:1.6;fill:none;pointer-events:stroke;}.onto-edge text {font-size:11px;fill:#7d92ad;paint-order:stroke;stroke:#fafcff;stroke-width:5px;stroke-linejoin:round;}
+.onto-edge.active path {stroke:#2563eb;stroke-width:3;}.onto-edge.active text {fill:#2563eb;}
+.onto-canvas-caption {padding:12px 16px;border-top:1px solid var(--border);background:#fff;color:#7e90a9;font-size:11px;}.onto-canvas-caption span {margin:0 9px;}
+.onto-property-pane {border-left:1px solid var(--border);min-width:0;overflow:auto;max-height:820px;}
+.onto-object-summary {padding:20px;}.onto-object-summary h2 {font-size:19px;margin:12px 0 8px;}.onto-object-summary code {color:#7a90ae;font-size:12px;}
+.onto-object-summary p {font-size:12px;line-height:1.9;color:#7d8fa7;margin:12px 0;}
+.onto-fields {padding:0 18px;}.onto-fields>div {padding:13px 0;border-top:1px solid #edf1f6;}.onto-fields>div>div {display:flex;justify-content:space-between;gap:8px;align-items:center;}
+.onto-fields strong {font-size:12px;font-weight:500;}.onto-fields code {display:block;font-size:11px;color:#8094b0;margin-top:6px;}.onto-fields small {display:block;color:#8c9bb0;font-size:11px;line-height:1.9;overflow-wrap:anywhere;}
+.onto-required {font-size:10px;padding:2px 5px;color:#b97820;background:#fff6e7;border-radius:3px;}
+.onto-constraint {margin:10px 18px;padding:10px;background:#f4f8ff;color:#5d7caa;font-size:11px;line-height:1.7;overflow-wrap:anywhere;}.onto-property-actions {padding:18px;}
+.onto-template-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;}.onto-template {padding:26px;display:flex;flex-direction:column;align-items:start;gap:17px;}
+.onto-template h2 {font-size:21px;}.onto-template p {color:#768aa4;line-height:1.9;}.onto-template-types {display:flex;gap:8px;flex-wrap:wrap;flex:1;}
+.onto-template-types span {padding:7px 11px;border-radius:5px;background:#f1f6ff;color:#5677a7;font-size:12px;}.onto-template-meta {font-size:12px;color:#8b9db4;}
+.onto-empty {text-align:center;padding:65px 24px;}.onto-empty h2 {font-size:22px;}.onto-empty p {margin:16px 0 24px;color:#8091a7;}.onto-empty-icon {font-size:54px;color:#6798e6;margin-bottom:15px;}
+.onto-filters {display:flex;align-items:center;gap:20px;flex-wrap:wrap;padding:0 20px 20px;}.onto-filters input {min-width:240px;}
+.onto-version-actions {display:flex;gap:10px;padding:0 20px 20px;flex-wrap:wrap;}.onto-history {padding:24px;}.onto-history h3 {font-size:14px;}.onto-history p {font-size:12px;color:#778aa4;line-height:2;margin-top:12px;}
+.onto-form-heading {display:flex;justify-content:space-between;align-items:center;gap:15px;margin:20px 0;}.onto-form-heading h3,.onto-section-title {font-size:15px;}
+.onto-field-row {padding:15px;background:#f7faff;border:1px solid #e0e8f4;border-radius:7px;margin-bottom:16px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;align-items:end;}
+.onto-field-row .form-field {margin:0;}.onto-field-row input,.onto-field-row select {width:100%;min-width:0;}.onto-field-row .checkbox-label {padding-bottom:10px;}
+.onto-map-fields>div {display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1fr);align-items:center;gap:20px;border-top:1px solid var(--border);padding:12px 0;}.onto-map-fields strong {font-size:13px;overflow-wrap:anywhere;}.onto-map-fields small {font-size:11px;color:#889ab1;margin-top:5px;}
+.onto-section-title {margin:24px 0 15px;}.onto-json {white-space:pre-wrap;overflow-wrap:anywhere;font:11px/1.9 Consolas,monospace;color:#547092;margin:10px 0;max-height:250px;overflow:auto;max-width:350px;}
+.onto-error-text {color:#b85a46;font-size:12px;line-height:1.9;}.onto-impact-grid {display:grid;grid-template-columns:1fr 1fr;gap:15px;margin:20px 0;}.onto-impact-grid>div {padding:18px;background:#f6f9ff;border-radius:6px;}.onto-impact-grid p {font-size:12px;color:#7187a4;line-height:1.9;margin-top:9px;}
+.modal:has([id^="onto-"]) .form-field {font-size:13px;}.modal:has([id^="onto-"]) textarea {font:13px/1.8 Consolas,"Microsoft YaHei",sans-serif;resize:vertical;width:100%;padding:12px;border:1px solid #d5dfed;border-radius:5px;}
+.onto-binding {display:flex;gap:6px;flex-wrap:wrap;min-width:230px;}.onto-binding select {max-width:240px;width:100%;font-size:12px;}.onto-binding small {display:block;width:100%;color:#6a8d7d;}
+@media(min-width:1600px){.onto-model {grid-template-columns:210px minmax(0,1fr) 290px;}}
+@media(max-width:1250px){.onto-model {grid-template-columns:160px minmax(280px,1fr);}.onto-property-pane {grid-column:1/-1;border-left:0;border-top:1px solid var(--border);max-height:400px;}.onto-fields {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 20px;}.onto-canvas-scroll {max-height:530px;}.onto-version-bar select {max-width:250px;}}
+@media(max-width:760px){.onto-model {grid-template-columns:135px minmax(0,1fr);}.onto-pane-head {padding:12px 9px;}.onto-type-list {padding:0 4px;}.onto-type-list>button {padding:10px 5px;gap:7px;}.onto-canvas-toolbar {padding:12px;}.onto-canvas-scroll {min-height:400px;}.onto-template-grid {grid-template-columns:1fr;}.onto-fields {grid-template-columns:repeat(2,minmax(0,1fr));}.onto-version-bar {padding:12px;}.onto-version-bar select {max-width:200px;}.onto-field-row {grid-template-columns:repeat(2,minmax(0,1fr));}.onto-map-fields>div {gap:10px;}.onto-impact-grid {grid-template-columns:1fr;}.onto-filters input {min-width:0;width:100%;}}
 .hidden,[hidden] {display:none!important;}
 :root {
   --blue:#2563eb; --blue-hover:#1d4ed8; --blue-soft:#eef4ff;
@@ -714,6 +771,7 @@ const permissionCatalog = [
   ['users','用户权限'],['operations','运行管理'],['import','导入资料'],['run','运行判定'],
   ['rule-edit','维护规则'],['export','导出记录'],['review','人工校核'],['publish','发布知识'],
   ['manage','管理用户与授权'],['audit','查看审计'],
+  ['ontology-edit','编辑本体'],['ontology-review','审批本体'],['ontology-publish','发布本体'],
 ];
 const fieldCatalog = [['layer','目标层位'],['depth','井段范围'],['thickness','厚度'],['distance','距离'],['source','资料来源']];
 const clone = value => JSON.parse(JSON.stringify(value));
@@ -1177,11 +1235,160 @@ function ingSeedDemo(db,fileManifest={},fixtures=ingDemoFixtures(db)){
 }
 
 
+// ===== src/ontology-core.js =====
+// Schema definitions and deterministic checks shared by the server and offline preview.
+const ontoDataTypes=['string','number','integer','boolean','datetime'];
+const ontoTransforms=['identity','trim','number','datetime'];
+const ontoField=(key,name,datatype='string',required=false,extra={})=>({key,name,datatype,required,unit:'',...extra});
+function ontoTemplate(id='geosteering'){
+  const depth=()=>[ontoField('top','起始井深','number',true,{unit:'m',min:0}),ontoField('bottom','终止井深','number',true,{unit:'m',min:0}),ontoField('datum','参考基准','string',true,{enum:['KB','MSL','GL']}),ontoField('depthType','深度类型','string',true,{enum:['MD','TVD']})];
+  const types=[
+    {id:'well',name:'井',description:'具有唯一井号的井对象',fields:[ontoField('code','井号','string',true),ontoField('name','井名称'),ontoField('block','所属区块')],constraints:[]},
+    {id:'interval',name:'井段',description:'按明确井深及基准界定的井段',fields:[ontoField('well','井号','string',true),...depth()],constraints:[{lower:'top',upper:'bottom'}]},
+    {id:'stratum',name:'地层',description:'地层分层记录；层位与岩性分别维护',fields:[ontoField('well','井名','string',true),ontoField('layer','层位','string',true),...depth(),ontoField('thickness','厚度','number',false,{unit:'m',min:0}),ontoField('lithology','岩性')],constraints:[{lower:'top',upper:'bottom'}]},
+    {id:'log',name:'测井记录',description:'曲线测量值及其深度',fields:[ontoField('well','井名','string',true),ontoField('depth','井深','number',true,{unit:'m',min:0}),ontoField('curve','曲线名','string',true),ontoField('value','曲线值','number',true),ontoField('valueUnit','曲线单位','string',true)],constraints:[]},
+    {id:'trajectory',name:'井轨迹点',description:'具有井深、井斜及方位的轨迹记录',fields:[ontoField('well','井号','string',true),ontoField('depth','井深','number',true,{unit:'m',min:0}),ontoField('inclination','井斜角','number',true,{unit:'°',min:0,max:180}),ontoField('azimuth','方位角','number',true,{unit:'°',min:0,max:360})],constraints:[]},
+    {id:'model',name:'地质模型',description:'带版本及适用区块的地质模型',fields:[ontoField('name','模型名称','string',true),ontoField('version','模型版本','string',true),ontoField('block','适用区块','string',true),ontoField('source','资料来源')],constraints:[]},
+    {id:'instruction',name:'历史导向指令',description:'导向指令、目标井段及依据',fields:[ontoField('well','井号','string',true),ontoField('interval','目标井段','string',true),ontoField('time','指令时间','datetime',true),ontoField('command','指令内容','string',true),ontoField('basis','依据','string',true)],constraints:[]},
+    {id:'lithology',name:'岩性',description:'岩石类型术语，与地层层位区分',fields:[ontoField('name','岩性名称','string',true)],constraints:[]},
+  ].map((type,i)=>({...type,x:70+(i%3)*235,y:65+Math.floor(i/3)*135}));
+  const relations=[['belongs','隶属于','interval','well','many:one'],['intersects','钻遇','interval','stratum','many:many'],['has_lithology','具有岩性','stratum','lithology','many:many'],['measures','记录于','log','interval','many:one'],['traces','描述','trajectory','interval','many:one'],['applies','适用于','model','well','many:many'],['targets','指向','instruction','interval','many:one'],['issued_for','所属井','instruction','well','many:one']].map(([id,name,from,to,cardinality])=>({id,name,from,to,cardinality}));
+  const schema={types,relations,terms:[{id:'term_gr',standard:'自然伽马',aliases:['GR'],typeId:'log',language:'zh-CN',scope:'测井曲线'},{id:'term_sand',standard:'砂岩',aliases:['sandstone'],typeId:'lithology',language:'zh-CN',scope:'岩性'}],mappings:[{id:'map_strata',name:'标准分层字段映射',sourceType:'stratum',typeId:'stratum',fields:[['well','well','trim'],['layer','layer','trim'],['top','top','number'],['bottom','bottom','number'],['datum','datum','trim'],['depthType','depthType','trim'],['thickness','thickness','number'],['lithology','lithology','trim']].map(([source,target,transform])=>({source,target,transform}))}],actions:[{id:'register_instruction',name:'登记历史导向指令',typeId:'instruction',description:'登记并检查历史样本，不下发现场控制命令',inputs:['well','interval','time','command','basis'],links:[{field:'well',typeId:'well'},{field:'interval',typeId:'interval'}]}]};
+  if(id==='strata'){const ids=['well','interval','stratum','lithology'];schema.types=types.filter(t=>ids.includes(t.id));schema.relations=relations.filter(r=>ids.includes(r.from)&&ids.includes(r.to));schema.terms=schema.terms.filter(t=>ids.includes(t.typeId));schema.actions=[];}
+  return schema;
+}
+const ontoTemplates=[{id:'geosteering',name:'地质导向完整模板',description:'井、井段、地层、测井、轨迹、模型、历史指令与岩性。'},{id:'strata',name:'分层对比基础模板',description:'井、井段、地层与岩性，适合先建立分层知识结构。'}];
+function ontoShape(input){
+  if(!input||typeof input!=='object'||Array.isArray(input))throw new Error('Schema 必须是对象。');
+  const output={};for(const [key,max]of Object.entries({types:80,relations:160,terms:300,mappings:60,actions:60})){if(!Array.isArray(input[key])||input[key].length>max)throw new Error(`${key} 必须为数组，最多 ${max} 项。`);output[key]=JSON.parse(JSON.stringify(input[key]));}
+  if(JSON.stringify(output).length>180000)throw new Error('Schema 内容过大。');
+  const isObject=v=>v&&typeof v==='object'&&!Array.isArray(v);
+  for(const list of Object.values(output))if(list.some(item=>!isObject(item)))throw new Error('Schema 条目必须为对象。');
+  for(const type of output.types){if(!Array.isArray(type.fields)||type.fields.length>60||!Array.isArray(type.constraints)||type.constraints.length>60)throw new Error('每种类型最多 60 个字段和约束。');}
+  for(const type of output.types)if(type.fields.some(f=>!isObject(f))||type.constraints.some(c=>!isObject(c)))throw new Error('字段与约束必须为对象。');
+  for(const mapping of output.mappings)if(!Array.isArray(mapping.fields)||mapping.fields.length>100)throw new Error('映射字段最多 100 项。');
+  for(const mapping of output.mappings)if(mapping.fields.some(f=>!isObject(f)))throw new Error('映射字段必须为对象。');
+  for(const action of output.actions)if(!Array.isArray(action.inputs)||!Array.isArray(action.links)||action.inputs.length>60||action.links.length>60)throw new Error('动作输入及关联最多 60 项。');
+  for(const action of output.actions)if(action.inputs.some(k=>typeof k!=='string')||action.links.some(l=>!isObject(l)))throw new Error('动作字段或关联格式无效。');
+  for(const term of output.terms)if(typeof term.standard!=='string'||typeof term.language!=='string'||typeof term.scope!=='string'||!Array.isArray(term.aliases)||term.aliases.some(a=>typeof a!=='string'))throw new Error('术语名称、语言、范围及别名需为文本。');
+  for(const list of Object.values(output))for(const item of list)for(const key of ['name','id','from','to','typeId','sourceType','description'])if(item[key]!==undefined&&typeof item[key]!=='string')throw new Error('标识和描述必须为文本。');
+  for(const type of output.types)for(const field of type.fields)for(const key of ['key','name','unit','datatype'])if(field[key]!==undefined&&typeof field[key]!=='string')throw new Error('字段标识、名称、单位和类型需为文本。');
+  for(const mapping of output.mappings)for(const field of mapping.fields)for(const key of ['source','target','transform'])if(typeof field[key]!=='string')throw new Error('源字段、目标属性和转换规则需为文本。');
+  return output;
+}
+function ontoValidate(schema){
+  const errors=[],warnings=[];const add=(path,message)=>errors.push({path,message});
+  const validKey=value=>typeof value==='string'&&/^[a-zA-Z][a-zA-Z0-9_]{0,39}$/.test(value);
+  function unique(list,path,key='id'){const seen=new Set();for(const item of list){if(!item||!validKey(item[key])){add(path,'标识需为字母开头的 1～40 位字母、数字或下划线。');continue;}if(seen.has(item[key]))add(path,`标识 ${item[key]} 重复。`);seen.add(item[key]);if(!String(item.name??item.standard??'').trim()&&key==='id')add(`${path}.${item[key]}`,'名称不能为空。');}}
+  unique(schema.types,'类型');if(!schema.types.length)add('类型','至少定义一种对象类型。');
+  const typeBy=id=>schema.types.find(t=>t.id===id);const fieldBy=(id,key)=>typeBy(id)?.fields.find(f=>f.key===key);
+  for(const type of schema.types){unique(type.fields,`类型.${type.id}.字段`,'key');for(const f of type.fields){const p=`${type.id}.${f.key}`;if(!String(f.name||'').trim())add(p,'字段名称不能为空。');if(!ontoDataTypes.includes(f.datatype))add(p,'不支持的字段数据类型。');if(typeof f.required!=='boolean')add(p,'必填标志必须为布尔值。');if(f.enum!==undefined&&(!Array.isArray(f.enum)||f.enum.some(v=>typeof v!=='string')))add(p,'枚举应为文本列表。');for(const k of ['min','max'])if(f[k]!==undefined&&(!Number.isFinite(f[k])||!['number','integer'].includes(f.datatype)))add(p,'上下限只适用于数值字段且必须为有限数值。');if(f.min!==undefined&&f.max!==undefined&&f.min>f.max)add(p,'最小值不能大于最大值。');}
+    for(const c of type.constraints){const a=fieldBy(type.id,c.lower),b=fieldBy(type.id,c.upper);if(!a||!b||![a,b].every(f=>['number','integer'].includes(f.datatype)))add(type.id,'区间约束需要两个有效数值字段。');else if(a.unit!==b.unit)add(type.id,'区间约束字段必须使用相同单位。');}
+    if(!Number.isFinite(type.x)||!Number.isFinite(type.y)||type.x<0||type.x>740||type.y<0||type.y>620)add(type.id,'画布坐标超出范围。');
+  }
+  unique(schema.relations,'关系');for(const r of schema.relations){if(!typeBy(r.from)||!typeBy(r.to))add(r.id,'关系起点或终点类型不存在。');if(!['one:one','one:many','many:one','many:many'].includes(r.cardinality))add(r.id,'关系基数无效。');}
+  const lexicon=new Map();for(const term of schema.terms){if(!typeBy(term.typeId))add(term.id,'术语所属类型不存在。');if(!term.standard?.trim()||!term.language?.trim()||!term.scope?.trim()||!Array.isArray(term.aliases))add(term.id,'术语、别名列表、语言和适用范围必填。');for(const word of [term.standard,...(Array.isArray(term.aliases)?term.aliases:[])]){const key=`${term.typeId}:${term.language}:${term.scope}:${String(word).trim().toLowerCase()}`;if(lexicon.has(key)&&lexicon.get(key)!==term.standard)add(term.id,`术语“${word}”存在冲突归属。`);lexicon.set(key,term.standard);}}
+  for(const key of ['terms','mappings','actions'])unique(schema[key],key);
+  for(const m of schema.mappings){if(!typeBy(m.typeId))add(m.id,'映射目标类型不存在。');if(!['stratum','log','trajectory','instruction','custom'].includes(m.sourceType))add(m.id,'来源类型无效。');const targets=new Set();for(const f of m.fields){if(!f.source?.trim()||!fieldBy(m.typeId,f.target))add(m.id,'源字段不能为空，目标属性必须存在。');if(!ontoTransforms.includes(f.transform))add(m.id,'转换规则无效。');if(targets.has(f.target))add(m.id,`属性 ${f.target} 被重复映射。`);targets.add(f.target);}for(const f of typeBy(m.typeId)?.fields||[])if(f.required&&!targets.has(f.key))add(m.id,`缺少必填属性 ${f.name} 的映射。`);}
+  for(const a of schema.actions){if(!typeBy(a.typeId))add(a.id,'动作写入类型不存在。');if(new Set(a.inputs).size!==a.inputs.length)add(a.id,'动作输入字段不能重复。');for(const key of a.inputs)if(!fieldBy(a.typeId,key))add(a.id,`输入字段 ${key} 不存在。`);for(const f of typeBy(a.typeId)?.fields||[])if(f.required&&!a.inputs.includes(f.key))add(a.id,`动作缺少必填输入 ${f.name}。`);for(const link of a.links)if(!a.inputs.includes(link.field)||!typeBy(link.typeId))add(a.id,'动作关联字段或目标类型无效。');}
+  if(!schema.relations.length)warnings.push({path:'关系',message:'尚未配置对象关系。'});
+  return {valid:!errors.length,errors,warnings};
+}
+function ontoCheckRecord(type,record){
+  const errors=[];for(const f of type.fields){const v=record[f.key];if(v===undefined||v===null||v===''){if(f.required)errors.push(`${f.name}为必填项`);continue;}
+    if(f.datatype==='string'&&typeof v!=='string')errors.push(`${f.name}需为文本`);
+    if(['number','integer'].includes(f.datatype)){if(typeof v!=='number'||!Number.isFinite(v)||(f.datatype==='integer'&&!Number.isInteger(v)))errors.push(`${f.name}需为${f.datatype==='integer'?'整数':'数值'}`);else if((f.min!==undefined&&v<f.min)||(f.max!==undefined&&v>f.max))errors.push(`${f.name}超出允许范围`);}
+    if(f.datatype==='boolean'&&typeof v!=='boolean')errors.push(`${f.name}需为布尔值`);
+    if(f.datatype==='datetime'&&(typeof v!=='string'||!/^\d{4}-\d\d-\d\dT.*(?:Z|[+-]\d\d:\d\d)$/.test(v)||!Number.isFinite(Date.parse(v))))errors.push(`${f.name}需为含时区的有效时间`);
+    if(f.enum?.length&&!f.enum.includes(String(v)))errors.push(`${f.name}不在枚举范围内`);
+  }
+  for(const c of type.constraints)if(typeof record[c.lower]==='number'&&typeof record[c.upper]==='number'&&record[c.lower]>record[c.upper])errors.push(`${c.upper}不能小于${c.lower}`);
+  return errors;
+}
+function ontoMapPreview(schema,mapping,rows){
+  const type=schema.types.find(t=>t.id===mapping.typeId);if(!type)return [{row:1,output:{},errors:['目标类型不存在']}];
+  return rows.slice(0,20).map((row,index)=>{const output={},errors=[];for(const f of mapping.fields){const raw=row[f.source];let value=raw;if(raw===undefined||raw===null||raw===''){value='';}else if(f.transform==='trim')value=String(raw).trim();else if(f.transform==='number'){value=String(raw).trim()===''?'':Number(raw);if(!Number.isFinite(value)){errors.push(`${f.source}无法转换为数值`);value=null;}}else if(f.transform==='datetime'){value=String(raw);if(!Number.isFinite(Date.parse(value)))errors.push(`${f.source}时间无效`);}output[f.target]=value;}errors.push(...ontoCheckRecord(type,output));return {row:index+1,output,errors};});
+}
+function ontoActionPreview(schema,action,input,references){
+  const type=schema.types.find(t=>t.id===action.typeId);if(!type)return {valid:false,errors:['写入类型不存在'],output:{}};
+  const output=Object.fromEntries(action.inputs.map(key=>[key,input[key]]));const errors=ontoCheckRecord(type,output);for(const link of action.links)if(!references[link.typeId]?.includes(String(input[link.field]??'')))errors.push(`${link.field}没有匹配到${schema.types.find(t=>t.id===link.typeId)?.name||link.typeId}对象`);
+  return {valid:!errors.length,errors,output};
+}
+function ontoDiff(previous,next){
+  const changes=[];for(const group of ['types','relations','terms','mappings','actions']){const before=new Map((previous?.[group]||[]).map(i=>[i.id,i]));for(const item of next[group]){const old=before.get(item.id);if(!old)changes.push({group,id:item.id,kind:'新增',before:null,after:item});else if(JSON.stringify(old)!==JSON.stringify(item))changes.push({group,id:item.id,kind:'修改',before:old,after:item});before.delete(item.id);}for(const [id,old]of before)changes.push({group,id,kind:'删除',before:old,after:null});}
+  return changes;
+}
+
+
+// ===== src/ontology-model.js =====
+
+function ontoEnsure(db){
+  db.ontology??={versions:[],bindings:[],permissionVersion:0};
+  if(!db.ontology.permissionVersion){
+    // Add the new module capabilities once; subsequent custom role changes are preserved.
+    const additions={admin:['ontology','ontology-edit','ontology-review','ontology-publish'],manager:['ontology','ontology-edit','ontology-publish'],engineer:['ontology','ontology-edit'],expert:['ontology','ontology-review']};
+    for(const role of db.roles)if(additions[role.id])role.permissions=[...new Set([...role.permissions,...additions[role.id]])];
+    db.ontology.permissionVersion=1;
+  }
+  return db.ontology;
+}
+function ontoScope(db,user,projectId,permission){if(!db.projects.some(p=>p.id===projectId)||!permittedWells(db,user,projectId).length)fault('项目不可访问。',403);requirePermission(db,user,permission,projectId);}
+function ontoVersion(db,id,projectId){const v=ontoEnsure(db).versions.find(v=>v.id===id&&v.projectId===projectId);if(!v)fault('本体版本不存在或不可访问。',404);return v;}
+function ontoImpact(db,version,user){
+  const ig=ingEnsure(db);const previous=ontoEnsure(db).versions.filter(v=>v.projectId===version.projectId&&v.status==='published'&&v.id!==version.id).at(-1);
+  const visibleAsset=id=>{if(!user)return false;try{ingFindAsset(db,user,id,'view',true);return true;}catch{return false;}};
+  return {baseVersionId:previous?.id||'',changes:ontoDiff(previous?.schema,version.schema),mappings:version.schema.mappings.map(m=>({id:m.id,name:m.name})),rules:[{id:db.rule.id,name:db.rule.name,note:'当前厚度差规则独立运行；变更地层、厚度字段时需人工核对。'}],indexes:{status:'未接入图数据库或搜索索引',fields:version.schema.types.flatMap(t=>t.fields.map(f=>`${t.id}.${f.key}`))},boundInputs:clone(ontoEnsure(db).bindings.filter(b=>b.projectId===version.projectId&&visibleAsset(b.assetId))),pendingHandoffs:ig.handoffs.filter(h=>h.projectId===version.projectId&&visibleAsset(h.assetId)).length};
+}
+function ontoDashboard(db,user,projectId){
+  ontoScope(db,user,projectId,'ontology');const model=ontoEnsure(db);
+  return {projectId,templates:ontoTemplates,versions:clone(model.versions.filter(v=>v.projectId===projectId)),capabilities:Object.fromEntries(['ontology-edit','ontology-review','ontology-publish'].map(p=>[p,can(db,user,p,projectId)]))};
+}
+function ontoPublished(db,user,projectId){ontoScope(db,user,projectId,'construction');return {versions:clone(ontoEnsure(db).versions.filter(v=>v.projectId===projectId&&v.status==='published').map(({id,name,number,publishedAt,revision})=>({id,name,number,publishedAt,revision}))),bindings:clone(ontoEnsure(db).bindings.filter(b=>b.projectId===projectId).filter(b=>{try{ingFindAsset(db,user,b.assetId,'view',true);return true;}catch{return false;}}))};}
+function ontoMutation(db,user,action,body,context={}){
+  const model=ontoEnsure(db),projectId=body.projectId;
+  ontoScope(db,user,projectId,action==='bind'?'construction':'ontology');
+  const permission={create:'ontology-edit',save:'ontology-edit',submit:'ontology-edit',approve:'ontology-review',reject:'ontology-review',publish:'ontology-publish',bind:'construction'}[action];if(!permission)fault('本体操作不存在。',404);requirePermission(db,user,permission,projectId);
+  const audit=(operation,id,details)=>auditEvent(db,user,operation,id,details,{...context,projectId});
+  if(action==='bind'){
+    const handoff=ingEnsure(db).handoffs.find(h=>h.id===body.handoffId&&h.projectId===projectId);if(!handoff)fault('资料交接不存在。',404);ingFindAsset(db,user,handoff.assetId,'view',true);
+    const version=ontoVersion(db,body.versionId,projectId);if(version.status!=='published')fault('只能选择已发布的本体版本。',409);
+    const existing=model.bindings.find(b=>b.handoffId===handoff.id);if((existing?.revision||0)!==body.expectedRevision)fault('本体选择已被其他操作更新，请刷新。',409);
+    const binding={handoffId:handoff.id,assetId:handoff.assetId,dataVersionId:handoff.versionId,projectId,versionId:version.id,schemaRevision:version.revision,revision:(existing?.revision||0)+1,selectedBy:user.name,selectedAt:new Date().toISOString()};model.bindings=model.bindings.filter(b=>b.handoffId!==handoff.id).concat(binding);audit('选择知识构建本体',handoff.id,binding);return clone(binding);
+  }
+  if(action==='create'){
+    const base=body.baseVersionId?ontoVersion(db,body.baseVersionId,projectId):null;
+    if(!base&&!ontoTemplates.some(t=>t.id===body.templateId))fault('请选择有效模板。');
+    const number=Math.max(0,...model.versions.filter(v=>v.projectId===projectId).map(v=>v.number))+1;
+    const name=String(body.name||`${db.projects.find(p=>p.id===projectId).name}本体`).trim();if(!name||name.length>100)fault('本体名称需为 1～100 字。');
+    const version={id:`ONTO-${db.sequence++}`,projectId,name,number,revision:1,status:'draft',baseVersionId:base?.id||'',templateId:base?.templateId||body.templateId,schema:clone(base?.schema||ontoTemplate(body.templateId)),createdBy:user.id,createdByName:user.name,createdAt:new Date().toISOString(),updatedAt:new Date().toISOString(),history:[]};model.versions.push(version);audit('创建本体草稿',version.id,{baseVersionId:version.baseVersionId,templateId:version.templateId});return clone(version);
+  }
+  const version=ontoVersion(db,body.versionId,projectId);if(version.revision!==body.expectedRevision)fault('本体版本已变化，请重新打开后操作。',409);
+  if(action==='save'){
+    if(version.status!=='draft')fault('只有草稿可以编辑；其他状态请复制为新版本。',409);
+    let schema;try{schema=ontoShape(body.schema);}catch(error){fault(error.message);}version.schema=schema;version.revision++;version.updatedAt=new Date().toISOString();audit('保存本体草稿',version.id,{revision:version.revision,validation:ontoValidate(schema)});return clone(version);
+  }
+  if(action==='submit'){
+    if(version.status!=='draft')fault('只有草稿可以送审。',409);const validation=ontoValidate(version.schema);if(!validation.valid)fault(`Schema 校验未通过：${validation.errors[0].message}`,409);
+    version.status='submitted';version.submittedBy=user.id;
+  }
+  if(['approve','reject'].includes(action)){
+    if(version.status!=='submitted')fault('只有待审批版本可以审批。',409);if(version.submittedBy===user.id&&!isAdmin(db,user))fault('请由其他具备审批权限的人员审批。',403);
+    if(!String(body.note||'').trim()||String(body.note).length>1000)fault('请填写 1～1000 字审批意见。');version.status=action==='approve'?'approved':'draft';version.reviewedBy=user.id;version.reviewNote=String(body.note).trim();
+  }
+  if(action==='publish'){
+    if(version.status!=='approved')fault('只有已批准版本可以发布。',409);if(!ontoValidate(version.schema).valid)fault('Schema 校验未通过。',409);if(body.confirmImpact!==true)fault('请先核对并确认发布影响。',409);
+    version.status='published';version.publishedAt=new Date().toISOString();version.publishedBy=user.name;
+    const {boundInputs,pendingHandoffs,...releaseImpact}=ontoImpact(db,version,user);version.releaseImpact=clone(releaseImpact);
+  }
+  version.revision++;version.updatedAt=new Date().toISOString();version.history.push({action,by:user.name,time:version.updatedAt,note:['approve','reject'].includes(action)?version.reviewNote:'',revision:version.revision});audit({submit:'本体送审',approve:'批准本体',reject:'退回本体',publish:'发布本体'}[action],version.id,{revision:version.revision,note:body.note||'',status:version.status});return clone(version);
+}
+
+
 // ===== src/offline-service.js =====
 function createOfflineService() {
   let db;try{db=JSON.parse(localStorage.getItem('geokg-offline-users-v1'));}catch{}if(!db?.users)db=makeDatabase();
   let session;try{session=JSON.parse(sessionStorage.getItem('geokg-offline-session-v1'));}catch{}
-  ingEnsure(db);
+  ingEnsure(db);ontoEnsure(db);
   const save=()=>{localStorage.setItem('geokg-offline-users-v1',JSON.stringify(db));if(session)sessionStorage.setItem('geokg-offline-session-v1',JSON.stringify(session));else sessionStorage.removeItem('geokg-offline-session-v1');};
   if(ingSeedDemo(db).changed)save();
   return async(pathname,body)=>{
@@ -1190,6 +1397,13 @@ function createOfflineService() {
     if(pathname==='/auth/me')return {user:identity(db,user),expires:session.expires};
     if(pathname==='/auth/logout'){auditEvent(db,user,'退出登录（离线演示）','会话');session=null;save();return {ok:true};}
     if(pathname==='/workspace')return workspace(db,user);
+    if(pathname.startsWith('/ontology')){
+      const [endpoint,query='']=pathname.split('?');const params=new URLSearchParams(query),projectId=params.get('projectId');
+      if(endpoint==='/ontology')return ontoDashboard(db,user,projectId);
+      if(endpoint==='/ontology/published')return ontoPublished(db,user,projectId);
+      if(endpoint==='/ontology/impact'){const dashboard=ontoDashboard(db,user,projectId);const version=dashboard.versions.find(v=>v.id===params.get('versionId'));if(!version)fault('本体版本不存在。',404);return ontoImpact(db,version,user);}
+      const before=clone(db);try{const result=ontoMutation(db,user,endpoint.split('/').pop(),body);save();return result;}catch(error){db=before;throw error;}
+    }
     if(pathname.startsWith('/ingestion')){
       const [endpoint,query='']=pathname.split('?');const params=new URLSearchParams(query);
       if(endpoint==='/ingestion')return ingDashboard(db,user,params.get('projectId'));
@@ -1328,7 +1542,7 @@ const ingDate=value=>value?new Date(value).toLocaleString('zh-CN',{timeZone:'Asi
 const ingBadge=(value,tone)=>`<span class="badge ${tone||({'通过':'teal','阻断':'red','警告':'amber','未校验':'neutral','解析失败':'red'}[value]||'blue')}">${ingEscape(value||'未校验')}</span>`;
 const ingButton=(action,label,extra='')=>`<button type="button" class="button" data-ing="${action}" ${extra}>${label}</button>`;
 const ingOption=(value,label,selected)=>`<option value="${ingEscape(value)}" ${value===selected?'selected':''}>${ingEscape(label)}</option>`;
-function createIngestionUI({getContext,repaint,refresh,modal,toast,go,selectAsset}){
+function createIngestionUI({getContext,repaint,refresh,modal,toast,go,selectAsset,constructionSelector}){
   let model=null,loadedProject='',loadingProject='',loading=false,error='',selected=null,detailTab='original',versionId='',tab='assets',page=1,previewPage=1,issuePage=1,pollTimer,requestGeneration=0,wizard=null,busy=false;
   let filters={well:'current',type:'',quality:'',status:'',search:'',from:'',to:'',origin:'all'};
   let scopeWell='';
@@ -1431,8 +1645,133 @@ function createIngestionUI({getContext,repaint,refresh,modal,toast,go,selectAsse
       if(form.id==='ing-alias'){const existing=model.aliases.find(alias=>alias.id===form.dataset.id);await perform('alias',{id:existing?.id,projectId:context().projectId,wellId:existing?.wellId||form.elements.wellId.value,kind:existing?.kind||form.elements.kind.value,rawName:existing?.rawName||form.elements.rawName.value,standardName:form.elements.standardName.value,expectedRevision:existing?.revision});toast('主数据映射已保存，相关资料需重新标准化。');}
     }catch(cause){toast(cause.message);}finally{if(submitter)submitter.disabled=false;}return true;
   }
-  function constructionHtml(){if(!context().canData)return '<div class="notice">查看待构建资料需要资料目录权限，请联系管理员配置。</div>';if(!ready())return '<div class="ing-empty">正在读取待知识构建资料…</div>';return `<section class="panel ingestion"><div class="panel-heading"><h2>待知识构建资料</h2>${ingBadge(`${model.handoffs.length} 项`,'blue')}</div><p class="ing-description">以下资料已固定版本并通过接入治理门槛。实体关系抽取、人工校核和图谱发布将在后续知识构建模块实现。</p>${contentTable(['交接编号','资料 / 归属井','固定数据版本','校验记录','记录数','状态','操作'],model.handoffs.map(item=>[ingEscape(item.id),`${ingEscape(model.assets.find(asset=>asset.id===item.assetId)?.name)}<small class="block">${ingEscape(wellName(item.wellId))}</small>`,ingEscape(item.versionId),ingEscape(item.qualityRunId),ingEscape(item.recordCount),ingBadge(item.status,'amber'),`<button class="text-button" data-ing="handoff-detail" data-id="${item.assetId}" data-version="${item.versionId}">查看输入</button>`]))}</section>`;}
+  function constructionHtml(){if(!context().canData)return '<div class="notice">查看待构建资料需要资料目录权限，请联系管理员配置。</div>';if(!ready())return '<div class="ing-empty">正在读取待知识构建资料…</div>';return `<section class="panel ingestion"><div class="panel-heading"><h2>待知识构建资料</h2>${ingBadge(`${model.handoffs.length} 项`,'blue')}</div><p class="ing-description">资料已固定版本并通过治理门槛，可为每项资料选择并固定已发布的本体。实体关系抽取、人工校核和图谱发布将在后续知识构建模块实现。</p>${contentTable(['交接编号','资料 / 归属井','固定数据版本','校验记录','记录数','状态','本体版本','操作'],model.handoffs.map(item=>[ingEscape(item.id),`${ingEscape(model.assets.find(asset=>asset.id===item.assetId)?.name)}<small class="block">${ingEscape(wellName(item.wellId))}</small>`,ingEscape(item.versionId),ingEscape(item.qualityRunId),ingEscape(item.recordCount),ingBadge(item.status,'amber'),constructionSelector?.(item.id)||'待选择',`<button class="text-button" data-ing="handoff-detail" data-id="${item.assetId}" data-version="${item.versionId}">查看输入</button>`]))}</section>`;}
   return {html,load,open,constructionHtml,async click(event){const button=event.target.closest('[data-ing="handoff-detail"]');if(button){try{await open(button.dataset.id,'lineage');versionId=button.dataset.version;repaint();}catch(cause){toast(cause.message);}return true;}return click(event);},submit,import:async()=>{if(!ready())await load();uploadDialog();},clear(){requestGeneration++;clearTimeout(pollTimer);model=null;loadedProject='';loading=false;error='';selected=null;wizard=null;busy=false;filters={well:'current',type:'',quality:'',status:'',search:'',from:'',to:'',origin:'all'};tab='assets';page=previewPage=issuePage=1;}};
+}
+
+
+// ===== src/ontology.js =====
+
+const ontoEscape=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ontoStatus={draft:'草稿',submitted:'待审批',approved:'已批准',published:'已发布'};
+const ontoTime=t=>t?new Date(t).toLocaleString('zh-CN',{timeZone:'Asia/Shanghai',hour12:false}):'—';
+const ontoButton=(action,label,extra='',primary=false)=>`<button type="button" class="button ${primary?'primary':''}" data-onto="${action}" ${extra}>${label}</button>`;
+const ontoOption=(id,name,selected)=>`<option value="${ontoEscape(id)}" ${id===selected?'selected':''}>${ontoEscape(name)}</option>`;
+const ontoTable=(headers,rows)=>`<div class="table-scroll"><table class="ing-table"><thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.length?rows.map(row=>`<tr>${row.map(v=>`<td>${v}</td>`).join('')}</tr>`).join(''):`<tr><td colspan="${headers.length}" class="ing-empty">暂无记录</td></tr>`}</tbody></table></div>`;
+const ontoInput=(label,key,value='',extra='')=>`<label class="form-field">${label}<input name="${key}" value="${ontoEscape(value)}" ${extra}></label>`;
+
+function createOntologyUI({getContext,repaint,modal,toast,go}){
+  let model=null,loadedProject='',loading=false,error='',generation=0,selectedId='',draft=null,dirty=false,tab='model',selection='',filter='',connecting='',busy=false;
+  let published=null,publishedProject='',publishedLoading=false,publishedError='',sourceRows=[],sourceLabel='模板内置虚构样例',mappingResult=null,actionResult=null;
+  let sourceAssetId='',sourceDetail=null,sourceVersionId='';
+  const context=()=>getContext();
+  const current=()=>model?.versions.find(v=>v.id===selectedId);
+  const cloneLocal=value=>JSON.parse(JSON.stringify(value));
+  const editable=()=>current()?.status==='draft'&&model?.capabilities['ontology-edit'];
+  const fieldOptions=(selected='')=>draft.types.map(t=>ontoOption(t.id,t.name,selected)).join('');
+  const close=()=>document.querySelector('dialog')?.close();
+  function resetDraft(version){selectedId=version?.id||'';draft=version?cloneLocal(version.schema):null;dirty=false;selection=draft?.types[0]?.id||'';connecting='';sourceRows=[];sourceAssetId=sourceVersionId='';sourceDetail=null;mappingResult=actionResult=null;sourceLabel='模板内置虚构样例';}
+  function update(){dirty=true;mappingResult=actionResult=null;repaint({preserveScroll:true});}
+  async function load(){
+    const projectId=context().projectId;if(!projectId||!context().canOntology)return;
+    const ticket=++generation;loading=true;
+    try{const result=await api('/ontology?'+new URLSearchParams({projectId}));if(ticket!==generation||context().projectId!==projectId)return;const changed=loadedProject!==projectId;model=result;loadedProject=projectId;error='';if(changed||!dirty)resetDraft(result.versions.find(v=>v.id===selectedId)||result.versions.at(-1));}
+    catch(cause){if(ticket===generation){error=cause.message;model=null;loadedProject=projectId;}}
+    finally{if(ticket===generation){loading=false;repaint({preserveScroll:true});}}
+  }
+  function ready(){if(loadedProject!==context().projectId){if(!loading)load();return false;}return Boolean(model);}
+  async function request(action,extra={}){
+    if(busy)throw new Error('操作处理中，请稍候。');busy=true;const projectId=context().projectId,version=current();
+    try{const result=await api('/ontology/'+action,{projectId,versionId:version?.id,expectedRevision:version?.revision,...extra});if(context().projectId!==projectId)return null;await load();if(action!=='bind'){resetDraft(model.versions.find(v=>v.id===result.id));published=null;publishedProject='';}close();repaint({preserveScroll:true});return result;}finally{busy=false;}
+  }
+  function tabs(){return `<div class="workspace-tabs onto-tabs" role="tablist" aria-label="本体管理页签">${[['model','可视化建模'],['templates','模板库'],['terms','术语与同义词'],['mappings','数据源映射'],['actions','业务动作'],['versions','版本与审批']].map(([id,name])=>`<button role="tab" aria-selected="${tab===id}" data-onto="tab" data-id="${id}" class="${tab===id?'active':''}">${name}</button>`).join('')}</div>`;}
+  function html(){
+    const heading=`<div class="page-heading"><div><div class="breadcrumb">工作台 <span>/</span> 本体管理</div><h1>本体与 Schema</h1><p>定义地质对象、属性与关系，为知识构建提供统一的数据结构。</p></div><div class="heading-actions">${ontoButton('reload','刷新')}${model?.capabilities['ontology-edit']?ontoButton('new','新建本体','',true):''}</div></div>`;
+    if(!ready())return heading+`<section class="panel ing-empty">${ontoEscape(error||'正在读取本体…')}${error?ontoButton('reload','重试'):''}</section>`;
+    return heading+`<div class="onto-version-bar"><div><span class="subtle">当前版本</span><select id="onto-version" aria-label="当前本体版本"><option value="">请选择版本</option>${model.versions.map(v=>ontoOption(v.id,`${v.name} · v${v.number} · ${ontoStatus[v.status]}`,selectedId)).join('')}</select>${current()?`<span class="badge ${current().status==='published'?'teal':'blue'}">${ontoStatus[current().status]}</span>`:''}${dirty?'<span class="onto-dirty">有未保存的修改</span>':''}</div><div>${editable()?ontoButton('discard','放弃修改')+ontoButton('save','保存草稿','',true):''}${draft?ontoButton('validate','校验 Schema'):''}${current()&&model.capabilities['ontology-edit']?ontoButton('clone','复制为新版本'):''}</div></div>`+tabs()+(!draft&&tab!=='templates'?`<section class="panel onto-empty"><div class="onto-empty-icon">◇</div><h2>从一个行业模板开始</h2><p>选择模板、调整结构，校验后送审并发布。</p>${model.capabilities['ontology-edit']?ontoButton('new','选择行业模板','',true):'<p>当前项目尚无本体版本，请联系具有本体编辑权限的人员创建。</p>'}</section>`:tab==='templates'?templateHtml():tab==='model'?modelHtml():tab==='terms'?termsHtml():tab==='mappings'?mappingsHtml():tab==='actions'?actionsHtml():versionsHtml());
+  }
+  function templateHtml(){return `<div class="onto-template-grid">${ontoTemplates.map(t=>{const s=ontoTemplate(t.id);return `<section class="panel onto-template"><span class="badge blue">行业模板</span><h2>${t.name}</h2><p>${t.description}</p><div class="onto-template-types">${s.types.map(type=>`<span>${type.name}</span>`).join('')}</div><div class="onto-template-meta">${s.types.length} 类对象 · ${s.relations.length} 类关系 · ${s.types.reduce((n,t)=>n+t.fields.length,0)} 个属性</div><div class="onto-inline">${ontoButton('template-preview','预览结构',`data-id="${t.id}"`)}${model.capabilities['ontology-edit']?ontoButton('template-use','使用模板',`data-id="${t.id}"`,true):''}</div></section>`;}).join('')}</div>`;}
+  function modelHtml(){
+    const type=draft.types.find(t=>t.id===selection);const relation=draft.relations.find(r=>r.id===selection);
+    return `<section class="panel onto-model"><aside class="onto-type-pane"><div class="onto-pane-head"><strong>对象类型 <small>${draft.types.length}</small></strong>${editable()?ontoButton('type-new','＋','aria-label="添加对象类型"'):''}</div><label class="onto-search"><input id="onto-type-search" placeholder="搜索类型" aria-label="搜索对象类型" value="${ontoEscape(filter)}"></label><div class="onto-type-list">${editable()?`<button draggable="true" data-onto-drag="__new__" data-onto="type-new" class="onto-add-palette"><span>＋</span><span><strong>新对象类型</strong><small>拖到画布添加</small></span></button>`:''}${draft.types.filter(t=>`${t.name} ${t.id}`.toLowerCase().includes(filter.toLowerCase())).map(t=>`<button draggable="${editable()}" data-onto="select" data-id="${t.id}" data-onto-drag="${t.id}" class="${selection===t.id?'active':''}"><span class="onto-type-dot"></span><span><strong>${ontoEscape(t.name)}</strong><small>${ontoEscape(t.id)} · ${t.fields.length} 个属性</small></span></button>`).join('')}</div><div class="onto-pane-foot">${editable()?'拖入新类型，或移动已有类型。':'查看已定义的对象类型与关系。'}</div></aside><div class="onto-canvas-pane"><div class="onto-canvas-toolbar"><strong>关系建模</strong><div>${editable()?ontoButton('type-new','添加类型')+ontoButton('relation-new','添加关系')+ontoButton('connect',connecting?'取消连线':'点击连线',`aria-pressed="${Boolean(connecting)}"`):'<span class="subtle">只读结构</span>'}</div></div><div class="onto-canvas-help">${connecting?connecting==='start'?'请选择起点类型，再选择终点类型。':'请选择终点类型。':'点击对象查看属性，点击关系查看连接约束。'}</div><div class="onto-canvas-scroll"><svg class="onto-canvas" viewBox="0 0 920 750" aria-label="本体类型关系画布"><defs><pattern id="onto-dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="#dce5f0"/></pattern><marker id="onto-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10" fill="#8ba4c4"/></marker></defs><rect width="920" height="750" fill="url(#onto-dots)"/>${draft.relations.map(r=>{const a=draft.types.find(t=>t.id===r.from),b=draft.types.find(t=>t.id===r.to);if(!a||!b)return '';const same=a.id===b.id;const d=same?`M${a.x+130} ${a.y}c100 -65 100 100 20 40`:`M${a.x+80} ${a.y+28}L${b.x+80} ${b.y+28}`;return `<g class="onto-edge ${selection===r.id?'active':''}" data-onto="select" data-id="${r.id}" tabindex="0" role="button" aria-label="关系 ${ontoEscape(r.name)}"><path d="${d}" marker-end="url(#onto-arrow)"/><text x="${same?a.x+180:(a.x+b.x)/2+80}" y="${same?a.y-12:(a.y+b.y)/2+14}" text-anchor="middle">${ontoEscape(r.name)}</text></g>`;}).join('')}${draft.types.map(t=>`<g class="onto-node ${selection===t.id?'active':''}" data-onto="select" data-id="${t.id}" data-onto-node="${t.id}" transform="translate(${t.x},${t.y})" role="button" tabindex="0" aria-label="对象类型 ${ontoEscape(t.name)}"><rect width="162" height="64" rx="9"/><rect class="onto-node-accent" width="5" height="64" rx="2"/><text x="18" y="27" class="onto-node-title">${ontoEscape(t.name)}</text><text x="18" y="48" class="onto-node-subtitle">${ontoEscape(t.id)} · ${t.fields.length} 属性</text></g>`).join('')}</svg></div><div class="onto-canvas-caption">${draft.types.length} 类对象 <span>·</span> ${draft.relations.length} 类关系 <span>·</span> 类型定义图</div></div><aside class="onto-property-pane"><div class="onto-pane-head"><strong>${relation?'关系属性':'对象属性'}</strong>${editable()&&(type||relation)?ontoButton(relation?'relation-edit':'type-edit','编辑',`data-id="${selection}"`):''}</div>${type?`<div class="onto-object-summary"><span class="badge blue">对象类型</span><h2>${ontoEscape(type.name)}</h2><code>${ontoEscape(type.id)}</code><p>${ontoEscape(type.description)}</p></div><div class="onto-fields">${type.fields.map(f=>`<div><div><strong>${ontoEscape(f.name)}</strong>${f.required?'<span class="onto-required">必填</span>':''}</div><code>${ontoEscape(f.key)}</code><small>${ontoEscape(f.datatype)}${f.unit?' · '+ontoEscape(f.unit):''}${f.min!==undefined?' · ≥ '+f.min:''}${f.max!==undefined?' · ≤ '+f.max:''}${f.enum?.length?' · '+ontoEscape(f.enum.join(' / ')):''}</small></div>`).join('')||'<p class="ing-empty">暂无属性</p>'}</div>${type.constraints.map(c=>`<p class="onto-constraint">约束：${ontoEscape(c.upper)} ≥ ${ontoEscape(c.lower)}</p>`).join('')}${editable()?`<div class="onto-property-actions">${ontoButton('type-delete','删除此类型',`data-id="${type.id}"`)}</div>`:''}`:relation?`<div class="onto-object-summary"><span class="badge teal">对象关系</span><h2>${ontoEscape(relation.name)}</h2><code>${ontoEscape(relation.id)}</code><p>${ontoEscape(draft.types.find(t=>t.id===relation.from)?.name)} → ${ontoEscape(draft.types.find(t=>t.id===relation.to)?.name)}</p><p>关系基数：${ontoEscape(relation.cardinality)}</p>${editable()?ontoButton('relation-delete','删除关系',`data-id="${relation.id}"`):''}</div>`:'<p class="ing-empty">请选择类型或关系</p>'}</aside></section>`;
+  }
+  function termsHtml(){const rows=draft.terms.filter(t=>`${t.standard} ${t.aliases.join(' ')} ${t.scope}`.toLowerCase().includes(filter.toLowerCase()));return `<section class="panel"><div class="panel-heading"><h2>术语表与同义词</h2>${editable()?ontoButton('term-new','新增术语','',true):''}</div><div class="onto-filters"><input id="onto-term-search" placeholder="搜索标准术语、别名或范围" aria-label="搜索术语" value="${ontoEscape(filter)}"><span class="subtle">同一类型、语言及范围内检查别名冲突。</span></div>${ontoTable(['标准术语','别名','类型','语言','适用范围','操作'],rows.map(t=>[ontoEscape(t.standard),ontoEscape(t.aliases.join('、'))||'—',ontoEscape(draft.types.find(x=>x.id===t.typeId)?.name||t.typeId),ontoEscape(t.language),ontoEscape(t.scope),editable()?ontoButton('term-edit','编辑',`data-id="${t.id}"`)+ontoButton('term-delete','删除',`data-id="${t.id}"`):'只读']))}</section>`;}
+  function mappingsHtml(){return `<section class="panel"><div class="panel-heading"><h2>数据源映射配置</h2>${editable()?ontoButton('mapping-new','新增映射','',true):''}</div><p class="ing-description">将源字段对应到本体属性。样例预览执行转换及字段约束检查。</p>${ontoTable(['映射名称','来源类型','目标对象','映射字段','操作'],draft.mappings.map(m=>[ontoEscape(m.name),ontoEscape(m.sourceType),ontoEscape(draft.types.find(t=>t.id===m.typeId)?.name||m.typeId),`${m.fields.length} 项`,ontoButton('mapping-preview','样例预览',`data-id="${m.id}"`)+(editable()?ontoButton('mapping-edit','编辑',`data-id="${m.id}"`)+ontoButton('mapping-delete','删除',`data-id="${m.id}"`):'')]))}</section>`;}
+  function actionsHtml(){return `<section class="panel"><div class="panel-heading"><h2>业务动作定义</h2>${editable()?ontoButton('action-new','新增动作','',true):''}</div><p class="ing-description">定义动作输入、写入对象和关联检查。历史指令使用明确标识的虚构样本核查。</p>${ontoTable(['动作类型','写入对象','输入字段','对象关联','操作'],draft.actions.map(a=>[ontoEscape(a.name),ontoEscape(draft.types.find(t=>t.id===a.typeId)?.name||a.typeId),ontoEscape(a.inputs.join('、')),ontoEscape(a.links.map(l=>`${l.field} → ${l.typeId}`).join('；')),ontoButton('action-preview','核查历史样本',`data-id="${a.id}"`)+(editable()?ontoButton('action-edit','编辑',`data-id="${a.id}"`)+ontoButton('action-delete','删除',`data-id="${a.id}"`):'')]))}</section>`;}
+  function versionsHtml(){return `<section class="panel"><div class="panel-heading"><h2>本体版本与变更审批</h2><span class="subtle">草稿 → 送审 → 批准 → 发布</span></div><div class="onto-version-actions">${current()?.status==='draft'&&editable()?ontoButton('submit','送审','',true):''}${current()?.status==='submitted'&&model.capabilities['ontology-review']?ontoButton('approve','批准')+ontoButton('reject','退回修改'):''}${current()?.status==='approved'&&model.capabilities['ontology-publish']?ontoButton('publish-preview','查看影响并发布','',true):''}${ontoButton('compare','比较版本')}${ontoButton('impact','查看变更影响')}</div>${ontoTable(['版本','状态','创建人','更新时间','操作'],[...model.versions].reverse().map(v=>[`<strong>${ontoEscape(v.name)}</strong><small class="block">v${v.number} · ${ontoEscape(v.id)}</small>`,`<span class="badge ${v.status==='published'?'teal':'blue'}">${ontoStatus[v.status]}</span>`,ontoEscape(v.createdByName),ontoTime(v.updatedAt),ontoButton('open-version',v.id===selectedId?'当前版本':'打开',`data-id="${v.id}"`)]))}<div class="onto-history"><h3>当前版本审批记录</h3>${(current()?.history||[]).map(h=>`<p><strong>${({submit:'送审',approve:'批准',reject:'退回',publish:'发布'})[h.action]}</strong> · ${ontoEscape(h.by)} · ${ontoTime(h.time)}${h.note?`<br>${ontoEscape(h.note)}`:''}</p>`).join('')||'<p class="subtle">尚无审批记录</p>'}</div></section>`;}
+  function requireEdit(){if(!editable())throw new Error('此版本不可编辑，请复制为新草稿。');}
+  function requireSaved(){if(dirty)throw new Error('请先保存草稿，再进行此操作。');}
+  function validationDialog(){const result=ontoValidate(draft);modal('Schema 校验',`<div class="notice ${result.valid?'':'demo-note'}">${result.valid?'校验通过，可进入送审流程。':`发现 ${result.errors.length} 项问题，请修改后再次校验。`}${dirty?' 当前检查包含未保存修改。':''}</div>${ontoTable(['位置','检查结果'],[...result.errors,...result.warnings].map(e=>[ontoEscape(e.path),ontoEscape(e.message)]))}`);}
+  function typeFieldRow(f={key:'',name:'',datatype:'string',required:false,unit:''}){return `<div class="onto-field-row" data-onto-field>${ontoInput('字段标识','fieldKey',f.key,'required pattern="[a-zA-Z][a-zA-Z0-9_]{0,39}"')}${ontoInput('显示名称','fieldName',f.name,'required maxlength="80"')}<label class="form-field">数据类型<select name="fieldDatatype">${ontoDataTypes.map(v=>ontoOption(v,v,f.datatype)).join('')}</select></label>${ontoInput('单位','fieldUnit',f.unit,'maxlength="30"')}${ontoInput('最小值','fieldMin',f.min??'','type="number" step="any"')}${ontoInput('最大值','fieldMax',f.max??'','type="number" step="any"')}${ontoInput('枚举（逗号分隔）','fieldEnum',f.enum?.join(',')||'')}<label class="checkbox-label"><input name="fieldRequired" type="checkbox" ${f.required?'checked':''}>必填</label>${ontoButton('field-remove','移除字段')}</div>`;}
+  function typeDialog(id){requireEdit();const t=draft.types.find(t=>t.id===id);modal(t?'编辑对象类型':'新增对象类型',`<form id="onto-type-form" data-id="${t?.id||''}"><div class="ing-form-pair">${ontoInput('类型标识','typeId',t?.id||'','required pattern="[a-zA-Z][a-zA-Z0-9_]{0,39}" '+(t?'readonly':''))}${ontoInput('类型名称','typeName',t?.name||'','required maxlength="80"')}</div>${ontoInput('业务含义','description',t?.description||'','maxlength="300"')}<div class="onto-form-heading"><h3>属性与约束</h3>${ontoButton('field-add','添加属性')}</div><div id="onto-field-rows">${(t?.fields||[ontoField('name','名称','string',true)]).map(typeFieldRow).join('')}</div><div class="ing-form-pair">${ontoInput('区间下界字段（可选）','lower',t?.constraints[0]?.lower||'')}${ontoInput('区间上界字段（可选）','upper',t?.constraints[0]?.upper||'')}</div><p class="subtle">配置上下界后校验上界 ≥ 下界；两字段应为同单位的数值。</p><div class="modal-actions"><button class="button primary" type="submit">应用到草稿</button></div></form>`,{wide:true});}
+  function relationDialog(id,from,to){requireEdit();const r=draft.relations.find(r=>r.id===id);modal(r?'编辑关系':'定义对象关系',`<form id="onto-relation-form" data-id="${r?.id||''}"><div class="ing-form-pair">${ontoInput('关系标识','relationId',r?.id||'','required pattern="[a-zA-Z][a-zA-Z0-9_]{0,39}" '+(r?'readonly':''))}${ontoInput('关系名称','relationName',r?.name||'','required maxlength="80"')}<label class="form-field">起点类型<select name="from">${fieldOptions(r?.from||from)}</select></label><label class="form-field">终点类型<select name="to">${fieldOptions(r?.to||to)}</select></label></div><label class="form-field">关系基数<select name="cardinality">${[['many:one','多对一'],['one:many','一对多'],['many:many','多对多'],['one:one','一对一']].map(([id,n])=>ontoOption(id,n,r?.cardinality)).join('')}</select></label><div class="modal-actions"><button class="button primary">应用到草稿</button></div></form>`);}
+  function termDialog(id){requireEdit();const t=draft.terms.find(t=>t.id===id);modal(t?'编辑术语':'新增术语',`<form id="onto-term-form" data-id="${t?.id||''}">${ontoInput('标准术语','standard',t?.standard||'','required maxlength="100"')}${ontoInput('别名（逗号分隔）','aliases',t?.aliases.join(',')||'')}<label class="form-field">所属类型<select name="typeId">${fieldOptions(t?.typeId)}</select></label><div class="ing-form-pair">${ontoInput('语言','language',t?.language||'zh-CN','required')}${ontoInput('适用范围','scope',t?.scope||'','required')}</div><div class="modal-actions"><button class="button primary">应用到草稿</button></div></form>`);}
+  function mappingDialog(id,typeId){requireEdit();const m=draft.mappings.find(m=>m.id===id);const type=draft.types.find(t=>t.id===(typeId||m?.typeId))||draft.types[0];if(!type)throw new Error('请先添加对象类型。');modal(m?'编辑字段映射':'新增字段映射',`<form id="onto-mapping-form" data-id="${m?.id||''}"><p class="ing-description">源字段对应数据接入模块治理后的标准字段，可输入自定义字段名。</p><datalist id="onto-source-fields">${(ingFieldSets[m?.sourceType||'stratum']||[]).map(([key,label])=>`<option value="${key}">${label}</option>`).join('')}</datalist>${ontoInput('映射名称','mappingName',m?.name||'','required maxlength="80"')}<div class="ing-form-pair"><label class="form-field">来源资料类型<select name="sourceType">${['stratum','log','trajectory','instruction','custom'].map(v=>ontoOption(v,v,m?.sourceType)).join('')}</select></label><label class="form-field">目标类型<select name="typeId" id="onto-mapping-type">${fieldOptions(type.id)}</select></label></div><div class="onto-map-fields">${type.fields.map(f=>{const row=m?.fields.find(r=>r.target===f.key);return `<div data-onto-map="${f.key}"><label class="form-field">源字段<input name="source" list="onto-source-fields" value="${ontoEscape(row?.source||'')}" placeholder="留空则不映射"></label><strong>→ ${ontoEscape(f.name)} ${f.required?'<span class="onto-required">必填</span>':''}<small class="block">${ontoEscape(f.key)} · ${f.datatype}</small></strong><label class="form-field">转换<select name="transform">${[['identity','保持原值'],['trim','去除首尾空格'],['number','转换为数值'],['datetime','时间检查']].map(([id,n])=>ontoOption(id,n,row?.transform||(['number','integer'].includes(f.datatype)?'number':'trim'))).join('')}</select></label></div>`;}).join('')}</div><div class="modal-actions"><button class="button primary">应用到草稿</button></div></form>`,{wide:true});}
+  const sampleStrata={well:'JH-01',layer:'演示目标层',top:2000,bottom:2010,datum:'KB',depthType:'MD',thickness:10,lithology:'砂岩'};
+  function mappingPreview(id){const m=draft.mappings.find(m=>m.id===id);if(!m)throw new Error('映射不存在。');const sample=sourceRows.length?sourceRows:[sampleStrata];mappingResult=ontoMapPreview(draft,m,sample);modal('字段映射样例预览',`<div class="notice">${ontoEscape(sourceRows.length?sourceLabel:'模板内置虚构分层样例；可加载当前项目的真实资料版本。')}</div><form id="onto-source-form" data-id="${id}"><div class="ing-form-pair"><label class="form-field">来源资料<select name="assetId" id="onto-source-asset" required><option value="">选择当前项目资料</option>${(context().assets||[]).filter(asset=>asset.managed&&(m.sourceType==='custom'||asset.objectType===m.sourceType)).map(asset=>ontoOption(asset.id,asset.name,sourceAssetId)).join('')}</select></label><label class="form-field">数据版本<select name="dataVersionId"><option value="">当前版本</option>${(sourceDetail?.versions||[]).map(v=>ontoOption(v.id,`v${v.number} · ${v.status}`,sourceVersionId)).join('')}</select></label></div><div class="onto-inline"><button class="button" type="submit">加载已治理资料</button>${ontoButton('mapping-sample','使用虚构样例',`data-id="${id}"`)}</div></form><h3 class="onto-section-title">源字段 → 本体属性</h3>${ontoTable(['源字段','目标属性','转换'],m.fields.map(f=>[ontoEscape(f.source),ontoEscape(`${m.typeId}.${f.target}`),ontoEscape(f.transform)]))}<h3 class="onto-section-title">样例检查（最多 20 条）</h3>${ontoTable(['行','源数据','映射结果','检查结果'],mappingResult.map((r,i)=>[r.row,`<pre class="onto-json">${ontoEscape(JSON.stringify(sample[i],null,2))}</pre>`,`<pre class="onto-json">${ontoEscape(JSON.stringify(r.output,null,2))}</pre>`,r.errors.length?`<span class="onto-error-text">${ontoEscape(r.errors.join('；'))}</span>`:'<span class="badge teal">通过</span>']))}`,{wide:true});}
+  function actionDialog(id,typeId){requireEdit();const a=draft.actions.find(a=>a.id===id);const type=draft.types.find(t=>t.id===(typeId||a?.typeId))||draft.types.find(t=>t.id==='instruction')||draft.types[0];if(!type)throw new Error('请先添加对象类型。');modal(a?'编辑业务动作':'新增业务动作',`<form id="onto-action-form" data-id="${a?.id||''}">${ontoInput('动作名称','actionName',a?.name||'','required maxlength="80"')}${ontoInput('动作说明','description',a?.description||'','maxlength="300"')}<label class="form-field">写入对象类型<select name="typeId" id="onto-action-type">${fieldOptions(type.id)}</select></label><div class="onto-map-fields">${type.fields.map(f=>`<div data-onto-action-field="${f.key}"><label class="checkbox-label"><input name="included" type="checkbox" ${!a||a.inputs.includes(f.key)?'checked':''}>${ontoEscape(f.name)}${f.required?'（必填）':''}</label><label class="form-field">字段类型<input value="${f.datatype}" readonly></label><label class="form-field">关联对象类型<select name="linkType"><option value="">无需关联</option>${fieldOptions(a?.links.find(l=>l.field===f.key)?.typeId||'')}</select></label></div>`).join('')}</div><div class="modal-actions"><button class="button primary">应用到草稿</button></div></form>`,{wide:true});}
+  function actionPreview(id,input){const a=draft.actions.find(a=>a.id===id);if(!a)throw new Error('动作不存在。');const sample=input||{well:'JH-01',interval:'JH-01:2000-2100',time:'2026-11-19T10:00:00+08:00',command:'复核目标层位后调整导向方案',basis:'虚构历史分层与轨迹记录'};const refs={well:['JH-01'],interval:['JH-01:2000-2100']};actionResult=ontoActionPreview(draft,a,sample,refs);modal('业务动作 · 历史样本核查',`<div class="notice">虚构历史指令样本。仅校验输入及关联，不写入图谱或下发指令。</div><form id="onto-action-preview-form" data-id="${id}"><label class="form-field">样本输入（JSON）<textarea name="sample" rows="9" required>${ontoEscape(JSON.stringify(sample,null,2))}</textarea></label><button class="button primary">运行写入前校验</button></form><h3 class="onto-section-title">核查结果</h3>${actionResult.valid?'<span class="badge teal">字段、约束与关联均通过</span>':`<div class="onto-error-text">${actionResult.errors.map(ontoEscape).join('<br>')}</div>`}<pre class="onto-json">${ontoEscape(JSON.stringify(actionResult.output,null,2))}</pre><p class="subtle">样本可用关联：井 JH-01；井段 JH-01:2000-2100。</p>`,{wide:true});}
+  function compareDialog(){requireSaved();const versions=model.versions.filter(v=>v.id!==selectedId);modal('本体版本比较',`<form id="onto-compare-form"><label class="form-field">基准版本<select name="baseId"><option value="">空结构（查看全部定义）</option>${versions.map(v=>ontoOption(v.id,`v${v.number} · ${ontoStatus[v.status]}`,current()?.baseVersionId)).join('')}</select></label><div class="modal-actions"><button class="button primary">比较当前 v${current().number}</button></div></form>`);}
+  async function impactDialog(publish=false){requireSaved();const projectId=context().projectId,id=selectedId;const data=await api('/ontology/impact?'+new URLSearchParams({projectId,versionId:id}));if(context().projectId!==projectId||selectedId!==id)return;modal(publish?'发布前影响确认':'本体变更影响',`<p class="ing-description">对比最近已发布版本 ${ontoEscape(data.baseVersionId||'无')}。已有知识构建资料继续使用原先选择的固定本体版本。</p>${ontoTable(['定义分类','标识','变更'],data.changes.map(c=>[ontoEscape(c.group),ontoEscape(c.id),c.kind]))}<div class="onto-impact-grid"><div><strong>数据映射</strong><p>${data.mappings.length} 项配置需在新版本下核查。</p></div><div><strong>业务规则</strong>${data.rules.map(r=>`<p>${ontoEscape(r.name)}：${ontoEscape(r.note)}</p>`).join('')}</div><div><strong>索引</strong><p>${ontoEscape(data.indexes.status)}。涉及 ${data.indexes.fields.length} 个属性；此处不执行重建。</p></div><div><strong>构建资料</strong><p>${data.pendingHandoffs} 项交接。资料与本体版本绑定不自动迁移。</p></div></div>${publish?`<label class="checkbox-label"><input id="onto-confirm-impact" type="checkbox">我已核对映射、规则与索引影响</label><div class="modal-actions">${ontoButton('publish-confirm','发布当前版本','',true)}</div>`:''}`,{wide:true});}
+  function chooseVersion(id){if(dirty)throw new Error('当前草稿尚未保存，请先保存或点击“放弃修改”。');resetDraft(model.versions.find(v=>v.id===id));repaint({preserveScroll:true});}
+  async function click(event){const button=event.target.closest('[data-onto]');if(!button)return false;const {onto:action,id}=button.dataset;try{
+    if(action==='reload'){if(dirty)throw new Error('请先保存或放弃当前修改。');loadedProject='';await load();}
+    if(action==='new'){tab='templates';repaint();}
+    if(action==='tab'){tab=id;filter='';repaint({preserveScroll:true});}
+    if(action==='template-preview'){const s=ontoTemplate(id);modal('行业模板结构预览',ontoTable(['对象类型','标识','属性'],s.types.map(t=>[t.name,t.id,t.fields.map(f=>`${f.name}${f.required?'*':''}`).join('、')]))+ontoTable(['关系','起点','终点','基数'],s.relations.map(r=>[r.name,r.from,r.to,r.cardinality])),{wide:true});}
+    if(action==='template-use'){requireSaved();if(await request('create',{templateId:id})){tab='model';toast('已从模板创建本体草稿。');repaint();}}
+    if(action==='clone'){requireSaved();if(await request('create',{baseVersionId:selectedId})){tab='model';toast('已复制为可编辑的新版本。');repaint();}}
+    if(action==='save'){requireEdit();await request('save',{schema:draft});toast('本体草稿已保存。');}
+    if(action==='discard'){resetDraft(current());repaint({preserveScroll:true});}
+    if(action==='validate')validationDialog();
+    if(action==='select'){if(connecting){if(connecting==='start')connecting=id;else{const from=connecting;connecting='';relationDialog('',from,id);}repaint({preserveScroll:true});}else{selection=id;repaint({preserveScroll:true});}}
+    if(action==='connect'){requireEdit();connecting=connecting?'':'start';repaint({preserveScroll:true});}
+    if(action==='type-new'||action==='type-edit')typeDialog(id);
+    if(action==='relation-new'||action==='relation-edit')relationDialog(id);
+    if(action==='term-new'||action==='term-edit')termDialog(id);
+    if(action==='mapping-new'||action==='mapping-edit')mappingDialog(id);
+    if(action==='action-new'||action==='action-edit')actionDialog(id);
+    if(action==='field-add')document.querySelector('#onto-field-rows').insertAdjacentHTML('beforeend',typeFieldRow());
+    if(action==='field-remove')button.closest('[data-onto-field]').remove();
+    if(action==='type-delete'){requireEdit();const linked=draft.relations.some(r=>r.from===id||r.to===id)||draft.terms.some(t=>t.typeId===id)||draft.mappings.some(m=>m.typeId===id)||draft.actions.some(a=>a.typeId===id||a.links.some(l=>l.typeId===id));if(linked)throw new Error('该类型仍被关系、术语、映射或动作引用，请先调整引用。');draft.types=draft.types.filter(t=>t.id!==id);selection=draft.types[0]?.id||'';update();}
+    if(['relation-delete','term-delete','mapping-delete','action-delete'].includes(action)){requireEdit();const group=({'relation-delete':'relations','term-delete':'terms','mapping-delete':'mappings','action-delete':'actions'})[action];draft[group]=draft[group].filter(i=>i.id!==id);update();}
+    if(action==='mapping-preview')mappingPreview(id);
+    if(action==='mapping-sample'){sourceRows=[];sourceAssetId=sourceVersionId='';sourceDetail=null;sourceLabel='模板内置虚构样例';mappingPreview(id);}
+    if(action==='action-preview')actionPreview(id);
+    if(action==='submit'){requireSaved();await request('submit');toast('已送审，请在版本页完成审批。');}
+    if(action==='approve'||action==='reject'){requireSaved();modal(action==='approve'?'批准本体版本':'退回修改',`<form id="onto-review-form" data-action="${action}"><label class="form-field">审批意见<textarea name="note" rows="4" required maxlength="1000"></textarea></label><p class="subtle">管理员可完成演示审批；其他人员不能审批本人送审的版本。</p><div class="modal-actions"><button class="button primary">确认${action==='approve'?'批准':'退回'}</button></div></form>`);}
+    if(action==='publish-preview')await impactDialog(true);
+    if(action==='publish-confirm'){if(!document.querySelector('#onto-confirm-impact')?.checked)throw new Error('请先确认发布影响。');await request('publish',{confirmImpact:true});toast('本体已发布，可在知识构建页面选择使用。');}
+    if(action==='impact')await impactDialog();
+    if(action==='compare')compareDialog();
+    if(action==='open-version')chooseVersion(id);
+    if(action==='published-reload'){publishedProject='';published=null;publishedError='';await loadPublished();}
+    if(action==='bind'){const select=document.querySelector(`[data-onto-bind="${id}"]`);const projectId=context().projectId;const binding=published?.bindings.find(b=>b.handoffId===id);await api('/ontology/bind',{projectId,handoffId:id,versionId:select.value,expectedRevision:binding?.revision||0});if(projectId===context().projectId){published=null;publishedProject='';await loadPublished();toast('已固定本体版本，后续构建可使用此选择。');}}
+  }catch(cause){toast(cause.message);}return true;}
+  function upsert(group,item,existingId){if(draft[group].some(i=>i.id===item.id&&i.id!==existingId))throw new Error('标识已存在。');const index=draft[group].findIndex(i=>i.id===existingId);if(index<0)draft[group].push(item);else draft[group][index]=item;close();update();}
+  function newId(prefix){let id;do{id=`${prefix}_${Date.now().toString(36)}_${Math.random().toString(36).slice(2,6)}`;}while(draft.types.some(t=>t.id===id));return id;}
+  async function submit(event){const form=event.target;if(!form.id.startsWith('onto-'))return false;event.preventDefault();const submitter=form.querySelector('[type="submit"],button:not([type="button"])');if(submitter)submitter.disabled=true;try{const el=form.elements;
+    if(form.id==='onto-type-form'){requireEdit();const fields=[...form.querySelectorAll('[data-onto-field]')].map(row=>{const q=n=>row.querySelector(`[name="${n}"]`);const f=ontoField(q('fieldKey').value.trim(),q('fieldName').value.trim(),q('fieldDatatype').value,q('fieldRequired').checked,{unit:q('fieldUnit').value.trim()});for(const key of ['min','max']){const value=q(key==='min'?'fieldMin':'fieldMax').value;if(value!=='')f[key]=Number(value);}const enums=q('fieldEnum').value.split(/[,，]/).map(s=>s.trim()).filter(Boolean);if(enums.length)f.enum=enums;return f;});const old=draft.types.find(t=>t.id===form.dataset.id);const lower=el.lower.value.trim(),upper=el.upper.value.trim();if(Boolean(lower)!==Boolean(upper))throw new Error('区间上下界需要同时填写。');const t={id:el.typeId.value.trim(),name:el.typeName.value.trim(),description:el.description.value.trim(),fields,constraints:lower?[{lower,upper}]:[],x:old?.x??80,y:old?.y??(80+draft.types.length*25)%600};selection=t.id;upsert('types',t,old?.id);}
+    if(form.id==='onto-relation-form'){requireEdit();upsert('relations',{id:el.relationId.value.trim(),name:el.relationName.value.trim(),from:el.from.value,to:el.to.value,cardinality:el.cardinality.value},form.dataset.id);}
+    if(form.id==='onto-term-form'){requireEdit();upsert('terms',{id:form.dataset.id||newId('term'),standard:el.standard.value.trim(),aliases:[...new Set(el.aliases.value.split(/[,，]/).map(s=>s.trim()).filter(Boolean))],typeId:el.typeId.value,language:el.language.value.trim(),scope:el.scope.value.trim()},form.dataset.id);}
+    if(form.id==='onto-mapping-form'){requireEdit();const fields=[...form.querySelectorAll('[data-onto-map]')].map(row=>({source:row.querySelector('[name="source"]').value.trim(),target:row.dataset.ontoMap,transform:row.querySelector('[name="transform"]').value})).filter(f=>f.source);upsert('mappings',{id:form.dataset.id||newId('map'),name:el.mappingName.value.trim(),sourceType:el.sourceType.value,typeId:el.typeId.value,fields},form.dataset.id);}
+    if(form.id==='onto-action-form'){requireEdit();const rows=[...form.querySelectorAll('[data-onto-action-field]')].filter(r=>r.querySelector('[name="included"]').checked);upsert('actions',{id:form.dataset.id||newId('action'),name:el.actionName.value.trim(),description:el.description.value.trim(),typeId:el.typeId.value,inputs:rows.map(r=>r.dataset.ontoActionField),links:rows.filter(r=>r.querySelector('[name="linkType"]').value).map(r=>({field:r.dataset.ontoActionField,typeId:r.querySelector('[name="linkType"]').value}))},form.dataset.id);}
+    if(form.id==='onto-source-form'){const projectId=context().projectId;const data=await api('/ingestion/assets/'+encodeURIComponent(el.assetId.value.trim()));if(context().projectId!==projectId)return true;if(data.asset?.projectId!==projectId)throw new Error('请选择当前项目资料。');const version=el.dataVersionId.value.trim()?data.versions.find(v=>v.id===el.dataVersionId.value.trim()):data.versions.find(v=>v.id===data.asset.currentVersionId);if(!version?.rows?.length)throw new Error('该版本无可访问的标准数据，请先完成资料治理。');const m=draft.mappings.find(m=>m.id===form.dataset.id);if(m.sourceType!=='custom'&&m.sourceType!==data.asset.objectType)throw new Error('资料类型与映射来源类型不一致。');sourceAssetId=data.asset.id;sourceDetail=data;sourceVersionId=version.id;sourceRows=cloneLocal(version.rows.slice(0,20).map(row=>row.record));sourceLabel=`${data.asset.name} · ${version.id} · 标准数据`;mappingPreview(form.dataset.id);}
+    if(form.id==='onto-action-preview-form'){const value=JSON.parse(el.sample.value);if(!value||typeof value!=='object'||Array.isArray(value))throw new Error('样本应为 JSON 对象。');actionPreview(form.dataset.id,value);}
+    if(form.id==='onto-review-form'){await request(form.dataset.action,{note:el.note.value});toast('审批结果已保存。');}
+    if(form.id==='onto-compare-form'){const base=model.versions.find(v=>v.id===el.baseId.value);const changes=ontoDiff(base?.schema,current().schema);modal('版本比较结果',`<p class="ing-description">${base?`v${base.number}`:'空结构'} → v${current().number}</p>${ontoTable(['分类','标识','变更','具体内容'],changes.map(c=>[ontoEscape(c.group),ontoEscape(c.id),c.kind,`<details><summary>查看前后定义</summary><pre class="onto-json">${ontoEscape(JSON.stringify({变更前:c.before,变更后:c.after},null,2))}</pre></details>`]))}`,{wide:true});}
+  }catch(cause){toast(cause.message);}finally{if(submitter)submitter.disabled=false;}return true;}
+  function change(event){const target=event.target;try{if(target.id==='onto-version')chooseVersion(target.value);if(target.id==='onto-source-asset'){sourceAssetId=target.value;sourceDetail=null;sourceRows=[];mappingPreview(target.closest('form').dataset.id);}if(target.id==='onto-mapping-type')mappingDialog(target.closest('form').dataset.id,target.value);if(target.id==='onto-action-type')actionDialog(target.closest('form').dataset.id,target.value);}catch(cause){toast(cause.message);repaint({preserveScroll:true});}}
+  function input(event){if(!['onto-type-search','onto-term-search'].includes(event.target.id))return;filter=event.target.value;const pos=event.target.selectionStart,id=event.target.id;repaint({preserveScroll:true});const next=document.querySelector('#'+id);next?.focus({preventScroll:true});next?.setSelectionRange(pos,pos);}
+  function dragstart(event){const node=event.target.closest('[data-onto-drag]');if(!node||!editable())return;event.dataTransfer.setData('application/x-geokg-type',node.dataset.ontoDrag);event.dataTransfer.effectAllowed='move';}
+  function drop(event){const canvas=event.target.closest('.onto-canvas');if(!canvas||!editable())return;const id=event.dataTransfer.getData('application/x-geokg-type');if(!id)return;event.preventDefault();let t=draft.types.find(t=>t.id===id);const isNew=id==='__new__';if(isNew){t={id:newId('object'),name:'新对象类型',description:'',fields:[ontoField('name','名称','string',true)],constraints:[],x:0,y:0};draft.types.push(t);}if(!t)return;const point=new DOMPoint(event.clientX,event.clientY).matrixTransform(canvas.getScreenCTM().inverse());t.x=Math.round(Math.max(0,Math.min(740,point.x-80)));t.y=Math.round(Math.max(0,Math.min(620,point.y-30)));selection=t.id;update();if(isNew)typeDialog(t.id);}
+  let pointer=null,suppressClick=false;
+  function pointerdown(event){const node=event.target.closest('[data-onto-node]');if(!node||!editable()||connecting||event.button!==0)return;const canvas=node.closest('svg'),type=draft.types.find(t=>t.id===node.dataset.ontoNode);pointer={id:event.pointerId,type,canvas,node,startX:event.clientX,startY:event.clientY,x:type.x,y:type.y,moved:false};node.setPointerCapture(event.pointerId);}
+  function pointermove(event){if(!pointer||event.pointerId!==pointer.id)return;if(Math.hypot(event.clientX-pointer.startX,event.clientY-pointer.startY)<4&&!pointer.moved)return;pointer.moved=true;const inverse=pointer.canvas.getScreenCTM().inverse();const start=new DOMPoint(pointer.startX,pointer.startY).matrixTransform(inverse),end=new DOMPoint(event.clientX,event.clientY).matrixTransform(inverse);pointer.type.x=Math.round(Math.max(0,Math.min(740,pointer.x+end.x-start.x)));pointer.type.y=Math.round(Math.max(0,Math.min(620,pointer.y+end.y-start.y)));pointer.node.setAttribute('transform',`translate(${pointer.type.x},${pointer.type.y})`);}
+  function pointerup(event){if(!pointer||event.pointerId!==pointer.id)return;const moved=pointer.moved;selection=pointer.type.id;pointer=null;if(moved){suppressClick=true;setTimeout(()=>{suppressClick=false;},0);update();}}
+  async function loadPublished(){const projectId=context().projectId;if(!projectId||publishedLoading||!context().canConstruction)return;const ticket=generation;publishedLoading=true;try{const result=await api('/ontology/published?'+new URLSearchParams({projectId}));if(context().projectId===projectId&&ticket===generation){published=result;publishedProject=projectId;publishedError='';}}catch(cause){if(context().projectId===projectId&&ticket===generation){publishedError=cause.message;publishedProject=projectId;}}finally{publishedLoading=false;repaint({preserveScroll:true});}}
+  function constructionSelector(handoffId){if(publishedProject!==context().projectId&&!publishedLoading)loadPublished();if(publishedError)return `${ontoEscape(publishedError)} ${ontoButton('published-reload','重试')}`;if(!published||publishedProject!==context().projectId)return '<span class="subtle">正在读取本体版本…</span>';if(!published.versions.length)return '<span class="subtle">暂无已发布本体</span>';const binding=published.bindings.find(b=>b.handoffId===handoffId);return `<div class="onto-binding"><select data-onto-bind="${handoffId}" aria-label="选择知识构建本体版本"><option value="">请选择已发布版本</option>${published.versions.map(v=>ontoOption(v.id,`${v.name} · v${v.number}`,binding?.versionId)).join('')}</select>${ontoButton('bind',binding?'更新选择':'固定版本',`data-id="${handoffId}"`)}${binding?`<small>已固定 · ${ontoEscape(binding.selectedBy)}</small>`:''}</div>`;}
+  return {html,load,submit,change,input,dragstart,drop,pointerdown,pointermove,pointerup,constructionSelector,async click(event){if(suppressClick){suppressClick=false;return true;}return click(event);},hasUnsaved:()=>dirty,clear(){generation++;model=null;loadedProject='';loading=false;error='';resetDraft();published=null;publishedProject='';publishedLoading=false;publishedError='';tab='model';filter='';pointer=null;suppressClick=false;}};
 }
 
 
@@ -1539,6 +1878,7 @@ function pageHtml(page) {
   if(page==='reasoning') return reasoningHtml();
   if(page==='graph') return heading('图谱管理','知识关联与来源','围绕当前井查看五类知识对象及其关联依据。',`<button class="button primary" data-route="retrieval">${icon('search',15)}进入混合检索</button>`)+`<section class="panel graph-full"><div class="panel-heading"><h2>${icon('graph',18)}当前井知识关联</h2>${badge('示例图谱','neutral')}</div>${graphHtml()}${graphLegend()}</section>`+assetTable();
   if(page==='data') return ingestionUI.html();
+  if(page==='ontology') return ontologyUI.html();
   if(page==='construction') return heading('知识构建','知识构建与校核','接收治理后的固定资料版本，准备实体与关系抽取。')+ingestionUI.constructionHtml()+moduleRoadmap(page);
   if(page==='operations') return heading('运行管理','运行记录','查看本次工作台中的规则判定记录及其输入快照。')+historyHtml()+moduleRoadmap(page);
   const definition=moduleDefinitions[page];
@@ -1636,6 +1976,7 @@ document.addEventListener('click',async event=>{
   const actionPermission={import:'import','run-rule':'run','export-run':'export','joint-analysis':'run'}[permissionButton?.dataset.action];
   if(actionPermission&&!permitted(actionPermission)){toast('无权执行此操作。');return;}
   try {
+  if(await ontologyUI.click(event))return;
   if(await ingestionUI.click(event))return;
   const routeButton=event.target.closest('[data-route]');
   if(routeButton){go(routeButton.dataset.route);return;}
@@ -1680,16 +2021,21 @@ document.addEventListener('click',async event=>{
 });
 document.addEventListener('change',event=>{
   usersUI.change(event);
+  ontologyUI.change(event);
+  if(event.target.id==='project-select'&&ontologyUI.hasUnsaved()&&!window.confirm('当前本体有未保存修改，切换项目将放弃这些修改。是否继续？')){event.target.value=state.projectId;return;}
   if(event.target.id==='project-select'){state.selectedAssetId='';state.projectId=event.target.value;state.wellId=currentProject().wells[0];state.selectedType='well';state.expanded=new Set([state.wellId]);state.activeResult=null;state.treeFilter='';persist();render();}
   if(event.target.id==='analysis-well'){state.wellId=event.target.value;state.selectedType='well';state.expanded.add(state.wellId);state.activeResult=null;persist();render();}
   if(event.target.id==='sample-select'){state.sampleId=event.target.value;state.formDirty=false;state.activeResult=null;render();}
   if(event.target.id==='scenario-select'){state.scenario=event.target.value;state.activeResult=null;render();}
 });
 document.addEventListener('input',event=>{
+  ontologyUI.input(event);
   if(event.target.id==='tree-search'){state.treeFilter=event.target.value;$('#tree-list').innerHTML=treeHtml();}
   if(['target-thickness','reference-thickness'].includes(event.target.id))invalidateResult();
 });
 document.addEventListener('submit',async event=>{
+  if(event.target.id.startsWith('onto-')||event.target.id.startsWith('ing-')||['login-form','admin-edit-form','audit-filter-form','rule-form'].includes(event.target.id))event.preventDefault();
+  if(await ontologyUI.submit(event))return;
   if(event.target.id.startsWith('ing-')||['login-form','admin-edit-form','audit-filter-form','rule-form'].includes(event.target.id))event.preventDefault();
   if(await ingestionUI.submit(event))return;
   if(['login-form','admin-edit-form','audit-filter-form','rule-form'].includes(event.target.id))event.preventDefault();
@@ -1705,7 +2051,17 @@ document.addEventListener('submit',async event=>{
 });
 document.addEventListener('keydown',event=>{if((event.key==='Enter'||event.key===' ')&&event.target.matches('.graph-node')){event.preventDefault();event.target.dispatchEvent(new MouseEvent('click',{bubbles:true}));}});
 const usersUI=createUsersUI({modal,toast,refresh:refreshWorkspace,getUser:()=>currentUser});
-const ingestionUI=createIngestionUI({getContext:()=>({projectId:state.projectId,wellId:state.wellId,block:currentProject().block,canData:permitted('data'),canImport:permitted('import'),route:route()}),repaint:render,refresh:refreshWorkspace,modal,toast,go,selectAsset:asset=>{state.wellId=asset.wellId;state.selectedType=asset.objectType;state.selectedAssetId=asset.id;state.expanded.add(asset.wellId);}});
+const ingestionUI=createIngestionUI({getContext:()=>({projectId:state.projectId,wellId:state.wellId,block:currentProject().block,canData:permitted('data'),canImport:permitted('import'),route:route()}),repaint:render,refresh:refreshWorkspace,modal,toast,go,constructionSelector:id=>ontologyUI.constructionSelector(id),selectAsset:asset=>{state.wellId=asset.wellId;state.selectedType=asset.objectType;state.selectedAssetId=asset.id;state.expanded.add(asset.wellId);}});
+const ontologyUI=createOntologyUI({getContext:()=>({projectId:state.projectId,canOntology:permitted('ontology'),canConstruction:permitted('construction'),assets:getAssets()}),repaint:render,modal,toast,go});
+document.addEventListener('dragstart',event=>ontologyUI.dragstart(event));
+document.addEventListener('dragover',event=>{if(event.target.closest('.onto-canvas'))event.preventDefault();});
+document.addEventListener('drop',event=>ontologyUI.drop(event));
+document.addEventListener('pointerdown',event=>ontologyUI.pointerdown(event));
+document.addEventListener('pointermove',event=>ontologyUI.pointermove(event));
+document.addEventListener('pointerup',event=>ontologyUI.pointerup(event));
+document.addEventListener('pointercancel',event=>ontologyUI.pointerup(event));
+document.addEventListener('keydown',event=>{if((event.key==='Enter'||event.key===' ')&&event.target.matches('.onto-node,.onto-edge')){event.preventDefault();event.target.dispatchEvent(new MouseEvent('click',{bubbles:true}));}});
+window.addEventListener('beforeunload',event=>{if(ontologyUI.hasUnsaved()){event.preventDefault();event.returnValue='';}});
 function applyPermissions(){
   for(const button of document.querySelectorAll('[data-route]'))if(!permitted(button.dataset.route))button.disabled=true;
   for(const button of document.querySelectorAll('[data-action]')){const key={import:'import','run-rule':'run','export-run':'export','joint-analysis':'run'}[button.dataset.action];if(key&&!permitted(key))button.hidden=true;}
@@ -1714,6 +2070,7 @@ function applyPermissions(){
 }
 function clearSession(message=''){
   ingestionUI.clear();
+  ontologyUI.clear();
   state.selectedAssetId='';
   currentUser=null;projects=[];wells=[];initialTasks=[];authorizedAssets=[];allowedActions={};state.runs=[];state.imported=[];state.activeResult=null;state.projectId='';state.wellId='';state.homeTab='overview';state.treeFilter='';state.selectedType='well';state.expanded=new Set();usersUI.clear();clearTimeout(sessionTimer);$('#overlay-root').innerHTML='';loginNotice=message;authLoading=false;location.hash='/login';render();
 }
