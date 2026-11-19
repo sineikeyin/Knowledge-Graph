@@ -2,7 +2,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import {randomUUID,createHash} from 'node:crypto';
 import {activeUser,fault,auditEvent} from '../src/access-model.js';
-import {ingLimits,ingParse} from '../src/ingestion-core.js';
+import {ingLimits,ingParse,ingFileFormat} from '../src/ingestion-core.js';
 import {ingEnsure,ingScope,ingFindAsset,ingRecordUpload,ingSetParsed,ingDashboard,ingDetail,ingMutation} from '../src/ingestion-model.js';
 import {ingDemoFixtures,ingSeedDemo,ingDemoSeedVersion} from '../src/ingestion-demo.js';
 
@@ -29,7 +29,7 @@ export async function createIngestion({directory,getDb,commit}){
         const version=getDb().ingestion.versions.find(item=>item.id===job.versionId);if(!version)break;
         await commit(db=>{const current=db.ingestion.jobs.find(item=>item.id===job.id);if(current){current.status='解析中';current.startedAt=new Date().toISOString();}const target=db.ingestion.versions.find(item=>item.id===version.id);target.status='解析中';const asset=db.assets.find(item=>item.id===target.assetId);if(asset.currentVersionId===target.id)asset.status='解析中';});
         let parsed,error;
-        try{const bytes=await fs.readFile(path.join(files,`${version.fileId}.bin`));const text=new TextDecoder(version.encoding||'utf-8',{fatal:true}).decode(bytes);parsed=ingParse(text,path.extname(version.fileName).slice(1).toLowerCase());}
+        try{const bytes=await fs.readFile(path.join(files,`${version.fileId}.bin`));const text=new TextDecoder(version.encoding||'utf-8',{fatal:true}).decode(bytes);parsed=ingParse(text,ingFileFormat(version.fileName));}
         catch(cause){error=cause.message?.includes('encoded data')?'编码不匹配，请按 UTF-8 或 GB18030 编码重新上传。':cause.message;}
         await commit(db=>ingSetParsed(db,job.id,parsed,error));
       }
@@ -50,6 +50,7 @@ export async function createIngestion({directory,getDb,commit}){
         input.encoding=input.encoding||'utf-8';if(!['utf-8','gb18030'].includes(input.encoding))fault('仅支持 UTF-8 或 GB18030 编码。');
         if(req.headers['x-import-config']){if(req.headers['x-import-config'].length>6000)fault('字段配置过大。');try{input.config=JSON.parse(decodeURIComponent(req.headers['x-import-config']));}catch{fault('字段配置格式错误。');}}
         ingScope(getDb(),user,input.projectId,input.wellId,'import');
+        if(!ingFileFormat(input.name))fault('目前仅支持 CSV 或 JSON 文件。',415);
         if(input.assetId)ingFindAsset(getDb(),user,input.assetId,'import',true);
         if(Number(req.headers['content-length'])>ingLimits.bytes)fault('单文件最多 5 MB。',413);
         const chunks=[];let size=0;

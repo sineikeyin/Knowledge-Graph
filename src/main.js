@@ -49,7 +49,8 @@ function downloadJson(data,name) {
   const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json;charset=utf-8'}));
   const link=document.createElement('a');link.href=url;link.download=name;link.click();setTimeout(()=>URL.revokeObjectURL(url),10000);
 }
-function render() {
+function render({preserveScroll=false}={}) {
+  const scrollState=preserveScroll?{mainTop:$('#main-content')?.scrollTop||0,mainLeft:$('#main-content')?.scrollLeft||0,windowTop:window.scrollY,windowLeft:window.scrollX}:null;
   if(authLoading){$('#app').innerHTML='<main class="empty-state" id="main-content"><h2>正在恢复登录会话…</h2></main>';return;}
   if(!currentUser){$('#app').innerHTML=loginHtml(loginNotice);return;}
   const page=route()==='login'?'home':route();
@@ -63,6 +64,7 @@ function render() {
   <div class="app-body ${page==='users'?'admin-layout':''}"><aside class="data-sidebar" aria-label="数据树与属性"><section class="tree-pane"><div class="pane-heading"><h2>${icon('folder',17)}数据资源</h2><button class="icon-button small" data-action="expand-tree" aria-label="展开全部井">${icon('layers',16)}</button></div><label class="tree-search">${icon('search',15)}<input id="tree-search" placeholder="搜索井、资料或对象" aria-label="搜索数据树" value="${escape(state.treeFilter)}"></label><div id="tree-list" class="tree-list">${treeHtml()}</div><button class="tree-import" data-action="import">${icon('upload',15)}导入资料</button></section><section id="properties" class="properties-pane">${propertiesHtml()}</section></aside><main class="main-content" id="main-content" tabindex="-1">${pageHtml(page)}</main></div>
   <footer class="status-bar"><span><i class="status-dot"></i>${authorizedAssets.some(asset=>asset.managed)?'本机资料与演示样例':'示例数据'} · ${currentProject().block} / ${currentWell().short}</span><span>资料版本 ${authorizedAssets.find(asset=>asset.id===state.selectedAssetId)?.version||currentWell().version}<span class="footer-separator">|</span>知识可追溯 · 结果可校核</span></footer>`;
   applyPermissions();
+  if(scrollState){const main=$('#main-content');if(main){main.scrollTop=scrollState.mainTop;main.scrollLeft=scrollState.mainLeft;}window.scrollTo(scrollState.windowLeft,scrollState.windowTop);}
 }
 function treeHtml() {
   const filter=state.treeFilter.toLowerCase();

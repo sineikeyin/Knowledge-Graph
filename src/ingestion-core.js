@@ -1,5 +1,7 @@
 // Pure parsers and deterministic governance rules; shared by the local service and offline demo.
 export const ingLimits = {bytes:5*1024*1024,rows:5000,columns:128,cell:4096};
+export const ingAcceptedFormats = ['csv','json'];
+export function ingFileFormat(name){const extension=String(name||'').match(/^.+\.([a-z0-9]+)$/i)?.[1]?.toLowerCase();return ingAcceptedFormats.includes(extension)?extension:'';}
 export const ingFieldSets = {
   stratum:[['well','井名',true],['layer','层位',true],['top','顶深',true],['bottom','底深',true],['thickness','厚度',false],['unit','深度单位',true],['depthType','深度类型',true],['datum','参考基准',true],['lithology','岩性',false],['block','区块',false]],
   log:[['well','井名',true],['depth','井深',true],['curve','曲线名',true],['value','曲线值',true],['valueUnit','曲线单位',true],['unit','深度单位',true],['depthType','深度类型',true],['datum','参考基准',true],['time','事件时间',false]],
@@ -45,7 +47,7 @@ export function ingParse(text,extension){
     headers=records.shift().row.map(value=>value.trim());
     if(records.some(record=>record.row.length!==headers.length))ingError('CSV 数据列数与表头不一致，请检查逗号和引号。');
     rows=records.map(record=>record.row);locations=records.map(record=>record.line);
-  }else ingError('该格式尚未配置解析器。当前支持 CSV、JSON；原件已保存，可在接入解析器后重试。');
+  }else ingError('目前仅支持 CSV 或 JSON 文件。');
   if(!headers.length||headers.length>ingLimits.columns||headers.some(header=>!header.trim()||header.length>100)||new Set(headers.map(ingKey)).size!==headers.length)ingError('表头不能为空或重复，最多 128 列，每个名称不超过 100 字。');
   if(rows.some(row=>row.some(cell=>cell.length>ingLimits.cell)))ingError('单元格超过 4096 字符限制。');
   return {headers,rows,locations,parserVersion:'structured-v1',format:extension};

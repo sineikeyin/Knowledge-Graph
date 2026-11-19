@@ -507,6 +507,17 @@ pre.snapshot {font-size:11px;line-height:1.8;background:#f7f9fc;border:1px solid
 .ing-connector h3 {font-size:17px;}
 .ing-connector p {color:#6b7d95;font-size:14px;line-height:1.9;flex:1;}
 .ing-connector-icon {width:44px;height:44px;background:#eef4ff;color:#3169d2;font-size:27px;border-radius:10px;display:grid;place-items:center;}
+.ing-file-connector {display:grid;grid-template-columns:minmax(240px,.8fr) minmax(0,1.5fr);overflow:hidden;}
+.ing-file-intro {padding:28px;display:flex;align-items:start;flex-direction:column;gap:15px;background:#f8fbff;border-right:1px solid var(--border);}
+.ing-file-intro h2 {font-size:21px;font-weight:600;}
+.ing-file-intro p {font-size:14px;color:#667c98;line-height:1.9;}
+.ing-file-guide {padding:28px;}
+.ing-file-guide h3 {font-size:17px;margin-bottom:14px;}
+.ing-file-guide ol {padding-left:21px;margin:0 0 22px;color:#536b87;line-height:2.1;font-size:14px;}
+.ing-file-guide dl {margin:0;border-top:1px solid var(--border);}
+.ing-file-guide dl>div {display:grid;grid-template-columns:90px 1fr;gap:16px;padding:12px 0;border-bottom:1px solid #edf1f7;font-size:14px;}
+.ing-file-guide dt {color:#8290a4;}.ing-file-guide dd {margin:0;color:#435b79;}
+@media(max-width:900px){.ing-file-connector {grid-template-columns:1fr;}.ing-file-intro {border-right:0;border-bottom:1px solid var(--border);}.ing-file-intro,.ing-file-guide {padding:22px;}}
 .ing-detail-heading {display:flex;gap:15px;flex-wrap:wrap;align-items:center;margin:20px 0;}
 .ing-detail-heading>div:nth-child(2) {flex:1;min-width:150px;}
 .ing-detail-heading h2 {font-size:21px;overflow-wrap:anywhere;}

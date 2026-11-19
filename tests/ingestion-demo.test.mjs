@@ -14,8 +14,21 @@ test('预置记录涵盖通过、警告、阻断、失败、映射、校验与�
   const db=makeDatabase(),user=db.users[0];assert.equal(ingSeedDemo(db).changed,true);const ig=db.ingestion;
   assert.equal(db.assets.filter(asset=>asset.demo).length,17);assert.equal(ig.jobs.filter(job=>job.demo).length,17);assert.equal(ig.aliases.filter(alias=>alias.demo).length,20);assert.equal(ig.versions.filter(version=>version.demo).length,22);assert.equal(ig.versions.reduce((count,version)=>count+version.qualityRuns.length,0),20);assert.equal(ig.handoffs.length,5);
   const dashboard=ingDashboard(db,user,'p1');assert.equal(dashboard.jobs.length,10);assert.equal(dashboard.aliases.length,12);assert.ok(dashboard.assets.some(asset=>asset.demo&&asset.quality==='通过'));assert.ok(dashboard.assets.some(asset=>asset.demo&&asset.quality==='警告'));assert.ok(dashboard.assets.some(asset=>asset.demo&&asset.quality==='阻断'));assert.ok(dashboard.jobs.some(job=>job.status==='失败'&&job.error));
-  for(const asset of db.assets.filter(asset=>asset.demo)){assert.match(asset.name,/^\[演示\]/);const version=ig.versions.find(item=>item.id===asset.currentVersionId);if(asset.quality==='通过')assert.equal(version.qualityRuns.at(-1).issues.length,0);if(asset.quality==='阻断')assert.ok(version.qualityRuns.at(-1).issues.some(issue=>issue.severity==='block'));}
+  for(const asset of db.assets.filter(asset=>asset.demo)){assert.doesNotMatch(asset.name,/^(?:\[演示\]|【演示】)/);assert.match(asset.source,/虚构/);const version=ig.versions.find(item=>item.id===asset.currentVersionId);if(asset.quality==='通过')assert.equal(version.qualityRuns.at(-1).issues.length,0);if(asset.quality==='阻断')assert.ok(version.qualityRuns.at(-1).issues.some(issue=>issue.severity==='block'));}
   assert.equal(ig.demoSeed.version,ingDemoSeedVersion);const before=JSON.stringify(db);assert.equal(ingSeedDemo(db).changed,false);assert.equal(JSON.stringify(db),before);
+});
+
+test('已有预置记录去掉名称前缀，保留原件摘要、版本、质量与交接；用户原始文件名不变',()=>{
+  const db=makeDatabase();ingSeedDemo(db);
+  for(const asset of db.assets.filter(asset=>asset.demo))asset.name='[演示] '+asset.name;
+  for(const version of db.ingestion.versions)version.fileName='【演示】 '+version.fileName;
+  delete db.ingestion.demoSeed.namingVersion;
+  const before=JSON.parse(JSON.stringify(db.ingestion));
+  db.assets.push({id:'user-original',projectId:'p1',wellId:'w1',objectType:'stratum',name:'[演示] 用户原始文件名.csv',managed:true});
+  assert.equal(ingSeedDemo(db).changed,true);assert.equal(db.assets.find(asset=>asset.id==='user-original').name,'[演示] 用户原始文件名.csv');
+  assert.ok(db.assets.filter(asset=>asset.demo).every(asset=>!asset.name.startsWith('[演示]')));
+  for(const version of db.ingestion.versions){const old=before.versions.find(item=>item.id===version.id);assert.doesNotMatch(version.fileName,/^(?:\[演示\]|【演示】)/);for(const field of ['hash','fileId','parentId','rows','qualityRuns','mappingRevision'])assert.deepEqual(version[field],old[field]);}
+  assert.deepEqual(db.ingestion.handoffs,before.handoffs);assert.deepEqual(db.ingestion.jobs,before.jobs);assert.equal(ingSeedDemo(db).changed,false);
 });
 
 test('增量演示初始化保留真实资料和校验；演示映射与真实映射互不影响',()=>{
