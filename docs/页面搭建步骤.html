@@ -188,7 +188,7 @@ figcaption { color:var(--muted); text-align:center; font-size:11px; padding:9px;
 <h2 id="heading-1">第一步：按老师参考图开发平台首页</h2>
 <p>页面采用“顶部品牌与个人信息 → 横向菜单 → 项目上下文 → 左侧数据树及属性 → 右侧工作区”的布局。文档左侧为阅读目录；实际产品的模块菜单放在顶部横排。</p>
 <h3>1.1 先搭建全站共用外壳</h3>
-<figure class="teacher-layout"><div class="teacher-header"><strong>智能地质导向知识图谱平台</strong><span>演示状态 · 个人信息</span></div><div class="teacher-menu">首页　数据接入　本体管理　知识构建　图谱管理　混合检索　规则与推理　接口联调　用户权限　运行管理</div><div class="teacher-context">当前项目／区块／井　｜　资料数量　｜　导入资料 → 构建知识 → 检索与推理</div><div class="teacher-body"><div class="teacher-left"><div><strong>数据资源树</strong><p>项目 → 井 → 地层、测井、轨迹、模型、历史指令</p></div><div><strong>对象属性</strong><p>对象名称、所属井、层位、井段、单位、基准、来源与版本</p></div></div><div class="teacher-work"><strong>右侧主工作区</strong><p>首页总览／资料目录／知识关联／运行记录</p><div>概览卡片 · 知识关系图 · 待办任务</div><div>邻井推荐／地层对比入口</div><div>最近资料与可追溯证据</div></div></div><figcaption>老师参考图中的四类区域保留，内容替换为本平台的知识管理业务。</figcaption></figure>
+<figure class="teacher-layout"><div class="teacher-header"><strong>智能地质导向知识图谱平台</strong><span>示例状态 · 个人信息</span></div><div class="teacher-menu">首页　数据接入　本体管理　知识构建　图谱管理　混合检索　规则与推理　接口联调　用户权限　运行管理</div><div class="teacher-context">当前项目／区块／井　｜　资料数量　｜　导入资料 → 构建知识 → 检索与推理</div><div class="teacher-body"><div class="teacher-left"><div><strong>数据资源树</strong><p>项目 → 井 → 地层、测井、轨迹、模型、历史指令</p></div><div><strong>对象属性</strong><p>对象名称、所属井、层位、井段、单位、基准、来源与版本</p></div></div><div class="teacher-work"><strong>右侧主工作区</strong><p>首页总览／资料目录／知识关联／运行记录</p><div>概览卡片 · 知识关系图 · 待办任务</div><div>邻井推荐／地层对比入口</div><div>最近资料与可追溯证据</div></div></div><figcaption>老师参考图中的四类区域保留，内容替换为本平台的知识管理业务。</figcaption></figure>
 <ol><li>顶部左侧放平台名称和标识，右侧放运行状态、待办、帮助、头像及角色信息。</li><li>第二行放横向模块菜单，当前模块高亮；左侧区域专用于数据树和属性。</li><li>第三行放项目／区块／井上下文、数量和工作流程入口。</li><li>主体左侧上方放可搜索、可展开的数据树，下方显示当前选中对象的属性。</li><li>主体右侧放当前模块的标题、工具栏、页签、列表／关系图／结果面板。</li><li>底部放当前工作范围、资料版本和状态信息。</li></ol>
 <h3>1.2 再开发首页工作区</h3>
 <ol><li><strong>概览：</strong>资料资产、知识实体、待校核项和已保存判定记录；点击进入对应页面。</li><li><strong>知识关联：</strong>以当前井连接地层、测井、轨迹、模型和历史指令；点击节点更新左下属性。</li><li><strong>待办：</strong>显示候选审核、场景校核和问题回归入口；打开具体对象。</li><li><strong>典型场景：</strong>邻井推荐、地层对比均进入检索结果中的分析面板。</li><li><strong>资料与记录：</strong>查看资料目录、来源版本和最近运行结果。</li></ol>
@@ -226,7 +226,7 @@ figcaption { color:var(--muted); text-align:center; font-size:11px; padding:9px;
 <h3>2.1 本机实现进度（2026-11-18）</h3>
 <p><strong>已更新代码：</strong>登录页及用户、组织、角色、项目成员、权限配置、审计六个页签已实现；首页个人信息、菜单、项目井树、资料及规则操作已接入统一授权。</p>
 <ul><li>登录：账号校验、密码显隐、登录/退出、30分钟会话、失效与停用提示；新增账号密码由管理员设置。</li><li>管理：组织树与用户搜索分页、新增编辑启停、角色权限矩阵、项目成员角色与井范围。</li><li>授权：项目、井、文档、图谱对象及字段限制；后端过滤返回结果，导入、判定和导出再次校验。</li><li>审计：操作者、对象、变更前后、结果、请求编号；按用户、井、时间、操作筛选。</li><li>运行：在当前项目根目录 E:\Knowledge Graph Platform 中执行 node server.mjs。初始测试账号 admin / engineer / expert / reader / auditor，密码 GeoDemo!2026；disabled 用于停用验证。</li></ul>
-<p><a href="../首页预览.html">打开更新后的登录与工作台页面</a>。双击预览为独立离线演示；通过本机服务访问为后端会话和权限验证。本机数据保存在 .runtime/platform.json；生产部署、统一身份认证和多实例数据库后续接入。</p>
+<p><a href="../首页预览.html">打开更新后的登录与工作台页面</a>。双击预览为独立离线示例；通过本机服务访问为后端会话和权限验证。本机数据保存在 .runtime/platform.json；生产部署、统一身份认证和多实例数据库后续接入。</p>
 </section>
 
 <section id="section-3" class="doc-section" aria-labelledby="heading-3"><h2 id="heading-3">第三步：开发数据接入与治理页面（M2，7项）</h2>
@@ -424,9 +424,9 @@ figcaption { color:var(--muted); text-align:center; font-size:11px; padding:9px;
 <tr><td>2．<span class="feature-id">M7-F3</span> 知识推理与依据记录</td><td>将本次实测值代入已选规则，记录输入、单位、基准、计算与逐项判断，在A09区输出明确结论；支持人工意见和回查。</td></tr>
 <tr><td>3．<span class="feature-id">M7-F8</span> 图谱与大模型联合推理</td><td>单独触发联合分析，将相关图谱事实、规则判定与文档证据交给大模型；输出理由、支持／反对证据、不确定性、引用和模型／提示模板版本。</td></tr>
 </tbody></table></div>
-<h3>8.1 首个可演示规则</h3>
-<p><strong>同层位厚度差复核：</strong>两井为已确认对应的同一层位，单位和深度基准一致，厚度差绝对值超过2 m时标记待复核。<strong>2 m仅为演示阈值，正式规则及阈值由专家确认。</strong></p>
-<div class="table-wrap"><table><thead><tr><th>演示输入／情况</th><th>面板应显示的结果</th></tr></thead><tbody>
+<h3>8.1 首个可示例规则</h3>
+<p><strong>同层位厚度差复核：</strong>两井为已确认对应的同一层位，单位和深度基准一致，厚度差绝对值超过2 m时标记待复核。<strong>2 m仅为示例阈值，正式规则及阈值由专家确认。</strong></p>
+<div class="table-wrap"><table><thead><tr><th>示例输入／情况</th><th>面板应显示的结果</th></tr></thead><tbody>
 <tr><td>目标8 m、参考11 m</td><td>差值3 m &gt; 2 m：需要提示风险／厚度差待复核，附两条输入及来源。</td></tr>
 <tr><td>目标8 m、参考9 m</td><td>差值1 m，不超过2 m：未触发规则。</td></tr>
 <tr><td>任一井厚度缺失或无效</td><td>资料不足，暂时无法判断；不使用零值替代。</td></tr>

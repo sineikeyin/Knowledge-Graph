@@ -1,4 +1,4 @@
-// 所有资料均为本地演示样例，不代表真实井、专家规则或正式测试结果。
+// 所有资料均为本地样例数据，不代表真实井、专家规则或正式测试结果。
 
 
 export const objectTypes = [
@@ -11,7 +11,7 @@ export const objectTypes = [
 export const defaultRule = {
   id: 'DEMO-RULE-001', name: '同层位厚度差复核规则', version: 'demo-v1.0',
   threshold: 2, unit: 'm', enabled: true,
-  scenario: 'strata', source: '分享对话中的演示规则（待专家确认）',
+  scenario: 'strata', source: '分享对话中的示例规则（待专家确认）',
   description: '两井层位已确认对应，单位及深度基准一致，厚度差绝对值超过阈值时标记待复核。',
 };
 export const demoCases = [

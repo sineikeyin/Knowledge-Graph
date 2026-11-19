@@ -32,7 +32,7 @@ function graphFixture(){
 }
 const graphNode=id=>({id}),graphEdge=(id,a,b)=>({id,subjectId:a,objectId:b,typeId:'links'});
 
-test('06 正式图与虚构图隔离，五类知识均有属性、关系和明确证据，演示初始化幂等',()=>{
+test('06 正式图与虚构图隔离，五类知识均有属性、关系和明确证据，示例初始化幂等',()=>{
   const f=graphFixture();assert.equal(f.dashboard().nodes.length,0);const demo=f.dashboard(f.admin,'demo');assert.equal(demo.nodes.length,21);assert.ok(demo.nodes.every(n=>n.demo&&n.evidence.demo));for(const type of ['stratum','log','trajectory','model','instruction'])assert.ok(demo.nodes.some(n=>n.typeId===type&&n.evidence.assetId));
   const ids=demo.nodes.map(n=>n.id);gmSeedDemo(f.db,'p1');assert.deepEqual(f.dashboard(f.admin,'demo').nodes.map(n=>n.id),ids);assert.equal(f.db.construction.facts.length,0);
   f.db.projects.push({id:'custom',name:'用户工区',block:'实际工区',wells:['w1']});gmSeedDemo(f.db,'custom');assert.equal(f.db.graph.demoFacts.filter(n=>n.projectId==='custom').length,0);
@@ -122,7 +122,7 @@ test('06 离线图谱七页签、查询、上下文、算法、快照和恢复�
   const sandbox=vm.createContext({location:{protocol:'file:'},localStorage:storage,sessionStorage:storage,console,Date,URLSearchParams,window:{dispatchEvent(){}},document:{querySelector:()=>null},FormData:class{constructor(form){return Object.entries(form.values)[Symbol.iterator]();}}});
   vm.runInContext(source,sandbox);await vm.runInContext("api('/auth/login',{account:'admin',password:'GeoDemo!2026'})",sandbox);
   await vm.runInContext(`var gmUi,gmModal='',gmToast='',gmRoute='',gmTransferred=null;gmUi=createGraphUI({getContext:()=>({projectId:'p1',wellId:'w2',canGraph:true}),repaint(){},modal:(_,html)=>gmModal=html,toast:message=>gmToast=message,go:route=>gmRoute=route,onContext:context=>gmTransferred=context,openAsset:async()=>{}});gmUi.load();`,sandbox);
-  assert.match(vm.runInContext('gmUi.html()',sandbox),/暂无可访问的正式知识/);await vm.runInContext("gmUi.change({target:{id:'gm-dataset',value:'demo'}})",sandbox);await vm.runInContext('gmUi.load()',sandbox);assert.match(vm.runInContext('gmUi.html()',sandbox),/虚构演示数据/);
+  assert.match(vm.runInContext('gmUi.html()',sandbox),/暂无可访问的正式知识/);await vm.runInContext("gmUi.change({target:{id:'gm-dataset',value:'demo'}})",sandbox);await vm.runInContext('gmUi.load()',sandbox);assert.match(vm.runInContext('gmUi.html()',sandbox),/虚构示例数据/);
   for(const id of ['browse','paths','spatial','similar','algorithms','history','snapshots']){await vm.runInContext(`gmUi.click({target:{closest:()=>({dataset:{gm:'tab',id:'${id}'}})}})`,sandbox);assert.ok(vm.runInContext('gmUi.html()',sandbox).length>500);}
   await vm.runInContext(`gmUi.submit({preventDefault(){},target:{id:'gm-paths',values:{start:'demo:p1:w1:log',end:'demo:p1:w1:instruction',maxHops:'6',directed:'false',relation:'all'}}})`,sandbox);await vm.runInContext("gmUi.click({target:{closest:()=>({dataset:{gm:'path-context'}})}})",sandbox);assert.equal(vm.runInContext('gmRoute',sandbox),'retrieval');assert.match(vm.runInContext('gmUi.retrievalHtml()',sandbox),/来自图谱的检索上下文/);
   await vm.runInContext(`gmUi.submit({preventDefault(){},target:{id:'gm-similar',values:{targetWellId:'w2',layer:'0.4',curve:'0.35',engineering:'0.25'}}})`,sandbox);await vm.runInContext("gmUi.click({target:{closest:()=>({dataset:{gm:'similar-context',id:'w1'}})}})",sandbox);assert.equal(vm.runInContext('gmTransferred.wellId',sandbox),'w2');assert.equal(vm.runInContext('gmTransferred.referenceWellId',sandbox),'w1');

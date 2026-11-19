@@ -5,18 +5,20 @@ import {ingSeedDemo} from './ingestion-demo.js';
 import {ontoEnsure,ontoDashboard,ontoPublished,ontoMutation,ontoImpact} from './ontology-model.js';
 import {kcEnsure,kcDashboard,kcDetail,kcGraph,kcMutation,kcDispatch,kcAdvance} from './construction-model.js';
 import {gmEnsure,gmSeedDemo,gmDashboard,gmQuery,gmMutation} from './graph-model.js';
+import {slCleanDatabase} from './sample-labels.js';
 export function createOfflineService() {
   let db;try{db=JSON.parse(localStorage.getItem('geokg-offline-users-v1'));}catch{}if(!db?.users)db=makeDatabase();
+  slCleanDatabase(db);
   let session;try{session=JSON.parse(sessionStorage.getItem('geokg-offline-session-v1'));}catch{}
   ingEnsure(db);ontoEnsure(db);kcEnsure(db);
   const save=()=>{localStorage.setItem('geokg-offline-users-v1',JSON.stringify(db));if(session)sessionStorage.setItem('geokg-offline-session-v1',JSON.stringify(session));else sessionStorage.removeItem('geokg-offline-session-v1');};
   if(ingSeedDemo(db).changed)save();
   gmEnsure(db);for(const project of db.projects)gmSeedDemo(db,project.id);save();
   return async(pathname,body)=>{
-    if(pathname==='/auth/login') {const user=db.users.find(u=>u.account===body.account);if(!user||body.password!=='GeoDemo!2026')fault('账号或密码不正确。',401);if(!user.enabled)fault('账号已停用，请联系管理员。',403);session={userId:user.id,expires:Date.now()+30*60*1000};user.lastLogin=new Date().toISOString();auditEvent(db,user,'登录（离线演示）','会话');save();return {user:identity(db,user),expires:session.expires};}
+    if(pathname==='/auth/login') {const user=db.users.find(u=>u.account===body.account);if(!user||body.password!=='GeoDemo!2026')fault('账号或密码不正确。',401);if(!user.enabled)fault('账号已停用，请联系管理员。',403);session={userId:user.id,expires:Date.now()+30*60*1000};user.lastLogin=new Date().toISOString();auditEvent(db,user,'登录（离线示例）','会话');save();return {user:identity(db,user),expires:session.expires};}
     if(!session||session.expires<=Date.now())fault('登录已失效，请重新登录。',401);const user=activeUser(db,session.userId);
     if(pathname==='/auth/me')return {user:identity(db,user),expires:session.expires};
-    if(pathname==='/auth/logout'){auditEvent(db,user,'退出登录（离线演示）','会话');session=null;save();return {ok:true};}
+    if(pathname==='/auth/logout'){auditEvent(db,user,'退出登录（离线示例）','会话');session=null;save();return {ok:true};}
     if(pathname==='/workspace')return workspace(db,user);
     if(pathname==='/graph'||pathname.startsWith('/graph?')||pathname.startsWith('/graph/')){
       const [endpoint,query='']=pathname.split('?'),params=new URLSearchParams(query),action=endpoint.split('/').pop(),before=clone(db);
@@ -50,7 +52,7 @@ export function createOfflineService() {
       if(endpoint==='/ingestion/sample'){
         const well=db.wells.find(item=>item.id===body.wellId);if(!well)fault('井不存在。');
         const text=`井名,层位,顶深,底深,深度单位,深度类型,参考基准\n${well.short},${well.layer},100,108,m,MD,KB\n`;
-        const result=ingRecordUpload(db,user,{projectId:body.projectId,wellId:well.id,objectType:'stratum',name:`${well.short}_虚构演示分层.csv`,hash:`offline-demo-${well.id}`,fileId:ingId(db,'DEMO'),size:text.length*2,encoding:'utf-8'});
+        const result=ingRecordUpload(db,user,{projectId:body.projectId,wellId:well.id,objectType:'stratum',name:`${well.short}_虚构示例分层.csv`,hash:`offline-demo-${well.id}`,fileId:ingId(db,'DEMO'),size:text.length*2,encoding:'utf-8'});
         if(!result.duplicate)ingSetParsed(db,result.jobId,ingParse(text,'csv'));
         save();return result;
       }

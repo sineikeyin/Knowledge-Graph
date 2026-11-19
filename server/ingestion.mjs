@@ -16,7 +16,7 @@ export async function createIngestion({directory,getDb,commit}){
     const bytes=Buffer.from(fixture.text,'utf8');
     manifest[fixture.key]={fileId,hash:createHash('sha256').update(bytes).digest('hex'),size:bytes.length};
     const target=path.join(files,`${fileId}.bin`);
-    try{await fs.writeFile(target,bytes,{flag:'wx'});}catch(error){if(error.code!=='EEXIST')throw error;const existing=await fs.readFile(target);if(createHash('sha256').update(existing).digest('hex')!==manifest[fixture.key].hash)throw new Error('演示原件摘要不一致，请检查运行目录中的样例文件。');}
+    try{await fs.writeFile(target,bytes,{flag:'wx'});}catch(error){if(error.code!=='EEXIST')throw error;const existing=await fs.readFile(target);if(createHash('sha256').update(existing).digest('hex')!==manifest[fixture.key].hash)throw new Error('示例原件摘要不一致，请检查运行目录中的样例文件。');}
   }
   await commit(db=>ingSeedDemo(db,manifest,fixtures));
   const referenced=new Set(getDb().ingestion.versions.map(version=>version.fileId));

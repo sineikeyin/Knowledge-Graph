@@ -9,7 +9,7 @@ export function evaluateThicknessRule(input, rule) {
     input: snapshot, rule: { ...rule }, evidenceIds: [...(input.evidenceIds || [])],
   });
   if (!rule.enabled || input.scenario !== rule.scenario || input.aligned !== true) {
-    return result('no_rule', '无适用规则', !rule.enabled ? '该规则已停用。' : input.scenario !== rule.scenario ? '当前演示规则仅适用于地层对比场景。' : '尚未确认两井为同一对应层位，本规则不适用。');
+    return result('no_rule', '无适用规则', !rule.enabled ? '该规则已停用。' : input.scenario !== rule.scenario ? '当前示例规则仅适用于地层对比场景。' : '尚未确认两井为同一对应层位，本规则不适用。');
   }
   if (input.conflict) return result('conflict', '规则冲突，待人工处理', '当前样例包含相互冲突的适用规则；解决冲突前不生成最终业务判断。');
   if (input.sameBasis !== true) return result('insufficient', '资料不足，暂时无法判断', '两井的单位或深度基准尚未统一，厚度差不可直接比较。');
@@ -29,5 +29,5 @@ export function evaluateThicknessRule(input, rule) {
     { name: '厚度差判断', actual: `|${target} − ${reference}| = ${difference} m`, condition: `绝对差值 > ${threshold} m`, passed: triggered },
   ];
   return result(triggered ? 'triggered' : 'not_triggered', triggered ? '需要提示风险：厚度差待复核' : '未触发规则',
-    triggered ? `厚度差 ${difference} m 超过演示阈值 ${threshold} m，建议人工复核层位及分层记录。` : `厚度差 ${difference} m 未超过演示阈值 ${threshold} m。`, steps, difference);
+    triggered ? `厚度差 ${difference} m 超过示例阈值 ${threshold} m，建议人工复核层位及分层记录。` : `厚度差 ${difference} m 未超过示例阈值 ${threshold} m。`, steps, difference);
 }

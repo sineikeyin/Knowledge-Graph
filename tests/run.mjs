@@ -7,4 +7,5 @@ await import('./ingestion-demo.test.mjs');
 await import('./ontology.test.mjs');
 await import('./construction.test.mjs');
 await import('./graph.test.mjs');
+await import('./sample-labels.test.mjs');
 await import('./preview.test.mjs');

@@ -1,6 +1,6 @@
 export const seedProjects = [
-  { id: 'p1', name: '鄂尔多斯示例工区', block: '示例区块 A', owner: '演示用户', wells: ['w1', 'w2', 'w3'] },
-  { id: 'p2', name: '松辽示例工区', block: '示例区块 B', owner: '演示用户', wells: ['w4', 'w5'] },
+  { id: 'p1', name: '鄂尔多斯示例工区', block: '示例区块 A', owner: '示例用户', wells: ['w1', 'w2', 'w3'] },
+  { id: 'p2', name: '松辽示例工区', block: '示例区块 B', owner: '示例用户', wells: ['w4', 'w5'] },
 ];
 export const seedWells = [
   { id: 'w1', name: '示例井 JH-01', short: 'JH-01', layer: '长 8₁', depth: '3,120–3,128 m', thickness: 8, distance: 0, source: 'JH-01 分层记录', version: 'data-v1.0' },
@@ -10,7 +10,7 @@ export const seedWells = [
   { id: 'w5', name: '示例井 SL-02', short: 'SL-02', layer: '扶余油层', depth: '1,411–1,422 m', thickness: 11, distance: 1.9, source: 'SL-02 分层记录', version: 'data-v1.0' },
 ];
 export const seedTasks = [
-  { id: 'demo-task-01', name: '分层资料知识审核', type: '人工校核', wellId: 'w1', state: '待审核', tone: 'amber', time: '演示记录', route: 'construction' },
-  { id: 'demo-task-02', name: '同层位厚度差复核', type: '规则判定', wellId: 'w1', state: '待运行', tone: 'blue', time: '演示记录', route: 'retrieval' },
-  { id: 'demo-task-03', name: '地层关系来源核查', type: '关系校核', wellId: 'w2', state: '待核查', tone: 'amber', time: '演示记录', route: 'graph' },
+  { id: 'demo-task-01', name: '分层资料知识审核', type: '人工校核', wellId: 'w1', state: '待审核', tone: 'amber', time: '示例记录', route: 'construction' },
+  { id: 'demo-task-02', name: '同层位厚度差复核', type: '规则判定', wellId: 'w1', state: '待运行', tone: 'blue', time: '示例记录', route: 'retrieval' },
+  { id: 'demo-task-03', name: '地层关系来源核查', type: '关系校核', wellId: 'w2', state: '待核查', tone: 'amber', time: '示例记录', route: 'graph' },
 ];

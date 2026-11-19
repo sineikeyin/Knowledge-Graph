@@ -1,6 +1,6 @@
 {
   "name": "geosteering-knowledge-platform",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "private": true,
   "type": "module",
   "description": "智能地质导向知识图谱平台：资料治理、本体与Schema、知识校核、图谱管理与关系查询、用户权限与规则判定",
@@ -9,6 +9,7 @@
     "dev": "node server.mjs",
     "preview:build": "node build-preview.mjs",
     "demo:init": "node scripts/initialize-governance-demo.mjs",
+    "samples:clean": "node scripts/clean-sample-labels.mjs",
     "test": "node tests/run.mjs"
   },
   "engines": { "node": ">=20" }

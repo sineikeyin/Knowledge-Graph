@@ -7,17 +7,19 @@ import {createIngestion} from './ingestion.mjs';
 import {createConstruction} from './construction.mjs';
 import {ontoEnsure,ontoDashboard,ontoPublished,ontoMutation,ontoImpact} from '../src/ontology-model.js';
 import {gmEnsure,gmSeedDemo,gmDashboard,gmQuery,gmMutation} from '../src/graph-model.js';
+import {prepareSampleLabelCleanup} from './sample-labels.mjs';
 
 export function passwordHash(password,salt=randomBytes(16).toString('hex')) {return `${salt}:${scryptSync(password,salt,64).toString('hex')}`;}
 export function passwordMatches(password,stored='') {const [salt,hash]=stored.split(':');if(!salt||!hash)return false;const actual=scryptSync(password,salt,64);const expected=Buffer.from(hash,'hex');return actual.length===expected.length&&timingSafeEqual(actual,expected);}
-export async function createApp({root,dataFile,sessionTtl=30*60*1000}={}) {
+export async function createApp({root,dataFile,sessionTtl=30*60*1000,labelBackupRoot}={}) {
   root=path.resolve(root);
   let state;try {state=JSON.parse(await fs.readFile(dataFile,'utf8'));}catch(error){if(error.code!=='ENOENT')throw error;state={db:makeDatabase(),passwords:{}};for(const user of state.db.users)state.passwords[user.id]=passwordHash('GeoDemo!2026');}
+  const labelCleanup=await prepareSampleLabelCleanup({db:state.db,directory:path.dirname(dataFile),dataFile,backupRoot:labelBackupRoot});state.db=labelCleanup.db;
   ontoEnsure(state.db);
   gmEnsure(state.db);for(const project of state.db.projects)gmSeedDemo(state.db,project.id);
   const sessions=new Map(),attempts=new Map();let commits=Promise.resolve();
   const persist=async()=>{await fs.mkdir(path.dirname(dataFile),{recursive:true});const tmp=dataFile+'.tmp';await fs.writeFile(tmp,JSON.stringify(state,null,2));await fs.rename(tmp,dataFile);};
-  await persist();
+  try{await labelCleanup.apply();if(labelCleanup.changed)state.db.sampleLabelCleanup={version:1,completedAt:new Date().toISOString(),...labelCleanup.summary};await persist();}catch(error){await labelCleanup.rollback();throw error;}
   const commit=operation=>{const next=commits.then(async()=>{const before=clone(state);try {const result=operation();await persist();return result;}catch(error){state=before;throw error;}});commits=next.catch(()=>{});return next;};
   const ingestion=await createIngestion({directory:path.join(path.dirname(dataFile),'ingestion'),getDb:()=>state.db,commit:operation=>commit(()=>operation(state.db))});
   const construction=await createConstruction({getDb:()=>state.db,commit:operation=>commit(()=>operation(state.db))});
