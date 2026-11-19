@@ -4,6 +4,7 @@ import path from 'node:path';
 import {randomBytes,scryptSync,timingSafeEqual} from 'node:crypto';
 import {makeDatabase,activeUser,identity,workspace,adminView,mutate,business,auditEvent,fault,clone} from '../src/access-model.js';
 import {createIngestion} from './ingestion.mjs';
+import {createConstruction} from './construction.mjs';
 import {ontoEnsure,ontoDashboard,ontoPublished,ontoMutation,ontoImpact} from '../src/ontology-model.js';
 
 export function passwordHash(password,salt=randomBytes(16).toString('hex')) {return `${salt}:${scryptSync(password,salt,64).toString('hex')}`;}
@@ -17,6 +18,7 @@ export async function createApp({root,dataFile,sessionTtl=30*60*1000}={}) {
   await persist();
   const commit=operation=>{const next=commits.then(async()=>{const before=clone(state);try {const result=operation();await persist();return result;}catch(error){state=before;throw error;}});commits=next.catch(()=>{});return next;};
   const ingestion=await createIngestion({directory:path.join(path.dirname(dataFile),'ingestion'),getDb:()=>state.db,commit:operation=>commit(()=>operation(state.db))});
+  const construction=await createConstruction({getDb:()=>state.db,commit:operation=>commit(()=>operation(state.db))});
   const handler=async(req,res)=>{
     const requestId='REQ-'+randomBytes(9).toString('hex');
     let auditUser=null;
@@ -29,7 +31,7 @@ export async function createApp({root,dataFile,sessionTtl=30*60*1000}={}) {
       if(!pathname.startsWith('/api/')) {
         if(!['GET','HEAD'].includes(req.method))fault('Method not allowed',405);
         const relative=pathname==='/'?'index.html':pathname.slice(1);
-        const publicFiles=['index.html','src/main.js','src/data.js','src/icons.js','src/rules.js','src/styles.css','src/api.js','src/users.js','src/ingestion.js','src/ingestion-core.js','src/ontology.js','src/ontology-core.js'];
+        const publicFiles=['index.html','src/main.js','src/data.js','src/icons.js','src/rules.js','src/styles.css','src/api.js','src/users.js','src/ingestion.js','src/ingestion-core.js','src/ontology.js','src/ontology-core.js','src/las-core.js','src/construction.js','src/construction-core.js'];
         if(!publicFiles.includes(relative)&&!/^assets\/[a-zA-Z0-9_.-]+\.svg$/.test(relative)&&relative!=='docs/页面搭建步骤.html')fault('File unavailable',404);
         const file=path.resolve(root,relative);if(!file.startsWith(root+path.sep))fault('Forbidden',403);
         const content=await fs.readFile(file);const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.svg':'image/svg+xml'};
@@ -40,7 +42,7 @@ export async function createApp({root,dataFile,sessionTtl=30*60*1000}={}) {
       if(req.headers['sec-fetch-site']==='cross-site')fault('跨站请求不允许。',403);
       let body={};if(req.method==='POST'&&pathname!=='/api/ingestion/upload') {
         if(!req.headers['content-type']?.startsWith('application/json'))fault('仅接受JSON请求。',415);
-        let bytes=0;const chunks=[];for await(const chunk of req){bytes+=chunk.length;if(bytes>(pathname==='/api/ontology/save'?1024*1024:65536))fault('请求过大。',413);chunks.push(chunk);}
+        let bytes=0;const chunks=[];for await(const chunk of req){bytes+=chunk.length;if(bytes>(['/api/ontology/save','/api/construction/sample'].includes(pathname)?1024*1024:65536))fault('请求过大。',413);chunks.push(chunk);}
         try {body=JSON.parse(Buffer.concat(chunks).toString()||'{}');}catch{fault('JSON格式错误。');}if(!body||Array.isArray(body)||typeof body!=='object')fault('请求格式错误。');
       }
       await commits;
@@ -58,6 +60,7 @@ export async function createApp({root,dataFile,sessionTtl=30*60*1000}={}) {
       const session=sessions.get(token);if(!session||session.expires<=Date.now()){sessions.delete(token);fault('登录已失效，请重新登录。',401);}
       const user=activeUser(state.db,session.userId);auditUser=user;if(req.method==='POST'&&req.headers['x-csrf-token']!==session.csrf)fault('请求校验失败，请刷新页面。',403);
       if(pathname.startsWith('/api/ingestion')&&await ingestion.handle({req,res,url,user,body,requestId,send}))return;
+      if(pathname.startsWith('/api/construction')&&await construction.handle({req,res,url,user,body,requestId,send}))return;
       if(pathname==='/api/auth/me'&&req.method==='GET'){send(200,{user:identity(state.db,user),csrf:session.csrf,expires:session.expires});return;}
       if(pathname==='/api/auth/logout'&&req.method==='POST'){await commit(()=>auditEvent(state.db,user,'退出登录','会话',{}, {requestId}));sessions.delete(token);res.setHeader('Set-Cookie','geokg_session=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0');send(200,{ok:true});return;}
       if(pathname==='/api/workspace'&&req.method==='GET'){send(200,workspace(state.db,user));return;}
@@ -84,6 +87,6 @@ export async function createApp({root,dataFile,sessionTtl=30*60*1000}={}) {
       send(status,{message:status===500?'服务保存或处理失败，请重试。':error.message,requestId});}
   };
   const server=http.createServer((req,res)=>{handler(req,res).catch(()=>{if(!res.headersSent)res.writeHead(500);res.end();});});
-  server.on('close',()=>ingestion.close());
+  server.on('close',()=>{ingestion.close();construction.close();});
   server.requestTimeout=60000;server.headersTimeout=10000;return server;
 }

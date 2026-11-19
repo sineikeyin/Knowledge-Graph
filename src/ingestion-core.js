@@ -1,6 +1,7 @@
+import {lasParse} from './las-core.js';
 // Pure parsers and deterministic governance rules; shared by the local service and offline demo.
 export const ingLimits = {bytes:5*1024*1024,rows:5000,columns:128,cell:4096};
-export const ingAcceptedFormats = ['csv','json'];
+export const ingAcceptedFormats = ['csv','json','las'];
 export function ingFileFormat(name){const extension=String(name||'').match(/^.+\.([a-z0-9]+)$/i)?.[1]?.toLowerCase();return ingAcceptedFormats.includes(extension)?extension:'';}
 export const ingFieldSets = {
   stratum:[['well','井名',true],['layer','层位',true],['top','顶深',true],['bottom','底深',true],['thickness','厚度',false],['unit','深度单位',true],['depthType','深度类型',true],['datum','参考基准',true],['lithology','岩性',false],['block','区块',false]],
@@ -20,6 +21,7 @@ export function ingError(message,status=400){const error=new Error(message);erro
 export function ingKey(value){return String(value??'').trim().toLowerCase().replace(/[\s_\-]/g,'');}
 export function ingParse(text,extension){
   text=String(text).replace(/^\uFEFF/,'');
+  if(extension==='las')return lasParse(text);
   let headers,rows,locations;
   if(extension==='json'){
     let value;try{value=JSON.parse(text);}catch{ingError('JSON 格式错误，请检查引号、逗号与括号。');}

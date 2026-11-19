@@ -638,6 +638,72 @@ pre.snapshot {font-size:11px;line-height:1.8;background:#f7f9fc;border:1px solid
 @media(max-width:1250px){.ing-summary {gap:10px;}.ing-summary>div {padding:16px;gap:10px;}.ing-summary strong {font-size:26px;}.ing-connectors {grid-template-columns:repeat(2,minmax(0,1fr));}.ing-detail-heading .heading-actions {width:100%;justify-content:start;}}
 @media(max-width:760px){.ing-summary {grid-template-columns:repeat(2,minmax(0,1fr));}.ing-summary span {font-size:13px;}.ing-connectors {grid-template-columns:1fr;}.ing-filters {padding:15px;gap:10px;}.ing-filters label {min-width:calc(50% - 10px);flex:1;}.ing-filters input,.ing-filters select {max-width:100%;width:100%;}.ing-tabs {gap:20px;}.ing-map-grid {grid-template-columns:90px minmax(90px,1fr) minmax(90px,1fr);gap:8px;font-size:12px;}.ing-map-grid input,.ing-map-grid select {font-size:12px;padding:7px 8px;}.ing-map-grid select {padding-right:32px;background-position:right 8px center;}.ing-form-pair {grid-template-columns:1fr;gap:0;}.ing-stepper {font-size:12px;gap:10px;padding:10px;}.ing-metadata>div {grid-template-columns:95px minmax(0,1fr);gap:10px;}.ing-pagination {flex-wrap:wrap;}.ing-table th,.ing-table td {padding:12px;}}
 
+/* Knowledge extraction, evidence review and release workspace. */
+.kc-module {font-size:14px;min-width:0;}
+.kc-module .panel {margin-bottom:20px;}
+.kc-summary {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:0 0 22px;}
+.kc-summary>div {display:flex;align-items:baseline;gap:12px;background:#fff;border:1px solid var(--border);border-radius:8px;padding:20px;}
+.kc-summary strong {font-size:28px;color:#315fba;}
+.kc-summary span {font-size:14px;color:#6b7f9b;}
+.kc-actions,.kc-task-bar,.kc-review-toolbar,.kc-evaluate-form {display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.kc-actions {justify-content:center;}
+.kc-task-bar,.kc-review-toolbar {margin:18px 0;}
+.kc-task-bar select {max-width:420px;flex:1;min-width:200px;}
+.kc-review-toolbar {justify-content:space-between;}
+.kc-note {color:#677b96;font-size:14px;line-height:1.8;padding:10px 20px;overflow-wrap:anywhere;}
+.kc-pipeline {list-style:none;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:9px;margin:20px;padding:0;}
+.kc-pipeline li {display:flex;flex-direction:column;gap:9px;align-items:start;border:1px solid #dce5f1;border-radius:7px;padding:14px 10px;background:#f9fbff;min-width:0;}
+.kc-pipeline li.done {border-top:3px solid #419b8c;background:#f4fbf9;}
+.kc-pipeline li.failed {border-top:3px solid #c95465;background:#fff7f7;}
+.kc-pipeline strong {font-size:14px;}
+.kc-pipeline small {font-size:12px;line-height:1.7;color:#71839d;overflow-wrap:anywhere;}
+.kc-workbench {display:grid;grid-template-columns:minmax(230px,.8fr) minmax(270px,1.1fr) minmax(280px,1fr);gap:16px;align-items:start;}
+.kc-workbench>.panel {min-width:0;}
+.kc-pane-head {padding:18px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.kc-pane-head h2 {margin:0;font-size:16px;}
+.kc-filters {padding:12px 14px;display:grid;gap:10px;background:#f7faff;}
+.kc-filters label {display:grid;grid-template-columns:70px minmax(0,1fr);align-items:center;gap:5px;font-size:14px;}
+.kc-module select,.kc-filters select,.kc-task-bar select {border:1px solid #d4dfed;border-radius:5px;padding:9px 12px;background-color:#fff;color:#435871;font-size:14px;min-width:0;max-width:100%;min-height:42px;height:auto;line-height:1.5;}
+.kc-candidate-list {max-height:640px;overflow:auto;}
+.kc-candidate {display:flex;flex-direction:column;gap:10px;text-align:left;width:100%;padding:17px 15px;background:white;border:0;border-bottom:1px solid #e8edf4;color:#425777;font-size:14px;cursor:pointer;border-left:3px solid transparent;}
+.kc-candidate.active {background:#eef4ff;border-left-color:#3971d8;}
+.kc-candidate:hover {background:#f4f8ff;}
+.kc-candidate strong {line-height:1.7;overflow-wrap:anywhere;}
+.kc-candidate small {font-size:12px;color:#7f91a9;line-height:1.7;}
+.kc-pagination {display:flex;align-items:center;justify-content:center;gap:10px;padding:12px;flex-wrap:wrap;font-size:14px;}
+.kc-pagination .button {padding:6px 9px;font-size:13px;}
+.kc-evidence-body,.kc-editor-body {padding:18px 16px;}
+.kc-evidence-body h3,.kc-editor-body h3 {font-size:16px;line-height:1.7;overflow-wrap:anywhere;}
+.kc-evidence-body p,.kc-editor-body p {font-size:14px;line-height:1.8;overflow-wrap:anywhere;}
+.kc-source-text {background:#f4f7fc;border:1px solid #dce5f1;border-radius:6px;padding:16px;white-space:pre-wrap;overflow-wrap:anywhere;font-size:14px;line-height:2;}
+.kc-source-text mark {background:#ffebad;color:#634d0f;padding:3px 0;}
+.kc-evidence .ing-metadata {padding:0;}
+.kc-evidence .kc-note {padding:10px 0;}
+.kc-editor .form-field {margin-bottom:14px;font-size:14px;}
+.kc-editor textarea,.modal textarea {min-height:90px;resize:vertical;border:1px solid #d4dfed;border-radius:5px;padding:12px;font:14px/1.7 Consolas,'Microsoft YaHei',sans-serif;width:100%;}
+.kc-editor input,.kc-editor select {font-size:14px;width:100%;min-width:0;}
+.kc-review-actions {display:flex;gap:8px;flex-wrap:wrap;margin:18px 0;}
+.kc-review-actions .button {font-size:14px;white-space:normal;}
+.kc-history {border:1px solid #dce5f1;border-radius:5px;margin:12px 0;padding:12px;font-size:14px;}
+.kc-history summary {cursor:pointer;line-height:1.8;}
+.kc-history small {color:#7c8eaa;overflow-wrap:anywhere;}
+.kc-module pre,.kc-published pre,.modal pre {white-space:pre-wrap;overflow-wrap:anywhere;max-height:420px;overflow:auto;font:13px/1.8 Consolas,'Microsoft YaHei',sans-serif;}
+.kc-structured h3 {padding:0 20px;}
+.kc-structured .ing-table th,.kc-structured .ing-table td {min-width:120px;}
+.kc-structured .ing-table td:nth-child(2),.kc-structured .ing-table td:nth-child(3) {min-width:220px;}
+.kc-evaluate-form {padding:20px;align-items:end;}
+.kc-evaluate-form .form-field {min-width:230px;flex:1;margin:0;}
+.kc-inputs {margin:20px 0;border:1px solid #dce5f1;border-radius:6px;max-height:240px;overflow:auto;font-size:14px;}
+.kc-inputs label {display:flex;align-items:start;gap:12px;margin:12px 8px;line-height:1.8;}
+.kc-inputs input {margin-top:6px;flex:none;}
+.kc-inputs small {color:#7d8fa9;}
+.kc-check {display:flex;gap:10px;margin:14px 0;font-size:14px;}
+.modal .kc-json-input {min-height:320px;font-size:14px;}
+.kc-issue {background:#fff8e8;border-left:3px solid #e5b75c;padding:12px;}
+.kc-evaluation .ing-table td {min-width:180px;}
+@media(max-width:1350px){.kc-pipeline {grid-template-columns:repeat(4,minmax(0,1fr));}.kc-workbench {grid-template-columns:minmax(210px,.7fr) minmax(240px,1fr);}.kc-editor {grid-column:1/-1;}.kc-editor form {display:grid;grid-template-columns:1fr 1fr;gap:0 16px;}.kc-editor .kc-review-actions {grid-column:1/-1;}.kc-summary>div {flex-direction:column;gap:5px;}}
+@media(max-width:850px){.kc-workbench {grid-template-columns:1fr;}.kc-editor {grid-column:auto;}.kc-summary {grid-template-columns:repeat(2,minmax(0,1fr));}.kc-pipeline {grid-template-columns:repeat(2,minmax(0,1fr));}.kc-tabs {gap:14px;}.kc-tabs button {font-size:14px;white-space:nowrap;}.kc-editor form {display:block;}.kc-candidate-list {max-height:360px;}.kc-task-bar select {min-width:150px;}.kc-pane-head {padding:15px;}}
+
 </style>
 </head>
 <body>
@@ -922,10 +988,48 @@ function business(db,user,action,body,context={}) {
 }
 
 
+// ===== src/las-core.js =====
+// LAS 2.x ASCII parser. Header locations refer to the unmodified uploaded file.
+function lasParse(text){
+  const lines=String(text).replace(/^\uFEFF/,'').split(/\r?\n/),header=[],curves=[],samples=[];
+  let section='',well='',nullValue=-999.25,wrap='NO',version='',depthType='',datum='';
+  const fail=message=>{throw new Error(message);};
+  for(let index=0;index<lines.length;index++){
+    const line=lines[index].trim();if(line.length>4096)fail(`LAS 第 ${index+1} 行超过4096字符。`);if(!line||line.startsWith('#'))continue;
+    if(line.startsWith('~')){section=line.slice(1).trim()[0]?.toUpperCase();continue;}
+    if(section==='A'){samples.push({line:index+1,values:line.split(/\s+/)});continue;}
+    if(!['V','W','C','P'].includes(section))continue;
+    const match=line.match(/^([^\s.]+)\.([^\s:]*)\s*(.*?)\s*(?::(.*))?$/);if(!match)fail(`LAS 第 ${index+1} 行头段格式错误。`);
+    const [,mnemonic,unit,value,description='']=match,key=mnemonic.toUpperCase();
+    header.push({section,mnemonic:key,unit,value:value.trim(),description:description.trim(),line:index+1,text:lines[index]});
+    if(header.length>1024)fail('LAS 头段最多1024个参数。');
+    if(section==='C')curves.push({mnemonic:key,unit,description:description.trim(),line:index+1});
+    if(section==='V'&&key==='VERS')version=value.trim();
+    if(section==='V'&&key==='WRAP')wrap=value.trim().toUpperCase();
+    if(section==='W'&&key==='WELL')well=value.trim();
+    if(section==='W'&&key==='NULL'){nullValue=Number(value);if(!Number.isFinite(nullValue))fail('LAS NULL 值无效。');}
+    if(section==='P'&&key==='DEPTTYPE')depthType=value.trim();
+    if(section==='P'&&key==='DREF')datum=value.trim();
+  }
+  if(!/^2(?:\.|$)/.test(version))fail('当前支持 LAS 2.x ASCII 文件，请转换版本后上传。');
+  if(wrap!=='NO')fail('当前不支持 LAS WRAP=YES，请展开为 WRAP=NO。');
+  if(!well||curves.length<2||!['DEPT','DEPTH'].includes(curves[0].mnemonic)||!samples.length)fail('LAS 需包含 WELL、深度列、曲线定义及 ASCII 数据。');
+  if(curves.length>128||samples.length*(curves.length-1)>5000)fail('LAS 展开后最多 5000 条曲线记录、128 列。');
+  const headers=['well','depth','curve','value','valueUnit','unit','depthType','datum'],rows=[],locations=[];
+  for(const sample of samples){
+    if(sample.values.length!==curves.length||sample.values.some(v=>!Number.isFinite(Number(v))))fail(`LAS 第 ${sample.line} 行数据列数或数值不合法。`);
+    for(let column=1;column<curves.length;column++){
+      rows.push([well,sample.values[0],curves[column].mnemonic,Number(sample.values[column])===nullValue?'':sample.values[column],curves[column].unit,curves[0].unit,depthType,datum]);locations.push(sample.line);
+    }
+  }
+  return {headers,rows,locations,lasHeader:header,curves,parserVersion:'las-ascii-v1',format:'las'};
+}
+
+
 // ===== src/ingestion-core.js =====
 // Pure parsers and deterministic governance rules; shared by the local service and offline demo.
 const ingLimits = {bytes:5*1024*1024,rows:5000,columns:128,cell:4096};
-const ingAcceptedFormats = ['csv','json'];
+const ingAcceptedFormats = ['csv','json','las'];
 function ingFileFormat(name){const extension=String(name||'').match(/^.+\.([a-z0-9]+)$/i)?.[1]?.toLowerCase();return ingAcceptedFormats.includes(extension)?extension:'';}
 const ingFieldSets = {
   stratum:[['well','井名',true],['layer','层位',true],['top','顶深',true],['bottom','底深',true],['thickness','厚度',false],['unit','深度单位',true],['depthType','深度类型',true],['datum','参考基准',true],['lithology','岩性',false],['block','区块',false]],
@@ -945,6 +1049,7 @@ function ingError(message,status=400){const error=new Error(message);error.statu
 function ingKey(value){return String(value??'').trim().toLowerCase().replace(/[\s_\-]/g,'');}
 function ingParse(text,extension){
   text=String(text).replace(/^\uFEFF/,'');
+  if(extension==='las')return lasParse(text);
   let headers,rows,locations;
   if(extension==='json'){
     let value;try{value=JSON.parse(text);}catch{ingError('JSON 格式错误，请检查引号、逗号与括号。');}
@@ -1399,11 +1504,246 @@ function ontoMutation(db,user,action,body,context={}){
 }
 
 
+// ===== src/construction-core.js =====
+
+const kcStages=[['parse','解析'],['sentence','分句 / 记录切分'],['ner','实体识别'],['relation','关系抽取'],['normalize','术语归一'],['quality','Schema 质检'],['store','候选入库']];
+const kcEngine='structured-geoscience-v1';
+const kcStable=value=>JSON.stringify(value&&typeof value==='object'?Array.isArray(value)?value.map(v=>JSON.parse(kcStable(v))):Object.fromEntries(Object.keys(value).sort().map(k=>[k,JSON.parse(kcStable(value[k]))])):value??null);
+const kcName=(type,v)=>type==='well'?v.code:type==='stratum'?v.layer:type==='lithology'?v.name:type==='interval'?`${v.well} ${v.top}–${v.bottom}`:type==='log'?`${v.curve} @ ${v.depth}`:type==='trajectory'?`${v.well} @ ${v.depth}`:v.name||v.command||type;
+function kcEvidence(source,rowIndex,field=''){
+  const parsed=source.parsed,cells=parsed.rows[rowIndex]||[],row=source.rows[rowIndex];
+  const raw=parsed.headers.map((name,i)=>`${name}: ${cells[i]??''}`).join(' | '),needle=String(row?.[field]??'');
+  // Normalized aliases may differ from the source. Highlight the source cell instead.
+  const column=source.config?.fields?.[field],rawValue=column?String(cells[parsed.headers.indexOf(column)]??''):needle;
+  const start=rawValue?raw.indexOf(rawValue):-1;
+  return {assetId:source.assetId,versionId:source.versionId,originalVersionId:source.originalVersionId,processingReason:source.reason,fileName:source.fileName,format:parsed.format,row:rowIndex+1,line:parsed.locations[rowIndex],field,column:column||field,raw,span:start>=0?{start,end:start+rawValue.length}:null,well:row?.well||'',layer:row?.layer||'',unit:row?.unit||'',depthType:row?.depthType||'',datum:row?.datum||''};
+}
+function kcEntities(task){
+  const result=[],types=task.schema.types;
+  function add(source,index,typeId,value,field,confidence){
+    const type=types.find(t=>t.id===typeId);if(!type)return;
+    const filtered=Object.fromEntries(type.fields.filter(f=>value[f.key]!==undefined&&value[f.key]!=='').map(f=>[f.key,value[f.key]]));
+    const key=`${source.versionId}:${index}:${typeId}`;
+    result.push({id:`${task.id}:E:${result.length+1}`,key,kind:'entity',typeId,typeName:type.name,name:String(kcName(typeId,filtered)),value:filtered,confidence,evidence:kcEvidence(source,index,field),state:'pending',revision:1,history:[],errors:[]});
+  }
+  for(const source of task.sources)for(let index=0;index<source.rows.length;index++){
+    const originalRow=source.rows[index],row={...originalRow,well:source.wellCode||originalRow.well};
+    if(row.well)add(source,index,'well',{code:row.well,name:row.well,block:row.block},'well',0.98);
+    if(source.objectType==='stratum'){
+      add(source,index,'interval',row,'top',0.96);add(source,index,'stratum',row,'layer',0.95);
+      if(row.lithology)add(source,index,'lithology',{name:row.lithology},'lithology',0.86);
+    }else if(['log','trajectory','model','instruction'].includes(source.objectType))add(source,index,source.objectType,row,source.objectType==='log'?'curve':'depth',0.94);
+  }
+  return result;
+}
+function kcRelations(task){
+  const result=[],groups=new Map();
+  for(const e of task.candidates.filter(c=>c.kind==='entity')){const key=`${e.evidence.versionId}:${e.evidence.row}`;if(!groups.has(key))groups.set(key,[]);groups.get(key).push(e);}
+  // Only relations explicitly allowed by the pinned ontology and backed by the same record.
+  const supported=new Set(['belongs','intersects','has_lithology','issued_for','applies']);
+  for(const group of groups.values())for(const type of task.schema.relations.filter(r=>supported.has(r.id))){
+    const subject=group.find(e=>e.typeId===type.from),object=group.find(e=>e.typeId===type.to);if(!subject||!object)continue;
+    result.push({id:`${task.id}:R:${result.length+1}`,kind:'relation',typeId:type.id,typeName:type.name,name:`${subject.name} — ${type.name} — ${object.name}`,value:{subjectId:subject.id,objectId:object.id},confidence:0.9,evidence:{...subject.evidence,field:`${type.from}/${type.to}`},state:'pending',revision:1,history:[],errors:[]});
+  }
+  return result;
+}
+function kcNormalize(task){
+  for(const c of task.candidates.filter(c=>c.kind==='entity')){
+    const before=JSON.parse(JSON.stringify(c.value));
+    for(const key of Object.keys(c.value))if(typeof c.value[key]==='string')c.value[key]=c.value[key].trim();
+    for(const term of task.schema.terms.filter(t=>t.typeId===c.typeId))for(const key of ['name','lithology','curve'])if([term.standard,...term.aliases].some(alias=>String(alias).toLowerCase()===String(c.value[key]??'').toLowerCase()))c.value[key]=term.standard;
+    c.normalization={before,after:JSON.parse(JSON.stringify(c.value)),schemaVersionId:task.ontologyVersionId};c.name=String(kcName(c.typeId,c.value));
+  }
+}
+function kcCheck(task,candidate){
+  if(candidate.kind==='entity'){const type=task.schema.types.find(t=>t.id===candidate.typeId);return type?ontoCheckRecord(type,candidate.value):['本体中没有此实体类型'];}
+  const relation=task.schema.relations.find(r=>r.id===candidate.typeId),subject=task.candidates.find(c=>c.id===candidate.value.subjectId&&c.kind==='entity'),object=task.candidates.find(c=>c.id===candidate.value.objectId&&c.kind==='entity');
+  const errors=[];if(!relation||!subject||!object||relation.from!==subject.typeId||relation.to!==object.typeId)errors.push('关系类型或端点不符合本体约束');
+  if(subject?.state==='rejected'||object?.state==='rejected')errors.push('关系端点已驳回');return errors;
+}
+function kcMetric(expected,actual){
+  const signature=item=>kcStable({kind:item.kind,typeId:item.typeId,value:item.value});
+  const pool=actual.map((value,index)=>({value,index,used:false})),details=[];let tp=0,fn=0,fp=0;
+  for(const item of expected){const hit=pool.find(p=>!p.used&&signature(p.value)===signature(item));if(hit){hit.used=true;tp++;details.push({error:'正确',expected:item,actual:hit.value});}else{fn++;details.push({error:'漏抽 / 属性不一致',expected:item,actual:null});}}
+  for(const item of pool.filter(p=>!p.used)){fp++;details.push({error:'多抽 / 属性不一致',expected:null,actual:item.value});}
+  const precision=tp+fp?tp/(tp+fp):0,recall=tp+fn?tp/(tp+fn):0;
+  // Extraction has no finite TN universe. Accuracy is explicitly the set Jaccard accuracy.
+  return {tp,fp,fn,accuracy:tp+fp+fn?tp/(tp+fp+fn):0,precision,recall,f1:precision+recall?2*precision*recall/(precision+recall):0,definition:'严格属性匹配、多重集计数；准确率 = TP/(TP+FP+FN)，不含真负例',details};
+}
+function kcEvaluationItems(task){
+  const entities=task.extractionSnapshot||task.candidates;
+  return entities.map(c=>({kind:c.kind,typeId:c.typeId,value:c.kind==='entity'?c.value:{subject:entities.find(e=>e.id===c.value.subjectId)?.value,object:entities.find(e=>e.id===c.value.objectId)?.value}}));
+}
+
+
+// ===== src/construction-model.js =====
+
+function kcEnsure(db){
+  db.construction??={tasks:[],samples:[],evaluations:[],triggers:[],events:[],publications:[],facts:[],issues:[],indexes:{},caches:{},permissionVersion:0};
+  const model=db.construction;
+  if(!model.permissionVersion){const engineer=db.roles.find(r=>r.id==='engineer');if(engineer)engineer.permissions=[...new Set([...engineer.permissions,'construction'])];model.permissionVersion=1;}
+  return model;
+}
+function kcScope(db,user,projectId,permission='construction'){
+  if(!db.projects.some(p=>p.id===projectId)||!permittedWells(db,user,projectId).length)fault('项目不可访问。',403);
+  requirePermission(db,user,permission,projectId);
+}
+function kcAssetAccess(db,user,source,action='view'){
+  const asset=ingFindAsset(db,user,source.assetId,'view',true);
+  if(action!=='view')for(const [kind,id]of [['well',asset.wellId],['document',asset.id],['object',`${asset.wellId}-${asset.objectType}`]])if(!resourceAllowed(db,user,asset.projectId,kind,id,asset.wellId,action))fault('无权校核或发布此资料。',403);
+  return asset;
+}
+function kcVisible(db,user,item){try{item.sources.forEach(s=>kcAssetAccess(db,user,s));return true;}catch{return false;}}
+function kcTask(db,user,id,projectId,action='view'){
+  const task=kcEnsure(db).tasks.find(t=>t.id===id&&t.projectId===projectId);if(!task)fault('构建任务不存在。',404);
+  for(const source of task.sources)kcAssetAccess(db,user,source,action);return task;
+}
+function kcRevision(item,expected){if(item.revision!==expected)fault('记录已变化，请刷新后重新操作。',409);}
+const kcNow=()=>new Date().toISOString();
+function kcSource(db,user,handoffId,projectId){
+  const ig=ingEnsure(db),h=ig.handoffs.find(h=>h.id===handoffId&&h.projectId===projectId);if(!h)fault('资料交接不存在。',404);
+  const asset=kcAssetAccess(db,user,h),v=ig.versions.find(v=>v.id===h.versionId&&v.assetId===asset.id),quality=v?.qualityRuns.find(q=>q.id===h.qualityRunId);
+  if(!v?.parsed||!v.rows?.length||!quality||quality.status==='阻断'||(quality.status==='警告'&&!h.warningsConfirmed))fault('固定资料版本未通过治理交接门槛。',409);
+  const original=ig.versions.filter(item=>item.assetId===asset.id&&item.fileId===v.fileId&&item.parsed).sort((a,b)=>a.number-b.number)[0]||v;
+  return {handoffId:h.id,assetId:asset.id,wellId:asset.wellId,wellCode:db.wells.find(w=>w.id===asset.wellId)?.short,versionId:v.id,originalVersionId:original.id,reason:v.reason,fileName:v.fileName,hash:v.hash,objectType:asset.objectType,demo:Boolean(asset.demo),qualityRunId:h.qualityRunId,parserVersion:v.parserVersion,config:clone(v.config),parsed:clone(original.parsed),rows:v.rows.map(row=>clone(row.record))};
+}
+function kcDashboard(db,user,projectId){
+  kcScope(db,user,projectId);const model=kcEnsure(db),ig=ingEnsure(db),visibleTasks=model.tasks.filter(t=>t.projectId===projectId&&kcVisible(db,user,t)),ids=new Set(visibleTasks.map(t=>t.id));
+  const sources=ig.handoffs.filter(h=>h.projectId===projectId).filter(h=>{try{kcAssetAccess(db,user,h);return true;}catch{return false;}}).map(h=>({...clone(h),name:db.assets.find(a=>a.id===h.assetId)?.name,binding:clone(ontoEnsure(db).bindings.find(b=>b.handoffId===h.id)||null)}));
+  return {projectId,sources,versions:ontoEnsure(db).versions.filter(v=>v.projectId===projectId&&v.status==='published').map(({id,name,number,revision})=>({id,name,number,revision})),tasks:visibleTasks.map(t=>({id:t.id,name:t.name,status:t.status,revision:t.revision,ontologyVersionId:t.ontologyVersionId,ontologyNumber:t.ontologyNumber,createdAt:t.createdAt,createdByName:t.createdByName,origin:t.origin,error:t.error,stages:clone(t.stages),sourceCount:t.sources.length,candidateCount:t.candidates.length,pending:t.candidates.filter(c=>c.state==='pending').length,accepted:t.candidates.filter(c=>c.state==='accepted').length})),samples:clone(model.samples.filter(s=>ids.has(s.taskId))),evaluations:clone(model.evaluations.filter(e=>ids.has(e.taskId))),triggers:clone(model.triggers.filter(t=>t.projectId===projectId&&t.createdBy===user.id)),events:clone(model.events.filter(e=>e.projectId===projectId&&e.createdBy===user.id)),publications:clone(model.publications.filter(p=>ids.has(p.taskId))),capabilities:{review:can(db,user,'review',projectId),publish:can(db,user,'publish',projectId),export:can(db,user,'export',projectId)}};
+}
+function kcDetail(db,user,projectId,taskId){kcScope(db,user,projectId);return clone(kcTask(db,user,taskId,projectId));}
+function kcGraph(db,user,projectId){
+  kcScope(db,user,projectId,'graph');const model=kcEnsure(db);
+  const facts=model.facts.filter(f=>f.projectId===projectId&&f.active).filter(f=>{try{kcAssetAccess(db,user,f);return true;}catch{return false;}}),ids=new Set(facts.map(f=>f.id));
+  return {facts:clone(facts.filter(f=>f.kind==='entity'||ids.has(f.subjectId)&&ids.has(f.objectId))),storage:'本机版本化知识库',externalGraph:'未接入外部图数据库'};
+}
+function kcAdvance(db,user,taskId){
+  const model=kcEnsure(db),task=model.tasks.find(t=>t.id===taskId);if(!task||!['queued','running'].includes(task.status))return null;
+  const stage=task.stages.find(s=>s.status!=='done');if(!stage)return null;
+  stage.startedAt=kcNow();stage.attempt++;task.status='running';
+  try{
+    kcScope(db,user,task.projectId);task.sources.forEach(s=>kcAssetAccess(db,user,s));
+    if(stage.id==='parse'){if(!task.sources.every(s=>s.parsed.rows.length&&s.rows.length))fault('资料解析快照为空。');stage.summary=`${task.sources.length} 份固定资料 / ${task.sources.reduce((n,s)=>n+s.rows.length,0)} 条记录`;}
+    if(stage.id==='sentence')stage.summary='按表格记录切分，保留源文件行号和单元格位置';
+    if(stage.id==='ner'){task.candidates=kcEntities(task);if(!task.candidates.length)fault('固定本体与资料字段无匹配实体，请调整本体后新建任务。');stage.summary=`识别 ${task.candidates.length} 项实体候选`;}
+    if(stage.id==='relation'){task.candidates=task.candidates.filter(c=>c.kind==='entity').concat(task.config.extractRelations?kcRelations(task):[]);stage.summary=`${task.candidates.filter(c=>c.kind==='relation').length} 项同记录证据支持的关系`;}
+    if(stage.id==='normalize'){if(task.config.normalizeTerms)kcNormalize(task);stage.summary=task.config.normalizeTerms?'按固定本体术语与治理后的单位归一':'已配置为保留治理后的术语，不额外替换';}
+    if(stage.id==='quality'){task.candidates.forEach(c=>{c.errors=kcCheck(task,c);});stage.summary=`${task.candidates.filter(c=>c.errors.length).length} 项需修正，所有候选仍须人工校核`;}
+    if(stage.id==='store'){task.extractionSnapshot=clone(task.candidates);task.status='review';stage.summary='候选已保存；审核和发布由独立操作完成';}
+    stage.status='done';stage.error='';task.error='';
+  }catch(error){stage.status='failed';stage.error=error.message;task.error=error.message;task.status='failed';}
+  stage.finishedAt=kcNow();task.revision++;task.updatedAt=kcNow();return clone(task);
+}
+function kcCreate(db,user,body,origin='manual'){
+  const model=kcEnsure(db),projectId=body.projectId;kcScope(db,user,projectId);
+  if(!Array.isArray(body.handoffIds)||!body.handoffIds.length||body.handoffIds.length>10)fault('请选择 1～10 份已治理资料。');
+  const ids=[...new Set(body.handoffIds)],sources=ids.map(id=>kcSource(db,user,id,projectId));
+  if(new Set(sources.map(s=>s.assetId)).size!==sources.length)fault('同一任务不能重复选择同一资料的不同版本。');
+  if(sources.reduce((n,s)=>n+s.rows.length,0)>2000)fault('单次构建最多 2000 条输入记录，请分批构建。');
+  const ontology=ontoEnsure(db).versions.find(v=>v.id===body.ontologyVersionId&&v.projectId===projectId&&v.status==='published');if(!ontology)fault('请选择已发布的本体版本。',409);
+  const confidence=body.config?.confidence??0.9;if(typeof confidence!=='number'||confidence<0||confidence>1||!Number.isFinite(confidence))fault('置信度分流阈值须在 0～1 之间。');
+  if(body.stages!==undefined&&kcStable(body.stages)!==kcStable(kcStages.map(([id])=>id)))fault('当前流水线需按依赖顺序执行全部七个步骤。');
+  const name=String(body.name||'知识抽取任务').trim();if(!name||name.length>100)fault('任务名称需为 1～100 字。');
+  const now=kcNow(),task={id:ingId(db,'KC'),projectId,name,revision:1,status:'queued',origin,createdBy:user.id,createdByName:user.name,createdAt:now,updatedAt:now,ontologyVersionId:ontology.id,ontologyNumber:ontology.number,schemaRevision:ontology.revision,schema:clone(ontology.schema),engine:kcEngine,config:{confidence,extractRelations:body.config?.extractRelations!==false,normalizeTerms:body.config?.normalizeTerms!==false},sources,candidates:[],stages:kcStages.map(([id,name])=>({id,name,status:'pending',attempt:0})),error:''};model.tasks.unshift(task);return task;
+}
+function kcMutation(db,user,action,body,context={}){
+  const model=kcEnsure(db),projectId=body.projectId;kcScope(db,user,projectId);
+  const log=(operation,object,details)=>auditEvent(db,user,operation,object,details,{...context,projectId});
+  if(action==='create'){const task=kcCreate(db,user,body);log('新建知识抽取任务',task.id,{sources:task.sources.map(s=>s.versionId),ontologyVersionId:task.ontologyVersionId,engine:task.engine});return clone(task);}
+  if(action==='event-retry'){
+    const event=model.events.find(e=>e.id===body.eventId&&e.projectId===projectId&&e.createdBy===user.id);if(!event||event.status!=='failed')fault('失败事件不存在。',404);
+    const trigger=model.triggers.find(t=>t.id===event.triggerId&&t.enabled);if(!trigger)fault('请先启用原触发配置。',409);
+    const task=kcCreate(db,user,{projectId,handoffIds:[event.handoffId],ontologyVersionId:trigger.ontologyVersionId,name:'增量事件重试'},'event');event.status='created';event.taskId=task.id;event.error='';event.retriedAt=kcNow();log('重试资料更新事件',event.id,event);return clone(event);
+  }
+  if(action==='trigger'){
+    if(typeof body.enabled!=='boolean'||!['all','stratum','log','trajectory'].includes(body.objectType))fault('触发配置无效。');
+    const onto=ontoEnsure(db).versions.find(v=>v.id===body.ontologyVersionId&&v.projectId===projectId&&v.status==='published');if(!onto)fault('触发器需固定已发布本体版本。');
+    const existing=body.id?model.triggers.find(t=>t.id===body.id&&t.createdBy===user.id&&t.projectId===projectId):null;if(body.id&&!existing)fault('触发配置不存在。',404);if(existing)kcRevision(existing,body.expectedRevision);
+    const trigger={id:existing?.id||ingId(db,'TRG'),projectId,createdBy:user.id,enabled:body.enabled,objectType:body.objectType,ontologyVersionId:onto.id,baselineHandoffs:existing?.baselineHandoffs||ingEnsure(db).handoffs.filter(h=>h.projectId===projectId).map(h=>h.id),revision:(existing?.revision||0)+1,updatedAt:kcNow()};model.triggers=model.triggers.filter(t=>t.id!==trigger.id).concat(trigger);log('配置知识增量触发',trigger.id,trigger);return clone(trigger);
+  }
+  const task=kcTask(db,user,body.taskId,projectId,['review','issue','sample'].includes(action)?'review':action==='publish'?'publish':'view');
+  if(action==='publish'){requirePermission(db,user,'publish',projectId);const existing=model.publications.find(p=>p.taskId===task.id);if(existing)return clone(existing);}
+  kcRevision(task,body.expectedRevision);
+  if(action==='export-evaluation'){
+    requirePermission(db,user,'export',projectId);task.sources.forEach(s=>kcAssetAccess(db,user,s,'export'));const result=model.evaluations.find(e=>e.id===body.evaluationId&&e.taskId===task.id);if(!result)fault('评价记录不存在。',404);log('导出知识抽取评价',result.id,{taskId:task.id});return clone(result);
+  }
+  if(action==='retry'){
+    if(task.status!=='failed')fault('只能重试失败任务。',409);task.stages.filter(s=>s.status==='failed').forEach(s=>{s.status='pending';});task.status='queued';task.error='';task.revision++;log('重试知识抽取',task.id,{});return clone(task);
+  }
+  if(action==='review'){
+    requirePermission(db,user,'review',projectId);if(task.status!=='review')fault('任务尚不可审核或已经发布。',409);
+    const c=task.candidates.find(c=>c.id===body.candidateId);if(!c)fault('候选不存在。',404);kcRevision(c,body.candidateRevision);
+    if(!['accept','reject','modify'].includes(body.decision))fault('审核操作无效。');
+    const note=String(body.note||'').trim();if(!note||note.length>1000)fault('请填写 1～1000 字审核理由。');
+    const before={value:clone(c.value),state:c.state,name:c.name};
+    const value=body.decision==='modify'?body.value:c.value;
+    if(!value||Array.isArray(value)||typeof value!=='object'||kcStable(value).length>12000)fault('候选属性需为 JSON 对象，最多 12000 字。');
+    const validKeys=c.kind==='entity'?task.schema.types.find(t=>t.id===c.typeId).fields.map(f=>f.key):['subjectId','objectId'];if(Object.keys(value).some(k=>!validKeys.includes(k)))fault('属性包含本体未定义的字段。');
+    const next={...c,value:clone(value)};const errors=kcCheck(task,next);if(body.decision!=='reject'&&errors.length)fault(`候选校验失败：${errors.join('；')}`,409);
+    c.value=clone(value);c.state=body.decision==='reject'?'rejected':'accepted';if(c.kind==='entity')c.name=String(kcName(c.typeId,c.value));c.errors=errors;c.revision++;
+    c.history.push({decision:body.decision,before,after:{value:clone(c.value),state:c.state,name:c.name},note,reviewer:user.name,reviewerId:user.id,time:kcNow(),revision:c.revision,taskRevision:task.revision+1,ontologyVersionId:task.ontologyVersionId});
+    task.revision++;task.updatedAt=kcNow();log('人工校核知识',c.id,c.history.at(-1));return clone(c);
+  }
+  if(action==='issue'){
+    requirePermission(db,user,'review',projectId);const c=task.candidates.find(c=>c.id===body.candidateId);if(!c)fault('候选不存在。',404);
+    const note=String(body.note||'').trim();if(!note||note.length>1000)fault('请填写 1～1000 字问题描述。');
+    const issue={id:ingId(db,'ISSUE'),projectId,taskId:task.id,candidateId:c.id,evidence:clone(c.evidence),note,createdBy:user.name,createdAt:kcNow(),status:'open'};model.issues.push(issue);task.revision++;task.issues??=[];task.issues.push(issue);log('登记知识问题',issue.id,issue);return clone(issue);
+  }
+  if(action==='sample'){
+    requirePermission(db,user,'review',projectId);if(!['review','published'].includes(task.status))fault('抽取完成后才能标注样本。',409);
+    if(!Array.isArray(body.expected)||!body.expected.length||body.expected.length>12000)fault('标注需为非空预期结果数组，最多12000项。');
+    for(const item of body.expected)if(!item||!['entity','relation'].includes(item.kind)||typeof item.typeId!=='string'||!item.value||typeof item.value!=='object'||Array.isArray(item.value))fault('每项标注必须包含 kind、typeId 和 value 对象。');
+    const name=String(body.name||'专家标注').trim();if(!name||name.length>100)fault('标注名称需为1～100字。');
+    const previous=model.samples.filter(s=>s.taskId===task.id),sample={id:ingId(db,'LABEL'),projectId,taskId:task.id,name,number:previous.length+1,expected:clone(body.expected),createdBy:user.name,createdAt:kcNow(),sourceVersions:task.sources.map(s=>s.versionId),ontologyVersionId:task.ontologyVersionId,engine:task.engine};model.samples.push(sample);log('保存专家标注版本',sample.id,{taskId:task.id,number:sample.number});return clone(sample);
+  }
+  if(action==='evaluate'){
+    const sample=model.samples.find(s=>s.id===body.sampleId&&s.taskId===task.id);if(!sample||!task.extractionSnapshot)fault('请选择此任务的专家标注版本。',409);
+    const actual=kcEvaluationItems(task),result={id:ingId(db,'EVAL'),projectId,taskId:task.id,sampleId:sample.id,sampleNumber:sample.number,engine:task.engine,ontologyVersionId:task.ontologyVersionId,sourceVersions:task.sources.map(s=>s.versionId),createdAt:kcNow(),createdBy:user.name,...kcMetric(sample.expected,actual)};model.evaluations.push(result);log('评价知识抽取',result.id,{sampleId:sample.id,tp:result.tp,fp:result.fp,fn:result.fn});return clone(result);
+  }
+  if(action==='publish'){
+    if(task.status!=='review'||!task.candidates.length||task.candidates.some(c=>c.state==='pending'))fault('全部候选处理完成后才能发布。',409);
+    const accepted=task.candidates.filter(c=>c.state==='accepted');if(!accepted.length)fault('没有可发布的已接受知识。',409);
+    for(const c of accepted){const errors=kcCheck(task,c);if(errors.length)fault(`发布校验失败：${errors.join('；')}`,409);if(c.kind==='relation'&&['subjectId','objectId'].some(k=>!accepted.some(e=>e.id===c.value[k]&&e.kind==='entity')))fault('已接受关系的两端实体必须同时接受。',409);}
+    // Refuse an older extraction overwriting a release from a newer data version.
+    for(const source of task.sources){const number=id=>ingEnsure(db).versions.find(v=>v.id===id)?.number||0;const newer=model.facts.some(f=>f.active&&f.assetId===source.assetId&&number(f.evidence.versionId)>number(source.versionId));if(newer)fault('此资料已有更新版本发布，不能以旧版本覆盖。',409);}
+    const id=ingId(db,'PUB'),factId=c=>`${id}:${typeof c==='string'?c:c.id}`;
+    for(const old of model.facts)if(old.projectId===projectId&&task.sources.some(s=>s.assetId===old.assetId))old.active=false;
+    const facts=accepted.map(c=>({id:factId(c),candidateId:c.id,kind:c.kind,typeId:c.typeId,typeName:c.typeName,name:c.kind==='relation'?`${accepted.find(e=>e.id===c.value.subjectId).name} — ${c.typeName} — ${accepted.find(e=>e.id===c.value.objectId).name}`:c.name,value:clone(c.value),...(c.kind==='relation'?{subjectId:factId(c.value.subjectId),objectId:factId(c.value.objectId)}:{}),assetId:c.evidence.assetId,evidence:clone(c.evidence),projectId,taskId:task.id,publicationId:id,ontologyVersionId:task.ontologyVersionId,active:true,history:clone(c.history)}));model.facts.push(...facts);
+    const active=model.facts.filter(f=>f.projectId===projectId&&f.active),index=Object.create(null);for(const f of active)for(const word of [...new Set(`${f.name} ${f.typeName}`.split(/\s+/).filter(Boolean))]){index[word]??=[];index[word].push(f.id);}model.indexes[projectId]={publicationId:id,updatedAt:kcNow(),entries:index};model.caches[projectId]={publicationId:id,entityCount:active.filter(f=>f.kind==='entity').length,relationCount:active.filter(f=>f.kind==='relation').length};
+    const publication={id,taskId:task.id,projectId,publishedAt:kcNow(),publishedBy:user.name,sourceVersions:task.sources.map(s=>s.versionId),ontologyVersionId:task.ontologyVersionId,factIds:facts.map(f=>f.id),entityCount:facts.filter(f=>f.kind==='entity').length,relationCount:facts.filter(f=>f.kind==='relation').length,refresh:{graph:'本机知识库已更新',index:'本机名称索引已重建',cache:'本机统计缓存已刷新'},external:'外部图数据库、搜索服务与缓存服务未接入'};model.publications.unshift(publication);task.status='published';task.publicationId=id;task.revision++;log('发布已校核知识',id,publication);return clone(publication);
+  }
+  fault('知识构建操作不存在。',404);
+}
+// Invoked after a governed handoff is committed. Events are deduplicated per trigger/input version.
+function kcHasEvents(db){
+  const model=kcEnsure(db);
+  return model.triggers.some(t=>t.enabled&&ingEnsure(db).handoffs.some(h=>{
+    if(h.projectId!==t.projectId||t.baselineHandoffs.includes(h.id)||model.events.some(e=>e.triggerId===t.id&&e.handoffId===h.id))return false;
+    const asset=db.assets.find(a=>a.id===h.assetId),user=db.users.find(u=>u.id===t.createdBy);if(!asset||!user?.enabled||(t.objectType!=='all'&&asset.objectType!==t.objectType))return false;
+    try{kcScope(db,user,t.projectId);kcAssetAccess(db,user,h);return true;}catch{return false;}
+  }));
+}
+function kcDispatch(db){
+  const model=kcEnsure(db),ig=ingEnsure(db);let changed=false;
+  for(const trigger of model.triggers.filter(t=>t.enabled))for(const h of ig.handoffs.filter(h=>h.projectId===trigger.projectId)){
+    const asset=db.assets.find(a=>a.id===h.assetId);if(!asset||(trigger.objectType!=='all'&&asset.objectType!==trigger.objectType))continue;
+    if(trigger.baselineHandoffs.includes(h.id)||model.events.some(e=>e.triggerId===trigger.id&&e.handoffId===h.id))continue;
+    const user=db.users.find(u=>u.id===trigger.createdBy);if(!user?.enabled)continue;
+    try{kcScope(db,user,trigger.projectId);kcAssetAccess(db,user,h);}catch{continue;}
+    const event={id:ingId(db,'EVENT'),projectId:trigger.projectId,triggerId:trigger.id,handoffId:h.id,createdBy:user.id,createdAt:kcNow(),status:'queued',versionId:h.versionId};
+    try{const task=kcCreate(db,user,{projectId:trigger.projectId,handoffIds:[h.id],ontologyVersionId:trigger.ontologyVersionId,name:`增量 · ${asset.name}`},'event');event.taskId=task.id;event.status='created';}catch(error){event.status='failed';event.error=error.message;}
+    model.events.push(event);auditEvent(db,user,'资料交接触发知识更新',event.id,event,{projectId:trigger.projectId});changed=true;
+  }
+  return changed;
+}
+
+
 // ===== src/offline-service.js =====
 function createOfflineService() {
   let db;try{db=JSON.parse(localStorage.getItem('geokg-offline-users-v1'));}catch{}if(!db?.users)db=makeDatabase();
   let session;try{session=JSON.parse(sessionStorage.getItem('geokg-offline-session-v1'));}catch{}
-  ingEnsure(db);ontoEnsure(db);
+  ingEnsure(db);ontoEnsure(db);kcEnsure(db);
   const save=()=>{localStorage.setItem('geokg-offline-users-v1',JSON.stringify(db));if(session)sessionStorage.setItem('geokg-offline-session-v1',JSON.stringify(session));else sessionStorage.removeItem('geokg-offline-session-v1');};
   if(ingSeedDemo(db).changed)save();
   return async(pathname,body)=>{
@@ -1412,6 +1752,20 @@ function createOfflineService() {
     if(pathname==='/auth/me')return {user:identity(db,user),expires:session.expires};
     if(pathname==='/auth/logout'){auditEvent(db,user,'退出登录（离线演示）','会话');session=null;save();return {ok:true};}
     if(pathname==='/workspace')return workspace(db,user);
+    if(pathname.startsWith('/construction')){
+      const [endpoint,query='']=pathname.split('?'),params=new URLSearchParams(query),projectId=params.get('projectId');
+      const before=clone(db);
+      try{
+        kcDispatch(db);
+        for(const task of db.construction.tasks.filter(t=>['queued','running'].includes(t.status))){const actor=db.users.find(u=>u.id===task.createdBy);if(actor?.enabled)for(let i=0;i<7&&['queued','running'].includes(task.status);i++)kcAdvance(db,actor,task.id);}
+        let result;
+        if(endpoint==='/construction')result=kcDashboard(db,user,projectId);
+        else if(endpoint==='/construction/task')result=kcDetail(db,user,projectId,params.get('taskId'));
+        else if(endpoint==='/construction/graph')result=kcGraph(db,user,projectId);
+        else result=kcMutation(db,user,endpoint.split('/').pop(),body);
+        save();return result;
+      }catch(error){db=before;throw error;}
+    }
     if(pathname.startsWith('/ontology')){
       const [endpoint,query='']=pathname.split('?');const params=new URLSearchParams(query),projectId=params.get('projectId');
       if(endpoint==='/ontology')return ontoDashboard(db,user,projectId);
@@ -1584,7 +1938,7 @@ function createIngestionUI({getContext,repaint,refresh,modal,toast,go,selectAsse
   function aliasesHtml(){return `<section class="panel"><div class="panel-heading"><h2>主数据与别名映射</h2>${model.capabilities.editWells.length?ingButton('alias-add','新增映射'):''}</div><p class="ing-description">映射按项目与井生效。井别名指向归属井；层位标准名经人工确认后参与校验。修改后，相关资料需重新标准化和校验。</p>${contentTable(['归属井','实体类型','原始名称 / 别名','标准名称','映射版本','确认人 / 时间','操作'],model.aliases.map(alias=>[ingEscape(wellName(alias.wellId)),ingEscape({well:'井',layer:'层位',lithology:'岩性',block:'区块'}[alias.kind]),`${ingEscape(ingAliasLabel(alias))}<small class="block">${alias.demo?'系统演示映射':'人工配置映射'}</small>`,ingEscape(alias.standardName),`v${alias.revision}`,`${ingEscape(alias.updatedBy)}<small class="block">${ingDate(alias.updatedAt)}</small>`,model.capabilities.editWells.includes(alias.wellId)?`<button class="text-button" data-ing="alias-edit" data-id="${alias.id}">编辑</button>`:'只读']))}</section>`;}
   function qualityHtml(){const assets=model.assets.filter(asset=>asset.hasFile);return `<section class="panel"><div class="panel-heading"><h2>质量规则</h2>${ingBadge('quality-v1','neutral')}</div>${contentTable(['规则','默认等级','检查内容'],ingRuleCatalog.map(([,name,level,description])=>[ingEscape(name),ingBadge(level,level==='阻断'?'red':'amber'),ingEscape(description)]))}</section><section class="panel"><div class="panel-heading"><h2>资料治理进度</h2><span class="subtle">在资料详情中定位问题、修正副本及重新校验</span></div>${contentTable(['资料','版本','质量状态','处理状态','操作'],assets.map(asset=>[ingEscape(asset.name),ingEscape(asset.version),asset.mappingStale?ingBadge('需重新标准化','amber'):ingBadge(asset.quality),ingEscape(asset.status),`<button class="text-button" data-ing="quality-detail" data-id="${asset.id}">查看问题</button>`]))}</section>`;}
   function connectorsHtml(){
-    return `<section class="panel ing-file-connector"><div class="ing-file-intro"><div class="ing-connector-icon">▤</div><h2>文件 / CSV / JSON</h2>${ingBadge('已接入','teal')}<p>从本地选择资料文件，完成归属配置、字段映射和预览后提交。</p>${context().canImport?ingButton('import',offlineMode?'导入样例':'导入 CSV / JSON'):'<p class="ing-description">当前账号仅可查看资料。</p>'}</div><div class="ing-file-guide"><h3>文件接入流程</h3><ol><li>选择 CSV 或 JSON 文件，指定项目、井和资料类型。</li><li>确认来源列、默认值、单位和深度基准。</li><li>预览后提交，在接入任务中查看解析结果。</li><li>通过主数据映射和质量校验，准备知识构建资料。</li></ol><dl><div><dt>支持格式</dt><dd>CSV；JSON 对象数组或 records 数组</dd></div><div><dt>文件限制</dt><dd>单文件 5 MB，最多 5000 条记录、128 列</dd></div><div><dt>支持编码</dt><dd>UTF-8 / GB18030</dd></div><div><dt>原件与版本</dt><dd>原件留存、版本追溯、问题定位与复检</dd></div></dl></div></section>`;
+    return `<section class="panel ing-file-connector"><div class="ing-file-intro"><div class="ing-connector-icon">▤</div><h2>文件 / CSV / JSON / LAS</h2>${ingBadge('已接入','teal')}<p>从本地选择资料文件，完成归属配置、字段映射和预览后提交。</p>${context().canImport?ingButton('import',offlineMode?'导入样例':'导入 CSV / JSON / LAS'):'<p class="ing-description">当前账号仅可查看资料。</p>'}</div><div class="ing-file-guide"><h3>文件接入流程</h3><ol><li>选择 CSV、JSON 或 LAS 文件，指定项目、井和资料类型。</li><li>确认来源列、默认值、单位和深度基准。</li><li>预览后提交，在接入任务中查看解析结果。</li><li>通过主数据映射和质量校验，准备知识构建资料。</li></ol><dl><div><dt>支持格式</dt><dd>CSV；JSON 对象数组；LAS 2.x ASCII（WRAP=NO）</dd></div><div><dt>文件限制</dt><dd>单文件 5 MB，最多 5000 条记录、128 列</dd></div><div><dt>支持编码</dt><dd>UTF-8 / GB18030</dd></div><div><dt>原件与版本</dt><dd>原件留存、版本追溯、问题定位与复检</dd></div></dl></div></section>`;
   }
   function mapFieldsHtml(parsed,objectType,config={}){const fields=config.fields||ingGuess(parsed.headers,objectType),defaults=config.defaults||{};return `<div class="ing-map-grid"><div class="ing-map-heading">标准字段</div><div class="ing-map-heading">来源列</div><div class="ing-map-heading">无来源列时的默认值</div>${(ingFieldSets[objectType]||[]).map(([key,label,required])=>`<label for="ing-map-${key}">${label}${required?' *':''}</label><select id="ing-map-${key}" name="map-${key}">${ingOption('','不映射 / 使用默认值',fields[key]||'')}${parsed.headers.map(header=>ingOption(header,header,fields[key])).join('')}</select><input aria-label="${label}默认值" name="default-${key}" value="${ingEscape(defaults[key]||'')}" placeholder="${key==='unit'?'m 或 ft':key==='depthType'?'MD 或 TVD':key==='datum'?'例如 KB（需确认）':'未映射时使用'}"></input>`).join('')}</div>`;}
   function readConfig(form,objectType){const result={fields:{},defaults:{}};for(const [key]of ingFieldSets[objectType]||[]){result.fields[key]=form.elements['map-'+key]?.value||'';result.defaults[key]=form.elements['default-'+key]?.value.trim()||'';}return result;}
@@ -1607,7 +1961,7 @@ function createIngestionUI({getContext,repaint,refresh,modal,toast,go,selectAsse
   function uploadDialog(asset){
     if(offlineMode){modal('导入演示样例',`<p>将为当前井生成一份虚构地层分层 CSV，演示解析、校验和知识构建交接。</p><p class="ing-description">样例不会保存至本机服务，也不会上传任何用户文件。</p><div class="modal-actions">${ingButton('close-dialog','取消')}<button class="button primary" data-ing="sample">导入样例</button></div>`);return;}
     wizard={step:1,asset,file:null,parsed:null,config:null,metadata:null,projectId:context().projectId};
-    modal(asset?'上传资料新版本':'导入资料 · 选择来源与文件',`<div class="ing-stepper"><b>1 选择来源与归属</b><span>2 字段映射</span><span>3 预览提交</span></div><form id="ing-upload-start"><label class="form-field">数据来源<select disabled><option>本地文件</option></select></label><div class="ing-form-pair"><label class="form-field">归属井<select name="wellId" ${asset?'disabled':''}>${model.wells.filter(well=>model.capabilities.editWells.includes(well.id)).map(well=>ingOption(well.id,well.name,asset?.wellId||context().wellId)).join('')}</select></label><label class="form-field">资料类型<select name="objectType" ${asset?'disabled':''}>${objectTypes.map(type=>ingOption(type.id,type.type,asset?.objectType||'stratum')).join('')}</select></label></div><label class="form-field">文件编码<select name="encoding"><option value="utf-8">UTF-8</option><option value="gb18030">GB18030</option></select></label><label class="form-field">选择文件（最多 5 MB）<input type="file" name="file" required accept=".csv,.json"></label><p class="ing-description">支持 CSV 表格和 JSON 对象数组。导入后可配置字段映射、查看解析结果并运行质量校验。</p><div class="modal-actions">${ingButton('close-dialog','取消')}<button type="submit" class="button primary">下一步</button></div></form>`,{wide:true});
+    modal(asset?'上传资料新版本':'导入资料 · 选择来源与文件',`<div class="ing-stepper"><b>1 选择来源与归属</b><span>2 字段映射</span><span>3 预览提交</span></div><form id="ing-upload-start"><label class="form-field">数据来源<select disabled><option>本地文件</option></select></label><div class="ing-form-pair"><label class="form-field">归属井<select name="wellId" ${asset?'disabled':''}>${model.wells.filter(well=>model.capabilities.editWells.includes(well.id)).map(well=>ingOption(well.id,well.name,asset?.wellId||context().wellId)).join('')}</select></label><label class="form-field">资料类型<select name="objectType" ${asset?'disabled':''}>${objectTypes.map(type=>ingOption(type.id,type.type,asset?.objectType||'stratum')).join('')}</select></label></div><label class="form-field">文件编码<select name="encoding"><option value="utf-8">UTF-8</option><option value="gb18030">GB18030</option></select></label><label class="form-field">选择文件（最多 5 MB）<input type="file" name="file" required accept=".csv,.json,.las"></label><p class="ing-description">支持 CSV 表格、JSON 对象数组和 LAS 2.x ASCII。LAS 的深度类型与参考基准需按原件明确配置。导入后可配置字段映射、查看解析结果并运行质量校验。</p><div class="modal-actions">${ingButton('close-dialog','取消')}<button type="submit" class="button primary">下一步</button></div></form>`,{wide:true});
   }
   function wizardMapping(){modal('导入资料 · 字段映射',`<div class="ing-stepper"><span>1 选择来源与归属</span><b>2 字段映射</b><span>3 预览提交</span></div><p class="ing-description">${ingEscape(wizard.file.name)} · ${ingEscape(wellName(wizard.metadata.wellId))}。默认值仅用于未映射的字段，基准请按原始资料确认。</p><form id="ing-upload-mapping">${mapFieldsHtml(wizard.parsed,wizard.metadata.objectType,wizard.config||{})}<div class="modal-actions">${ingButton('close-dialog','取消')}<button type="submit" class="button primary">预览</button></div></form>`,{wide:true});}
   function wizardReview(){const well=model.wells.find(well=>well.id===wizard.metadata.wellId),aliases=model.aliases.filter(alias=>alias.wellId===well.id&&!alias.demo);let preview='当前资料类型暂无治理模板，提交后可保存解析结果并查看处理状态。';if(wizard.parsed&&ingFieldSets[wizard.metadata.objectType]){const scope={well,aliases,layers:[well.layer,...aliases.filter(alias=>alias.kind==='layer').map(alias=>alias.standardName)]};const rows=ingNormalize(wizard.parsed,wizard.metadata.objectType,wizard.config,scope),result=ingValidate(rows,wizard.metadata.objectType,scope);preview=`<div class="ing-quality-summary">${ingBadge(result.status)}<span>${rows.length} 条记录 · ${result.issues.length} 项预检查问题</span></div><p class="ing-description">预检查用于确认映射；正式结果以服务端运行质量校验为准。问题资料可先保存，再治理。</p>${contentTable(['行号','井名','层位 / 曲线','深度类型','参考基准'],rows.slice(0,5).map(row=>[ingEscape(row.row),ingEscape(row.record.well),ingEscape(row.record.layer||row.record.curve||'—'),ingEscape(row.record.depthType),ingEscape(row.record.datum)]))}`;}
@@ -1639,7 +1993,7 @@ function createIngestionUI({getContext,repaint,refresh,modal,toast,go,selectAsse
       if(action==='correct'){const version=selectedVersion();const fields=ingFieldSets[selected.asset.objectType]||[];modal('修正数据副本',`<form id="ing-correct"><label class="form-field">数据行号<input type="number" name="row" min="1" max="${version.rows.length}" required value="${ingEscape(button.dataset.row||1)}"></label><label class="form-field">标准字段<select name="field">${fields.map(([key,label])=>ingOption(key,label,button.dataset.field||fields[0]?.[0])).join('')}</select></label><label class="form-field">修正原始值<input name="value" maxlength="4096" required></label><p class="ing-description">输入值遵循原字段单位；深度为 ft 时会再次换算为 m。原件不变，修正生成新版本并要求复检。</p><div class="modal-actions">${ingButton('close-dialog','取消')}<button type="submit" class="button primary">保存修正</button></div></form>`);}
       if(action==='validate'){const options=selectedVersion().qualityRuns.at(-1)?.options||{};modal('运行质量校验',`<form id="ing-validate"><p>基础规则自动执行。下列采样与曲线规则为可选配置，留空表示不适用；阈值需经业务确认。</p><div class="ing-form-pair">${[['maxGap','最大采样间距（m）'],['min','曲线最小值'],['max','曲线最大值'],['maxJump','相邻曲线最大变化值']].map(([key,label])=>`<label class="form-field">${label}<input name="${key}" type="number" step="any" value="${ingEscape(options[key]??'')}"></label>`).join('')}</div><div class="modal-actions">${ingButton('close-dialog','取消')}<button class="button primary" type="submit">开始校验</button></div></form>`);}
       if(action==='retry'){await perform('retry');toast('解析任务已重新提交。');}
-      if(action==='handoff'){const version=selectedVersion(),warning=version.qualityRuns.at(-1)?.status==='警告';modal('提交知识构建',`<p>将固定 v${version.number}（${ingEscape(version.id)}）及其校验记录交给知识构建。共 ${version.rows.length} 条标准数据。</p><p class="ing-description">提交后状态为“待知识构建”；实体抽取、人工校核和发布将在后续模块实现。</p>${warning?'<label class="form-field"><span><input type="checkbox" id="ing-confirm-warnings"> 我已查看并确认此版本的质量警告</span></label>':''}<div class="modal-actions">${ingButton('close-dialog','取消')}<button class="button primary" data-ing="handoff-confirm" data-warning="${warning}">确认提交</button></div>`);}
+      if(action==='handoff'){const version=selectedVersion(),warning=version.qualityRuns.at(-1)?.status==='警告';modal('提交知识构建',`<p>将固定 v${version.number}（${ingEscape(version.id)}）及其校验记录交给知识构建。共 ${version.rows.length} 条标准数据。</p><p class="ing-description">提交后状态为“待知识构建”；提交后可在知识构建页创建抽取任务，校核候选知识并发布。</p>${warning?'<label class="form-field"><span><input type="checkbox" id="ing-confirm-warnings"> 我已查看并确认此版本的质量警告</span></label>':''}<div class="modal-actions">${ingButton('close-dialog','取消')}<button class="button primary" data-ing="handoff-confirm" data-warning="${warning}">确认提交</button></div>`);}
       if(action==='handoff-confirm'){const confirmed=Boolean(document.querySelector('#ing-confirm-warnings')?.checked);if(button.dataset.warning==='true'&&!confirmed)throw new Error('请先确认质量警告。');const result=await perform('handoff',{confirmWarnings:confirmed});if(result){toast('已提交至待知识构建清单。');selected=null;go('construction');}}
       if(action==='alias-add')aliasDialog();if(action==='alias-edit')aliasDialog(model.aliases.find(alias=>alias.id===button.dataset.id));
     }catch(cause){toast(cause.message);}return true;
@@ -1650,7 +2004,7 @@ function createIngestionUI({getContext,repaint,refresh,modal,toast,go,selectAsse
       if(form.id==='ing-upload-start'){
         const file=form.elements.file.files[0];if(!file||!file.size||file.size>ingLimits.bytes)throw new Error('请选择非空且不超过 5 MB 的文件。');
         wizard.file=file;wizard.metadata={projectId:context().projectId,wellId:wizard.asset?.wellId||form.elements.wellId.value,objectType:wizard.asset?.objectType||form.elements.objectType.value,encoding:form.elements.encoding.value,name:file.name,...(wizard.asset?{assetId:wizard.asset.id,expectedVersionId:wizard.asset.currentVersionId}:{})};
-        const extension=ingFileFormat(file.name);if(!extension)throw new Error('目前仅支持 CSV 或 JSON 文件。');wizard.parsed=ingParse(new TextDecoder(wizard.metadata.encoding,{fatal:true}).decode(await file.arrayBuffer()),extension);
+        const extension=ingFileFormat(file.name);if(!extension)throw new Error('目前支持 CSV、JSON 或 LAS 2.x ASCII 文件。');if(extension==='las'&&wizard.metadata.objectType!=='log')throw new Error('LAS 文件请选择测井资料类型。');wizard.parsed=ingParse(new TextDecoder(wizard.metadata.encoding,{fatal:true}).decode(await file.arrayBuffer()),extension);
         if(wizard.parsed&&ingFieldSets[wizard.metadata.objectType])wizardMapping();else wizardReview();
       }
       if(form.id==='ing-upload-mapping'){wizard.config=readConfig(form,wizard.metadata.objectType);wizardReview();}
@@ -1660,7 +2014,7 @@ function createIngestionUI({getContext,repaint,refresh,modal,toast,go,selectAsse
       if(form.id==='ing-alias'){const existing=model.aliases.find(alias=>alias.id===form.dataset.id);await perform('alias',{id:existing?.id,projectId:context().projectId,wellId:existing?.wellId||form.elements.wellId.value,kind:existing?.kind||form.elements.kind.value,rawName:existing?.rawName||form.elements.rawName.value,standardName:form.elements.standardName.value,expectedRevision:existing?.revision});toast('主数据映射已保存，相关资料需重新标准化。');}
     }catch(cause){toast(cause.message);}finally{if(submitter)submitter.disabled=false;}return true;
   }
-  function constructionHtml(){if(!context().canData)return '<div class="notice">查看待构建资料需要资料目录权限，请联系管理员配置。</div>';if(!ready())return '<div class="ing-empty">正在读取待知识构建资料…</div>';return `<section class="panel ingestion"><div class="panel-heading"><h2>待知识构建资料</h2>${ingBadge(`${model.handoffs.length} 项`,'blue')}</div><p class="ing-description">资料已固定版本并通过治理门槛，可为每项资料选择并固定已发布的本体。实体关系抽取、人工校核和图谱发布将在后续知识构建模块实现。</p>${contentTable(['交接编号','资料 / 归属井','固定数据版本','校验记录','记录数','状态','本体版本','操作'],model.handoffs.map(item=>[ingEscape(item.id),`${ingEscape(model.assets.find(asset=>asset.id===item.assetId)?.name)}<small class="block">${ingEscape(wellName(item.wellId))}</small>`,ingEscape(item.versionId),ingEscape(item.qualityRunId),ingEscape(item.recordCount),ingBadge(item.status,'amber'),constructionSelector?.(item.id)||'待选择',`<button class="text-button" data-ing="handoff-detail" data-id="${item.assetId}" data-version="${item.versionId}">查看输入</button>`]))}</section>`;}
+  function constructionHtml(){if(!context().canData)return '<div class="notice">查看待构建资料需要资料目录权限，请联系管理员配置。</div>';if(!ready())return '<div class="ing-empty">正在读取待知识构建资料…</div>';return `<section class="panel ingestion"><div class="panel-heading"><h2>待知识构建资料</h2>${ingBadge(`${model.handoffs.length} 项`,'blue')}</div><p class="ing-description">资料已固定版本并通过治理门槛，可为每项资料选择并固定已发布的本体。在知识构建页选择资料与本体创建任务，审核后发布。</p>${contentTable(['交接编号','资料 / 归属井','固定数据版本','校验记录','记录数','状态','本体版本','操作'],model.handoffs.map(item=>[ingEscape(item.id),`${ingEscape(model.assets.find(asset=>asset.id===item.assetId)?.name)}<small class="block">${ingEscape(wellName(item.wellId))}</small>`,ingEscape(item.versionId),ingEscape(item.qualityRunId),ingEscape(item.recordCount),ingBadge(item.status,'amber'),constructionSelector?.(item.id)||'待选择',`<button class="text-button" data-ing="handoff-detail" data-id="${item.assetId}" data-version="${item.versionId}">查看输入</button>`]))}</section>`;}
   return {html,load,open,constructionHtml,async click(event){const button=event.target.closest('[data-ing="handoff-detail"]');if(button){try{await open(button.dataset.id,'lineage');versionId=button.dataset.version;repaint();}catch(cause){toast(cause.message);}return true;}return click(event);},submit,import:async()=>{if(!ready())await load();uploadDialog();},clear(){requestGeneration++;clearTimeout(pollTimer);model=null;loadedProject='';loading=false;error='';selected=null;wizard=null;busy=false;filters={well:'current',type:'',quality:'',status:'',search:'',from:'',to:'',origin:'all'};tab='assets';page=previewPage=issuePage=1;}};
 }
 
@@ -1796,6 +2150,138 @@ function createOntologyUI({getContext,repaint,modal,toast,go}){
 }
 
 
+// ===== src/construction.js =====
+
+const kcEsc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const kcTime=t=>t?new Date(t).toLocaleString('zh-CN',{timeZone:'Asia/Shanghai',hour12:false}):'—';
+const kcStatus={queued:'排队中',running:'抽取中',failed:'失败',review:'待人工校核',published:'已发布',pending:'待校核',accepted:'已接受',rejected:'已驳回',done:'完成',created:'已创建任务',open:'待处理'};
+const kcBadge=(s,tone)=>`<span class="badge ${tone||(s==='failed'||s==='rejected'?'red':s==='published'||s==='accepted'||s==='done'?'teal':'blue')}">${kcEsc(kcStatus[s]||s)}</span>`;
+const kcBtn=(action,label,extra='',primary=false)=>`<button type="button" class="button ${primary?'primary':''}" data-kc="${action}" ${extra}>${label}</button>`;
+const kcOpt=(value,label,current)=>`<option value="${kcEsc(value)}" ${value===current?'selected':''}>${kcEsc(label)}</option>`;
+const kcTable=(headers,rows)=>`<div class="table-scroll"><table class="ing-table"><thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.length?rows.map(r=>`<tr>${r.map(v=>`<td>${v}</td>`).join('')}</tr>`).join(''):`<tr><td colspan="${headers.length}" class="ing-empty">暂无记录</td></tr>`}</tbody></table></div>`;
+const kcJson=v=>kcEsc(JSON.stringify(v,null,2));
+const kcSnippet=e=>{const raw=e.raw||'',span=e.span;return span?kcEsc(raw.slice(0,span.start))+`<mark>${kcEsc(raw.slice(span.start,span.end))}</mark>`+kcEsc(raw.slice(span.end)):kcEsc(raw);};
+
+function createConstructionUI({getContext,repaint,modal,toast,go}){
+  let model=null,task=null,project='',loading=false,error='',ticket=0,tab='tasks',selectedId='',candidateId='',busy=false,pollTimer;
+  let filter={kind:'all',state:'all',confidence:'all'},candidatePage=1,structuredPage=1,sourceIndex=0,evaluationId='',evaluationPage=1,graphPage=1,graph=null,graphProject='',graphLoading=false,graphError='',graphTicket=0;
+  const ctx=()=>getContext(),close=()=>document.querySelector('dialog')?.close();
+  const selected=()=>task?.candidates.find(c=>c.id===candidateId);
+  const pending=()=>task?.candidates.filter(c=>c.state==='pending').length||0;
+  function schedule(){clearTimeout(pollTimer);if(model?.tasks.some(t=>['running','queued'].includes(t.status)))pollTimer=setTimeout(()=>{if(ctx().route==='construction'){if(document.querySelector('dialog[open]'))schedule();else load();}},900);}
+  async function load(){
+    const p=ctx().projectId;if(!p||!ctx().canConstruction)return;
+    const id=++ticket;loading=true;
+    try{
+      const data=await api('/construction?'+new URLSearchParams({projectId:p}));if(id!==ticket||p!==ctx().projectId)return;
+      if(project!==p){selectedId='';candidateId='';tab='tasks';filter={kind:'all',state:'all',confidence:'all'};evaluationId='';sourceIndex=0;}
+      selectedId=data.tasks.some(t=>t.id===selectedId)?selectedId:data.tasks[0]?.id||'';
+      const detail=selectedId?await api('/construction/task?'+new URLSearchParams({projectId:p,taskId:selectedId})):null;if(id!==ticket||p!==ctx().projectId)return;
+      model=data;task=detail;project=p;error='';if(!filteredCandidates().some(c=>c.id===candidateId))candidateId=filteredCandidates()[0]?.id||'';
+    }catch(cause){if(id===ticket){model=null;task=null;project=p;error=cause.message;}}
+    finally{if(id===ticket){loading=false;repaint({preserveScroll:true});schedule();}}
+  }
+  function ready(){if(project!==ctx().projectId){if(!loading)load();return false;}return Boolean(model);}
+  async function send(action,extra={}){
+    if(busy)throw new Error('操作处理中，请稍候。');busy=true;const p=ctx().projectId;
+    try{const result=await api('/construction/'+action,{projectId:p,taskId:task?.id,expectedRevision:task?.revision,...extra});if(p!==ctx().projectId)return null;close();if(action==='create')selectedId=result.id;await load();graph=null;graphProject='';return result;}finally{busy=false;}
+  }
+  function tabs(){return `<div class="workspace-tabs kc-tabs" role="tablist" aria-label="知识构建页签">${[['tasks','抽取任务'],['review','人工校核'],['structured','表格与 LAS'],['evaluation','质量评价'],['updates','增量与发布']].map(([id,label])=>`<button role="tab" aria-selected="${tab===id}" class="${tab===id?'active':''}" data-kc="tab" data-id="${id}">${label}</button>`).join('')}</div>`;}
+  function html(){
+    const head=`<div class="page-heading"><div><div class="breadcrumb">工作台 / 知识构建</div><h1>知识抽取与人工校核</h1><p>固定资料与本体版本，核对候选知识和来源，再发布到知识库。</p></div><div class="heading-actions">${kcBtn('refresh','刷新')}${model?kcBtn('new','新建抽取任务','',true):''}</div></div>`;
+    if(!ready())return head+`<section class="panel ing-empty">${kcEsc(error||'正在读取构建任务…')}${error?kcBtn('refresh','重试'):''}</section>`;
+    return `<div class="kc-module">${head}<div class="kc-summary"><div><strong>${model.tasks.length}</strong><span>抽取任务</span></div><div><strong>${model.tasks.reduce((n,t)=>n+t.pending,0)}</strong><span>待校核候选</span></div><div><strong>${model.publications.length}</strong><span>知识发布</span></div><div><strong>${model.sources.length}</strong><span>可构建资料</span></div></div>${tabs()}${tab==='tasks'?tasksHtml():tab==='updates'?updatesHtml():`${taskSelector()}${!task?'<section class="panel ing-empty">请先新建抽取任务。</section>':tab==='review'?reviewHtml():tab==='structured'?structuredHtml():evaluationHtml()}`}</div>`;
+  }
+  function taskSelector(){return `<div class="kc-task-bar"><label for="kc-task">当前任务</label><select id="kc-task">${model.tasks.map(t=>kcOpt(t.id,`${t.name} · ${kcStatus[t.status]}`,selectedId)).join('')}</select>${task?kcBadge(task.status):''}<span class="subtle">${task?`本体 v${task.ontologyNumber} · ${kcEsc(task.engine)}`:''}</span></div>`;}
+  function tasksHtml(){return `<section class="panel"><div class="panel-heading"><h2>抽取任务</h2><span class="subtle">选择任务查看固定输入与七阶段执行记录</span></div>${kcTable(['任务 / 来源','固定本体','候选 / 待校核','状态','创建人 / 时间','操作'],model.tasks.map(t=>[`<strong>${kcEsc(t.name)}</strong><small class="block">${kcEsc(t.id)} · ${t.sourceCount} 份资料 · ${t.origin==='event'?'事件触发':'手动创建'}</small>`,`v${t.ontologyNumber} · ${kcEsc(t.ontologyVersionId)}`,`${t.candidateCount} / ${t.pending}`,kcBadge(t.status),`${kcEsc(t.createdByName)}<small class="block">${kcTime(t.createdAt)}</small>`,kcBtn('select','查看任务',`data-id="${t.id}"`)]))}</section>${task?`<section class="panel kc-task-detail"><div class="panel-heading"><h2>${kcEsc(task.name)}</h2><div>${task.status==='failed'?kcBtn('retry','重试失败阶段'):''}${['review','published'].includes(task.status)?kcBtn('tab','进入人工校核','data-id="review"',true):''}</div></div>${task.error?`<div class="auth-message">${kcEsc(task.error)}</div>`:''}<ol class="kc-pipeline">${task.stages.map(s=>`<li class="${s.status}"><span>${kcBadge(s.status==='pending'?'等待执行':s.status)}</span><strong>${kcEsc(s.name)}</strong><small>${kcEsc(s.summary||s.error||'按依赖顺序执行')}</small><small>${s.attempt?`执行 ${s.attempt} 次 · ${kcTime(s.finishedAt)}`:'尚未执行'}</small></li>`).join('')}</ol>${kcTable(['固定资料 / 原件','数据版本 / 校验记录','记录数 / 格式','来源'],task.sources.map(s=>[kcEsc(s.fileName),`${kcEsc(s.versionId)}<small class="block">${kcEsc(s.qualityRunId)}</small>`,`${s.rows.length} / ${kcEsc(s.parsed.format.toUpperCase())}`,s.demo?'虚构演示资料':'用户资料']))}<p class="kc-note">解析与记录切分使用治理后的快照；置信度为规则分流分值，不是统计概率。候选入库后等待人工校核，不自动发布。</p></section>`:emptyInputs()}`;}
+  function emptyInputs(){return `<section class="panel ing-empty"><h2>从合格资料开始构建</h2><p>当前可选择 ${model.sources.length} 份固定资料、${model.versions.length} 个已发布本体。</p><div class="kc-actions">${kcBtn('data','查看数据资料')}${kcBtn('ontology','管理本体')}${model.sources.length&&model.versions.length?kcBtn('new','创建第一个任务','',true):''}</div></section>`;}
+  function filteredCandidates(){return (task?.candidates||[]).filter(c=>(filter.kind==='all'||c.kind===filter.kind)&&(filter.state==='all'||c.state===filter.state)&&(filter.confidence==='all'||(filter.confidence==='low'?c.confidence<task.config.confidence:c.confidence>=task.config.confidence)));}
+  function reviewHtml(){
+    if(!['review','published'].includes(task.status))return '<section class="panel ing-empty">任务完成抽取后可进行人工校核，请在任务页查看进度或重试。</section>';
+    const candidates=filteredCandidates(),pages=Math.max(1,Math.ceil(candidates.length/30));candidatePage=Math.min(candidatePage,pages);const c=selected(),canReview=model.capabilities.review&&task.status==='review';
+    return `<div class="kc-review-toolbar"><span>${pending()} 项待校核 / 共 ${task.candidates.length} 项</span><div class="kc-actions">${model.capabilities.publish&&task.status==='review'?kcBtn('publish','审核完成并发布',pending()?'disabled title="请逐项处理全部候选"':'',true):''}${task.status==='published'?kcBtn('graph','查看已发布知识',`data-publication="${task.publicationId}"`):''}</div></div><div class="kc-workbench"><aside class="panel kc-candidates"><div class="kc-pane-head"><h2>候选知识</h2><span>${candidates.length} 项</span></div><div class="kc-filters"><label>类别<select id="kc-kind">${[['all','全部实体与关系'],['entity','实体'],['relation','关系']].map(([v,n])=>kcOpt(v,n,filter.kind)).join('')}</select></label><label>审核状态<select id="kc-state">${[['all','全部状态'],['pending','待校核'],['accepted','已接受'],['rejected','已驳回']].map(([v,n])=>kcOpt(v,n,filter.state)).join('')}</select></label><label>置信度<select id="kc-confidence">${[['all','全部置信度'],['low',`低于 ${task.config.confidence}`],['high',`不低于 ${task.config.confidence}`]].map(([v,n])=>kcOpt(v,n,filter.confidence)).join('')}</select></label></div><div class="kc-candidate-list">${candidates.slice((candidatePage-1)*30,candidatePage*30).map(item=>`<button data-kc="candidate" data-id="${item.id}" class="kc-candidate ${c?.id===item.id?'active':''}"><strong>${kcEsc(candidateName(item))}</strong><span>${kcEsc(item.typeName)} · ${item.kind==='entity'?'实体':'关系'} · ${Math.round(item.confidence*100)}%</span><span>${kcBadge(item.state)} ${item.errors.length?'<small>需修正</small>':''}</span><small>${kcEsc(item.evidence.fileName)} · ${item.evidence.format==='json'?'记录':'行'} ${item.evidence.line}</small></button>`).join('')||'<p class="ing-empty">当前筛选无候选</p>'}</div><div class="kc-pagination">${kcBtn('candidate-prev','上一页',candidatePage===1?'disabled':'')}<span>${candidatePage}/${pages}</span>${kcBtn('candidate-next','下一页',candidatePage===pages?'disabled':'')}</div></aside><section class="panel kc-evidence"><div class="kc-pane-head"><h2>原文与结构化证据</h2>${c?kcBadge(c.evidence.format.toUpperCase(),'neutral'):''}</div>${c?evidenceHtml(c.evidence):'<p class="ing-empty">选择左侧候选查看原文</p>'}</section><section class="panel kc-editor"><div class="kc-pane-head"><h2>编辑与审核</h2>${c?kcBadge(c.state):''}</div>${c?`<div class="kc-editor-body"><h3>${kcEsc(candidateName(c))}</h3><p class="subtle">${kcEsc(c.id)} · 候选版本 ${c.revision}</p>${c.errors.length?`<div class="auth-message">${c.errors.map(kcEsc).join('<br>')}</div>`:''}<form id="kc-review-form" data-candidate="${c.id}">${candidateFields(c,!canReview)}${canReview?`<label class="form-field">审核理由<textarea name="note" required maxlength="1000" placeholder="说明接受、驳回或修正依据"></textarea></label><div class="kc-review-actions"><button type="submit" name="decision" value="accept" class="button primary">接受</button><button type="submit" name="decision" value="modify" class="button">保存修改并接受</button><button type="submit" name="decision" value="reject" class="button">驳回</button></div>`:''}</form>${model.capabilities.review?kcBtn('issue','登记问题'):''}<h3>审核记录</h3>${c.history.slice().reverse().map(h=>`<details class="kc-history"><summary>${kcEsc(h.reviewer)} · ${kcEsc({accept:'接受',modify:'修改并接受',reject:'驳回'}[h.decision])} · v${h.revision}</summary><p>${kcEsc(h.note)}</p><small>${kcTime(h.time)} · ${kcEsc(h.ontologyVersionId)}</small><h4>修改前</h4><pre>${kcJson(h.before)}</pre><h4>修改后</h4><pre>${kcJson(h.after)}</pre></details>`).join('')||'<p class="subtle">尚无人工审核记录</p>'}${(task.issues||[]).filter(i=>i.candidateId===c.id).map(i=>`<p class="kc-issue">${kcEsc(i.id)} · ${kcEsc(i.note)} · 待处理</p>`).join('')}</div>`:'<p class="ing-empty">请选择候选</p>'}</section></div>`;
+  }
+  function candidateName(c){if(c.kind==='entity')return c.name;return `${task.candidates.find(e=>e.id===c.value.subjectId)?.name||'缺失主体'} — ${c.typeName} — ${task.candidates.find(e=>e.id===c.value.objectId)?.name||'缺失客体'}`;}
+  function evidenceHtml(e){return `<div class="kc-evidence-body"><h3>${kcEsc(e.fileName)}</h3><p>${kcEsc(e.versionId)} · ${e.format==='json'?'记录序号':'原件行号'} ${e.line} · 列 ${kcEsc(e.column)}</p><pre class="kc-source-text">${kcSnippet(e)}</pre><dl class="ing-metadata">${[['井',e.well],['层位',e.layer],['单位',e.unit],['深度类型',e.depthType],['参考基准',e.datum]].map(([n,v])=>`<div><dt>${n}</dt><dd>${kcEsc(v||'未提供')}</dd></div>`).join('')}</dl><p class="kc-note">原件版本 ${kcEsc(e.originalVersionId||e.versionId)}；固定治理版本 ${kcEsc(e.versionId)}（${kcEsc(e.processingReason||'首次上传')}）。此处为原件记录，治理修正结果见候选属性与对照表。</p>${!offlineMode?`<a class="button" href="/api/ingestion/files/${encodeURIComponent(e.versionId)}">下载该版本原件</a>`:''}</div>`;}
+  function candidateFields(c,disabled){
+    if(c.kind==='relation')return ['subjectId','objectId'].map((key,i)=>`<label class="form-field">${i?'客体':'主体'}<select name="${key}" ${disabled?'disabled':''}>${task.candidates.filter(e=>e.kind==='entity'&&e.typeId===task.schema.relations.find(r=>r.id===c.typeId)[i?'to':'from']).map(e=>kcOpt(e.id,`${e.name} · ${kcStatus[e.state]}`,c.value[key])).join('')}</select></label>`).join('');
+    return task.schema.types.find(t=>t.id===c.typeId).fields.map(f=>`<label class="form-field">${kcEsc(f.name)} ${f.required?'*':''}${f.unit?`（${kcEsc(f.unit)}）`:''}${f.enum?.length?`<select name="${f.key}" ${disabled?'disabled':''}>${kcOpt('','未提供',c.value[f.key])}${f.enum.map(v=>kcOpt(v,v,c.value[f.key])).join('')}</select>`:`<input name="${f.key}" type="${['number','integer'].includes(f.datatype)?'number':'text'}" ${f.datatype==='number'?'step="any"':''} ${disabled?'disabled':''} value="${kcEsc(c.value[f.key]??'')}">`}</label>`).join('');
+  }
+  function structuredHtml(){
+    const source=task.sources[sourceIndex]||task.sources[0],parsed=source.parsed,pages=Math.max(1,Math.ceil(source.rows.length/20));structuredPage=Math.min(structuredPage,pages);
+    return `<section class="panel kc-structured"><div class="panel-heading"><h2>原表与抽取结果对照</h2><label>资料 <select id="kc-source">${task.sources.map((s,i)=>kcOpt(String(i),s.fileName,String(sourceIndex))).join('')}</select></label></div>${parsed.lasHeader?`<h3>LAS 头段</h3>${kcTable(['原件行','分段','参数','单位','值 / 说明'],parsed.lasHeader.map(h=>[h.line,kcEsc(h.section),kcEsc(h.mnemonic),kcEsc(h.unit),`${kcEsc(h.value)}<small class="block">${kcEsc(h.description)}</small>`]))}`:''}${kcTable(['记录 / 原件位置','原始表格记录','治理后结构化值','实体 / 关系候选'],source.rows.slice((structuredPage-1)*20,structuredPage*20).map((row,i)=>{const index=(structuredPage-1)*20+i,cs=task.candidates.filter(c=>c.evidence.versionId===source.versionId&&c.evidence.row===index+1);return [index+1+` / ${parsed.locations[index]}`,`<pre>${kcEsc(parsed.headers.map((h,j)=>`${h}: ${parsed.rows[index][j]}`).join('\n'))}</pre>`,`<pre>${kcJson(row)}</pre>`,cs.map(c=>`<button class="text-button" data-kc="locate" data-id="${c.id}">${kcEsc(candidateName(c))}</button>`).join('<br>')||'抽取中'];}))}<div class="kc-pagination">${kcBtn('source-prev','上一页',structuredPage===1?'disabled':'')}<span>${structuredPage}/${pages}</span>${kcBtn('source-next','下一页',structuredPage===pages?'disabled':'')}</div></section>`;
+  }
+  function evaluationHtml(){
+    const samples=model.samples.filter(s=>s.taskId===task.id),runs=model.evaluations.filter(e=>e.taskId===task.id),result=runs.find(e=>e.id===evaluationId)||runs.at(-1);const pages=Math.max(1,Math.ceil((result?.details.length||0)/100));evaluationPage=Math.min(evaluationPage,pages);
+    return `<section class="panel kc-evaluation"><div class="panel-heading"><h2>专家标注与抽取评价</h2><div class="kc-actions">${model.capabilities.review&&task.extractionSnapshot?kcBtn('sample','新建专家标注版本'):''}</div></div><p class="kc-note">评价固定的原始抽取输出，人工审核后的知识不会反向覆盖预测。专家须独立核对来源及完整预期结果；预填预测只用于编辑格式。</p><form id="kc-evaluate-form" class="kc-evaluate-form"><label class="form-field">专家标注版本<select name="sampleId" required>${kcOpt('','选择此任务的标注版本','')}${samples.map(s=>kcOpt(s.id,`${s.name} · v${s.number} · ${s.createdBy}`,'')).join('')}</select></label><button type="submit" class="button primary" ${samples.length?'':'disabled'}>运行评价</button><label class="form-field">历史评价<select id="kc-evaluation">${runs.map(r=>kcOpt(r.id,`${r.id} · 标注v${r.sampleNumber} · ${kcTime(r.createdAt)}`,result?.id)).join('')}</select></label></form>${result?`<p class="kc-note">${kcEsc(result.definition)}。抽取器 ${kcEsc(result.engine)} · 本体 ${kcEsc(result.ontologyVersionId)} · 标注 ${kcEsc(result.sampleId)}。</p><div class="kc-summary">${[['准确率',result.accuracy],['精确率',result.precision],['召回率',result.recall],['F1',result.f1]].map(([label,value])=>`<div><strong>${(value*100).toFixed(1)}%</strong><span>${label}</span></div>`).join('')}</div><p class="kc-note">TP ${result.tp} · FP ${result.fp} · FN ${result.fn} · 共 ${result.details.length} 条比对明细</p>${kcTable(['错误类型 / 编号','预期','实际'],result.details.slice((evaluationPage-1)*100,evaluationPage*100).map((d,i)=>[`${(evaluationPage-1)*100+i+1} · ${kcEsc(d.error)}`,`<pre>${kcJson(d.expected)}</pre>`,`<pre>${kcJson(d.actual)}</pre>`]))}<div class="kc-pagination">${kcBtn('evaluation-prev','上一页',evaluationPage===1?'disabled':'')}<span>${evaluationPage}/${pages}</span>${kcBtn('evaluation-next','下一页',evaluationPage===pages?'disabled':'')}</div>${model.capabilities.export?kcBtn('export-evaluation','导出完整评价明细',`data-id="${result.id}"`):''}`:'<div class="ing-empty">选择专家标注版本运行评价，查看指标与逐项预期 / 实际。</div>'}</section>`;
+  }
+  function updatesHtml(){return `<section class="panel"><div class="panel-heading"><h2>资料事件触发配置</h2>${kcBtn('trigger','新增触发配置')}</div><p class="kc-note">仅当新资料或变更版本完成治理交接后触发抽取。配置前已有的交接不补建；每个触发器对同一固定资料版本只创建一个任务，所有结果仍须人工审核后发布。</p>${kcTable(['范围','固定本体','状态','操作'],model.triggers.map(t=>[kcEsc(t.objectType==='all'?'全部资料':t.objectType),kcEsc(t.ontologyVersionId),kcBadge(t.enabled?'已启用':'已停用'),kcBtn('toggle-trigger',t.enabled?'停用':'启用',`data-id="${t.id}"`)]))}</section><section class="panel"><div class="panel-heading"><h2>增量事件与更新任务</h2></div>${kcTable(['事件 / 输入版本','状态','更新任务','时间'],model.events.slice().reverse().map(e=>[`${kcEsc(e.id)}<small class="block">${kcEsc(e.versionId)}</small>`,`${kcBadge(e.status)} ${kcEsc(e.error||'')}`,e.taskId?kcBtn('select','查看更新任务',`data-id="${e.taskId}"`):kcBtn('event-retry','重试事件',`data-id="${e.id}"`),kcTime(e.createdAt)]))}</section><section class="panel"><div class="panel-heading"><h2>知识发布与刷新记录</h2></div>${kcTable(['发布 / 任务','实体 / 关系','图谱 / 索引 / 缓存','发布人 / 时间','操作'],model.publications.map(p=>[`${kcEsc(p.id)}<small class="block">${kcEsc(p.taskId)}</small>`,`${p.entityCount} / ${p.relationCount}`,Object.values(p.refresh).map(kcEsc).join('<br>')+`<small class="block">${kcEsc(p.external)}</small>`,`${kcEsc(p.publishedBy)}<small class="block">${kcTime(p.publishedAt)}</small>`,kcBtn('graph','查看图谱实体 / 关系',`data-publication="${p.id}"`)]))}</section>`;}
+  function newDialog(){
+    modal('新建知识抽取任务',!model.sources.length||!model.versions.length?`<p>需要已治理的固定资料和已发布本体才能创建任务。</p><div class="kc-actions">${kcBtn('data','前往数据接入')}${kcBtn('ontology','前往本体管理')}</div>`:`<form id="kc-create-form"><label class="form-field">任务名称<input name="name" required maxlength="100" value="地质资料知识抽取"></label><label class="form-field">固定本体版本<select name="ontologyVersionId" required>${model.versions.map(v=>kcOpt(v.id,`${v.name} · v${v.number}`,model.sources[0]?.binding?.versionId)).join('')}</select></label><fieldset class="kc-inputs"><legend>选择合格资料（最多10份、2000条记录）</legend>${model.sources.map(s=>`<label><input type="checkbox" name="handoffIds" value="${s.id}"><span>${kcEsc(s.name)}<small class="block">${kcEsc(s.versionId)} · ${s.recordCount}条 · ${kcEsc(s.qualityRunId)}</small></span></label>`).join('')}</fieldset><label class="form-field">低置信度分流阈值<input type="number" name="confidence" value="0.9" min="0" max="1" step="0.01" required></label><fieldset class="kc-inputs"><legend>流水线步骤（依赖顺序固定）</legend>${kcStages.map(([id,name])=>`<label><input type="checkbox" checked disabled><span>${kcEsc(name)}</span></label>`).join('')}</fieldset><label class="kc-check"><input type="checkbox" name="extractRelations" checked> 执行本体约束关系抽取</label><label class="kc-check"><input type="checkbox" name="normalizeTerms" checked> 使用本体术语与同义词归一</label><p class="kc-note">本版使用表格字段与术语规则抽取；七步按依赖顺序执行，候选入库后等待人工审核。任意自然语言、PDF / OCR 与机器学习模型需另行接入。</p><div class="modal-actions"><button type="submit" class="button primary">创建并运行</button></div></form>`,{wide:true});
+  }
+  function download(value,name){const url=URL.createObjectURL(new Blob([JSON.stringify(value,null,2)],{type:'application/json;charset=utf-8'}));const link=document.createElement('a');link.href=url;link.download=name;link.click();setTimeout(()=>URL.revokeObjectURL(url),10000);}
+  async function click(event){
+    const b=event.target.closest('[data-kc]');if(!b)return false;const action=b.dataset.kc;
+    try{
+      if(action==='refresh')await load();
+      if(action==='graph-refresh')await loadGraph();
+      if(action==='tab'){tab=b.dataset.id;repaint({preserveScroll:true});}
+      if(action==='new')newDialog();
+      if(action==='data'||action==='ontology'){close();go(action);}
+      if(action==='select'){selectedId=b.dataset.id;tab='tasks';candidateId='';sourceIndex=0;structuredPage=1;await load();}
+      if(action==='candidate'||action==='locate'){candidateId=b.dataset.id;if(action==='locate')tab='review';repaint({preserveScroll:true});}
+      if(action==='candidate-prev'||action==='candidate-next'){candidatePage+=action==='candidate-prev'?-1:1;repaint({preserveScroll:true});}
+      if(action==='evaluation-prev'||action==='evaluation-next'){evaluationPage+=action==='evaluation-prev'?-1:1;repaint({preserveScroll:true});}
+      if(action==='graph-prev'||action==='graph-next'){graphPage+=action==='graph-prev'?-1:1;repaint({preserveScroll:true});}
+      if(action==='source-prev'||action==='source-next'){structuredPage+=action==='source-prev'?-1:1;repaint({preserveScroll:true});}
+      if(action==='retry'){await send('retry');toast('已重试失败阶段。');}
+      if(action==='event-retry'){await send('event-retry',{eventId:b.dataset.id});toast('增量事件已重新创建任务。');}
+      if(action==='issue'){modal('登记知识问题',`<form id="kc-issue-form"><p>${kcEsc(candidateName(selected()))}</p><label class="form-field">问题描述<textarea name="note" required maxlength="1000"></textarea></label><button class="button primary" type="submit">保存问题与证据</button></form>`);}
+      if(action==='sample'){modal('保存独立专家标注版本',`<form id="kc-sample-form"><label class="form-field">标注名称<input name="name" required maxlength="100" value="专家核对样本"></label><p class="kc-note">请根据原件独立修订完整预期结果。预填值来自抽取输出，仅供编辑格式，不代表专家真值。关系使用主体和客体的属性对象，避免候选编号影响比对。</p><label class="form-field">预期结果 JSON 数组<textarea name="expected" class="kc-json-input" required>${kcJson(kcEvaluationItems(task))}</textarea></label><label><input type="checkbox" name="confirmed" required> 已逐项核对原件，确认这是独立专家标注</label><div class="modal-actions"><button type="submit" class="button primary">保存新标注版本</button></div></form>`,{wide:true});}
+      if(action==='export-evaluation'){const result=await send('export-evaluation',{evaluationId:b.dataset.id});if(result)download(result,`${result.id}.json`);}
+      if(action==='trigger'){modal('新建增量触发配置',`<form id="kc-trigger-form"><label class="form-field">适用资料<select name="objectType"><option value="all">全部类型</option><option value="stratum">地层</option><option value="log">测井 / LAS</option><option value="trajectory">井轨迹</option></select></label><label class="form-field">固定本体版本<select name="ontologyVersionId" required>${model.versions.map(v=>kcOpt(v.id,`${v.name} · v${v.number}`,'')).join('')}</select></label><button class="button primary" type="submit" ${model.versions.length?'':'disabled'}>保存并启用</button></form>`);}
+      if(action==='toggle-trigger'){const t=model.triggers.find(t=>t.id===b.dataset.id);await send('trigger',{...t,expectedRevision:t.revision,enabled:!t.enabled});toast('触发配置已更新。');}
+      if(action==='publish'){modal('发布已审核知识',`<p>发布 ${task.candidates.filter(c=>c.state==='accepted').length} 项已接受知识；同一资料的上一发布版本将保留为历史。</p><p>本机知识库、名称索引与统计缓存将在同一保存事务中更新。</p><div class="modal-actions">${kcBtn('publish-confirm','确认发布','',true)}</div>`);}
+      if(action==='publish-confirm'){const result=await send('publish');if(result){tab='updates';repaint({preserveScroll:true});toast('知识已发布，可在图谱页查看实体、关系和原文。');}}
+      if(action==='graph'){close();graph=null;graphProject='';graphPage=1;location.hash=`/graph?publication=${encodeURIComponent(b.dataset.publication||'')}`;repaint();}
+      if(action==='graph-fact'){const f=graph?.facts.find(f=>f.id===b.dataset.id);if(f)modal('已发布知识与证据',`<h3>${kcEsc(f.name)}</h3><pre>${kcJson(f.value)}</pre>${evidenceHtml(f.evidence)}<h3>人工校核依据</h3>${f.history.map(h=>`<p>${kcEsc(h.reviewer)} · ${kcEsc(h.note)} · ${kcTime(h.time)}</p>`).join('')}`,{wide:true});}
+    }catch(cause){toast(cause.message);}return true;
+  }
+  async function submit(event){
+    const form=event.target;if(!form.id.startsWith('kc-'))return false;event.preventDefault();const button=event.submitter;if(button)button.disabled=true;
+    try{
+      const fields=form.elements;
+      if(form.id==='kc-create-form'){const handoffIds=Array.from(form.querySelectorAll('[name="handoffIds"]:checked')).map(e=>e.value);await send('create',{name:fields.name.value,handoffIds,ontologyVersionId:fields.ontologyVersionId.value,config:{confidence:Number(fields.confidence.value),extractRelations:fields.extractRelations.checked,normalizeTerms:fields.normalizeTerms.checked},stages:kcStages.map(([id])=>id)});tab='tasks';toast('任务已创建并开始执行。');}
+      if(form.id==='kc-review-form'){
+        const c=selected();if(!c||c.id!==form.dataset.candidate)throw new Error('候选已变化，请重新打开。');const decision=event.submitter?.value||'accept';let value;
+        if(decision!=='reject'){value={};if(c.kind==='entity')for(const f of task.schema.types.find(t=>t.id===c.typeId).fields){const raw=fields.namedItem(f.key).value;if(raw!=='')value[f.key]=['number','integer'].includes(f.datatype)?Number(raw):f.datatype==='boolean'?raw==='true':raw;}else value={subjectId:fields.subjectId.value,objectId:fields.objectId.value};}
+        if(decision==='accept'&&kcStable(value)!==kcStable(c.value))throw new Error('属性已修改，请使用“保存修改并接受”。');
+        await send('review',{candidateId:c.id,candidateRevision:c.revision,decision,note:fields.note.value,...(value?{value}:{})});toast('审核结果、前后值及理由已保存。');
+      }
+      if(form.id==='kc-issue-form'){const result=await send('issue',{candidateId:selected().id,note:fields.note.value});if(result)toast(`问题已登记：${result.id}`);}
+      if(form.id==='kc-sample-form'){if(!fields.confirmed.checked)throw new Error('请先独立核对专家标注。');let expected;try{expected=JSON.parse(fields.expected.value);}catch{throw new Error('预期结果 JSON 格式错误。');}await send('sample',{name:fields.name.value,expected});toast('专家标注已保存为新版本。');}
+      if(form.id==='kc-evaluate-form'){const result=await send('evaluate',{sampleId:fields.sampleId.value});if(result){evaluationId=result.id;evaluationPage=1;repaint({preserveScroll:true});toast('抽取评价已完成。');}}
+      if(form.id==='kc-trigger-form'){await send('trigger',{objectType:fields.objectType.value,ontologyVersionId:fields.ontologyVersionId.value,enabled:true});toast('增量触发配置已保存。');}
+    }catch(cause){toast(cause.message);}finally{if(button)button.disabled=false;}return true;
+  }
+  function change(event){
+    const e=event.target;
+    if(e.id==='kc-task'){selectedId=e.value;candidateId='';sourceIndex=0;structuredPage=1;load();}
+    if(['kc-kind','kc-state','kc-confidence'].includes(e.id)){filter[e.id.slice(3)]=e.value;candidatePage=1;candidateId=filteredCandidates()[0]?.id||'';repaint({preserveScroll:true});}
+    if(e.id==='kc-source'){sourceIndex=Number(e.value);structuredPage=1;repaint({preserveScroll:true});}
+    if(e.id==='kc-evaluation'){evaluationId=e.value;evaluationPage=1;repaint({preserveScroll:true});}
+  }
+  async function loadGraph(){const p=ctx().projectId,id=++graphTicket;graphLoading=true;try{const result=await api('/construction/graph?'+new URLSearchParams({projectId:p}));if(id!==graphTicket||p!==ctx().projectId)return;graph=result;graphProject=p;graphError='';}catch(cause){if(id===graphTicket){graphError=cause.message;graphProject=p;graph=null;}}finally{if(id===graphTicket){graphLoading=false;repaint({preserveScroll:true});}}}
+  function graphHtml(){
+    if(graphProject!==ctx().projectId){if(!graphLoading)loadGraph();return '<section class="panel ing-empty">正在读取已发布知识…</section>';}
+    if(!graph)return `<section class="panel ing-empty">${kcEsc(graphError)}</section>`;
+    const publication=new URLSearchParams(location.hash.split('?')[1]||'').get('publication'),facts=graph.facts.filter(f=>!publication||f.publicationId===publication),pages=Math.max(1,Math.ceil(facts.length/100));graphPage=Math.min(graphPage,pages);
+    return `<section class="panel kc-published"><div class="panel-heading"><h2>人工审核后发布的知识</h2>${kcBtn('graph-refresh','刷新知识')}<span class="subtle">${kcEsc(graph.storage)} · ${facts.length} 项</span></div>${publication?`<p class="kc-note">当前发布：${kcEsc(publication)}。${facts.length?'':'此发布已被新版本替代，或没有可访问的现行知识。'} <a href="#/graph">查看全部现行知识</a></p>`:''}${kcTable(['对象 / 关系','类型','资料与固定版本','操作'],facts.slice((graphPage-1)*100,graphPage*100).map(f=>[kcEsc(f.name),`${f.kind==='entity'?'实体':'关系'} · ${kcEsc(f.typeName)}`,`${kcEsc(f.evidence.fileName)}<small class="block">${kcEsc(f.evidence.versionId)} · 行 / 记录 ${f.evidence.line}</small>`,kcBtn('graph-fact','查看知识与证据',`data-id="${f.id}"`)]))}<div class="kc-pagination">${kcBtn('graph-prev','上一页',graphPage===1?'disabled':'')}<span>${graphPage}/${pages}</span>${kcBtn('graph-next','下一页',graphPage===pages?'disabled':'')}</div><p class="kc-note">${kcEsc(graph.externalGraph)}。各发布任务保留完整候选与审核历史。</p></section>`;
+  }
+  return {html,load,click,submit,change,graphHtml,clear(){ticket++;graphTicket++;clearTimeout(pollTimer);model=task=graph=null;project=graphProject='';loading=graphLoading=false;error=graphError='';selectedId=candidateId=evaluationId='';tab='tasks';busy=false;}};
+}
+
+
 // ===== src/main.js =====
 let projects=[],wells=[],initialTasks=[],authorizedAssets=[],allowedActions={},currentUser=null,authLoading=true,loginNotice='',sessionTimer;
 const permitted=(permission)=>['import','run','export','rule-edit'].includes(permission)?(allowedActions[state.wellId]||[]).includes(permission):currentUser?.permissions.includes('manage')||((projects.find(p=>p.id===state.projectId)?.permissions||currentUser?.permissions||[]).includes(permission));
@@ -1897,10 +2383,10 @@ function pageHtml(page) {
   if(page==='home') return homeHtml();
   if(page==='retrieval') return retrievalHtml();
   if(page==='reasoning') return reasoningHtml();
-  if(page==='graph') return heading('图谱管理','知识关联与来源','围绕当前井查看五类知识对象及其关联依据。',`<button class="button primary" data-route="retrieval">${icon('search',15)}进入混合检索</button>`)+`<section class="panel graph-full"><div class="panel-heading"><h2>${icon('graph',18)}当前井知识关联</h2>${badge('示例图谱','neutral')}</div>${graphHtml()}${graphLegend()}</section>`+assetTable();
+  if(page==='graph') return heading('图谱管理','知识关联与来源','围绕当前井查看五类知识对象及其关联依据。',`<button class="button primary" data-route="retrieval">${icon('search',15)}进入混合检索</button>`)+constructionUI.graphHtml()+`<section class="panel graph-full"><div class="panel-heading"><h2>${icon('graph',18)}当前井知识关联</h2>${badge('示例图谱','neutral')}</div>${graphHtml()}${graphLegend()}</section>`+assetTable();
   if(page==='data') return ingestionUI.html();
   if(page==='ontology') return ontologyUI.html();
-  if(page==='construction') return heading('知识构建','知识构建与校核','接收治理后的固定资料版本，准备实体与关系抽取。')+ingestionUI.constructionHtml()+moduleRoadmap(page);
+  if(page==='construction') return constructionUI.html();
   if(page==='operations') return heading('运行管理','运行记录','查看本次工作台中的规则判定记录及其输入快照。')+historyHtml()+moduleRoadmap(page);
   const definition=moduleDefinitions[page];
   if(!definition) return heading('页面不存在','未找到该页面','请通过顶部菜单返回工作台。',`<button class="button primary" data-route="home">返回首页</button>`);
@@ -1997,6 +2483,7 @@ document.addEventListener('click',async event=>{
   const actionPermission={import:'import','run-rule':'run','export-run':'export','joint-analysis':'run'}[permissionButton?.dataset.action];
   if(actionPermission&&!permitted(actionPermission)){toast('无权执行此操作。');return;}
   try {
+  if(await constructionUI.click(event))return;
   if(await ontologyUI.click(event))return;
   if(await ingestionUI.click(event))return;
   const routeButton=event.target.closest('[data-route]');
@@ -2043,6 +2530,7 @@ document.addEventListener('click',async event=>{
 document.addEventListener('change',event=>{
   usersUI.change(event);
   ontologyUI.change(event);
+  constructionUI.change(event);
   if(event.target.id==='project-select'&&ontologyUI.hasUnsaved()&&!window.confirm('当前本体有未保存修改，切换项目将放弃这些修改。是否继续？')){event.target.value=state.projectId;return;}
   if(event.target.id==='project-select'){state.selectedAssetId='';state.projectId=event.target.value;state.wellId=currentProject().wells[0];state.selectedType='well';state.expanded=new Set([state.wellId]);state.activeResult=null;state.treeFilter='';persist();render();}
   if(event.target.id==='analysis-well'){state.wellId=event.target.value;state.selectedType='well';state.expanded.add(state.wellId);state.activeResult=null;persist();render();}
@@ -2055,6 +2543,7 @@ document.addEventListener('input',event=>{
   if(['target-thickness','reference-thickness'].includes(event.target.id))invalidateResult();
 });
 document.addEventListener('submit',async event=>{
+  if(event.target.id.startsWith('kc-')){event.preventDefault();await constructionUI.submit(event);return;}
   if(event.target.id.startsWith('onto-')||event.target.id.startsWith('ing-')||['login-form','admin-edit-form','audit-filter-form','rule-form'].includes(event.target.id))event.preventDefault();
   if(await ontologyUI.submit(event))return;
   if(event.target.id.startsWith('ing-')||['login-form','admin-edit-form','audit-filter-form','rule-form'].includes(event.target.id))event.preventDefault();
@@ -2074,6 +2563,7 @@ document.addEventListener('keydown',event=>{if((event.key==='Enter'||event.key==
 const usersUI=createUsersUI({modal,toast,refresh:refreshWorkspace,getUser:()=>currentUser});
 const ingestionUI=createIngestionUI({getContext:()=>({projectId:state.projectId,wellId:state.wellId,block:currentProject().block,canData:permitted('data'),canImport:permitted('import'),route:route()}),repaint:render,refresh:refreshWorkspace,modal,toast,go,constructionSelector:id=>ontologyUI.constructionSelector(id),selectAsset:asset=>{state.wellId=asset.wellId;state.selectedType=asset.objectType;state.selectedAssetId=asset.id;state.expanded.add(asset.wellId);}});
 const ontologyUI=createOntologyUI({getContext:()=>({projectId:state.projectId,canOntology:permitted('ontology'),canConstruction:permitted('construction'),assets:getAssets()}),repaint:render,modal,toast,go});
+const constructionUI=createConstructionUI({getContext:()=>({projectId:state.projectId,wellId:state.wellId,canConstruction:permitted('construction'),route:route()}),repaint:render,modal,toast,go});
 document.addEventListener('dragstart',event=>ontologyUI.dragstart(event));
 document.addEventListener('dragover',event=>{if(event.target.closest('.onto-canvas'))event.preventDefault();});
 document.addEventListener('drop',event=>ontologyUI.drop(event));
@@ -2092,6 +2582,7 @@ function applyPermissions(){
 function clearSession(message=''){
   ingestionUI.clear();
   ontologyUI.clear();
+  constructionUI.clear();
   state.selectedAssetId='';
   currentUser=null;projects=[];wells=[];initialTasks=[];authorizedAssets=[];allowedActions={};state.runs=[];state.imported=[];state.activeResult=null;state.projectId='';state.wellId='';state.homeTab='overview';state.treeFilter='';state.selectedType='well';state.expanded=new Set();usersUI.clear();clearTimeout(sessionTimer);$('#overlay-root').innerHTML='';loginNotice=message;authLoading=false;location.hash='/login';render();
 }
@@ -2110,7 +2601,7 @@ async function handleAuthAction(event){const control=event.target.closest('[data
   if(control.dataset.auth==='logout'){try{await api('/auth/logout',{});clearSession('您已退出登录。');}catch(error){toast(error.message);}}
 }
 window.addEventListener('session-expired',()=>clearSession('登录已失效或账号已停用，请重新登录。'));
-window.addEventListener('hashchange',async()=>{$('dialog')?.close();if(currentUser&&route()==='users')await usersUI.load();render();});
+window.addEventListener('hashchange',async()=>{$('dialog')?.close();if(currentUser&&route()==='users')await usersUI.load();if(currentUser&&route()==='construction')await constructionUI.load();render();});
 window.addEventListener('focus',async()=>{if(!currentUser)return;try{await refreshWorkspace();}catch(error){if(error.status!==401)toast(error.message);}});
 async function start(){render();try{await refreshWorkspace();if(route()==='users')await usersUI.load();authLoading=false;render();}catch(error){if(error.status===401)clearSession();else {authLoading=false;clearSession('无法连接服务，请确认本机服务已启动后刷新。');}}}
 start();

@@ -50,7 +50,8 @@ export async function createIngestion({directory,getDb,commit}){
         input.encoding=input.encoding||'utf-8';if(!['utf-8','gb18030'].includes(input.encoding))fault('仅支持 UTF-8 或 GB18030 编码。');
         if(req.headers['x-import-config']){if(req.headers['x-import-config'].length>6000)fault('字段配置过大。');try{input.config=JSON.parse(decodeURIComponent(req.headers['x-import-config']));}catch{fault('字段配置格式错误。');}}
         ingScope(getDb(),user,input.projectId,input.wellId,'import');
-        if(!ingFileFormat(input.name))fault('目前仅支持 CSV 或 JSON 文件。',415);
+        if(!ingFileFormat(input.name))fault('目前支持 CSV、JSON 或 LAS 2.x ASCII 文件。',415);
+        if(ingFileFormat(input.name)==='las'&&input.objectType!=='log')fault('LAS 文件请选择测井资料类型。');
         if(input.assetId)ingFindAsset(getDb(),user,input.assetId,'import',true);
         if(Number(req.headers['content-length'])>ingLimits.bytes)fault('单文件最多 5 MB。',413);
         const chunks=[];let size=0;

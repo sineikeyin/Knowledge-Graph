@@ -3,10 +3,11 @@ import {ingEnsure,ingRecordUpload,ingSetParsed,ingDashboard,ingDetail,ingMutatio
 import {ingParse} from './ingestion-core.js';
 import {ingSeedDemo} from './ingestion-demo.js';
 import {ontoEnsure,ontoDashboard,ontoPublished,ontoMutation,ontoImpact} from './ontology-model.js';
+import {kcEnsure,kcDashboard,kcDetail,kcGraph,kcMutation,kcDispatch,kcAdvance} from './construction-model.js';
 export function createOfflineService() {
   let db;try{db=JSON.parse(localStorage.getItem('geokg-offline-users-v1'));}catch{}if(!db?.users)db=makeDatabase();
   let session;try{session=JSON.parse(sessionStorage.getItem('geokg-offline-session-v1'));}catch{}
-  ingEnsure(db);ontoEnsure(db);
+  ingEnsure(db);ontoEnsure(db);kcEnsure(db);
   const save=()=>{localStorage.setItem('geokg-offline-users-v1',JSON.stringify(db));if(session)sessionStorage.setItem('geokg-offline-session-v1',JSON.stringify(session));else sessionStorage.removeItem('geokg-offline-session-v1');};
   if(ingSeedDemo(db).changed)save();
   return async(pathname,body)=>{
@@ -15,6 +16,20 @@ export function createOfflineService() {
     if(pathname==='/auth/me')return {user:identity(db,user),expires:session.expires};
     if(pathname==='/auth/logout'){auditEvent(db,user,'退出登录（离线演示）','会话');session=null;save();return {ok:true};}
     if(pathname==='/workspace')return workspace(db,user);
+    if(pathname.startsWith('/construction')){
+      const [endpoint,query='']=pathname.split('?'),params=new URLSearchParams(query),projectId=params.get('projectId');
+      const before=clone(db);
+      try{
+        kcDispatch(db);
+        for(const task of db.construction.tasks.filter(t=>['queued','running'].includes(t.status))){const actor=db.users.find(u=>u.id===task.createdBy);if(actor?.enabled)for(let i=0;i<7&&['queued','running'].includes(task.status);i++)kcAdvance(db,actor,task.id);}
+        let result;
+        if(endpoint==='/construction')result=kcDashboard(db,user,projectId);
+        else if(endpoint==='/construction/task')result=kcDetail(db,user,projectId,params.get('taskId'));
+        else if(endpoint==='/construction/graph')result=kcGraph(db,user,projectId);
+        else result=kcMutation(db,user,endpoint.split('/').pop(),body);
+        save();return result;
+      }catch(error){db=before;throw error;}
+    }
     if(pathname.startsWith('/ontology')){
       const [endpoint,query='']=pathname.split('?');const params=new URLSearchParams(query),projectId=params.get('projectId');
       if(endpoint==='/ontology')return ontoDashboard(db,user,projectId);
