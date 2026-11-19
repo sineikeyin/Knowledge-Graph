@@ -1,6 +1,6 @@
 {
   "name": "geosteering-knowledge-platform",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "private": true,
   "type": "module",
   "description": "智能地质导向知识图谱平台：资料治理、本体与Schema管理、用户权限与规则判定",

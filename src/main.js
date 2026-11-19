@@ -192,7 +192,7 @@ function invalidateResult() {
 
 // SVG 原生鼠标聚焦会滚动整个图形；保留焦点但不移动当前视口。
 document.addEventListener('mousedown',event=>{
-  const node=event.target.closest('.graph-node');
+  const node=event.target.closest('.graph-node,.onto-node,.onto-edge');
   if(!node||event.button!==0)return;
   event.preventDefault();
   node.focus({preventScroll:true});
