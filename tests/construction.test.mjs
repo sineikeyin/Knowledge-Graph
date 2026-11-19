@@ -8,7 +8,7 @@ import {ingParse} from '../src/ingestion-core.js';
 import {ingRecordUpload,ingSetParsed,ingMutation} from '../src/ingestion-model.js';
 import {ontoEnsure,ontoMutation} from '../src/ontology-model.js';
 import {kcEnsure,kcDashboard,kcDetail,kcGraph,kcMutation,kcAdvance,kcDispatch} from '../src/construction-model.js';
-import {kcMetric,kcEvaluationItems} from '../src/construction-core.js';
+import {kcMetric,kcEvaluationItems,kcDefaultTaskName} from '../src/construction-core.js';
 import {createApp} from '../server/app.mjs';
 
 const kcTestLas=`~Version Information
@@ -56,6 +56,14 @@ test('05 任务绑定固定资料、本体与抽取配置，分七阶段产生�
   assert.equal(created.stages.length,7);const task=f.run(created.id);assert.equal(task.status,'review');assert.ok(task.stages.every(s=>s.status==='done'&&s.attempt===1));assert.equal(task.candidates.filter(c=>c.kind==='entity').length,4);assert.equal(task.candidates.filter(c=>c.kind==='relation').length,3);
   const rock=task.candidates.find(c=>c.typeId==='lithology');assert.equal(rock.value.name,'砂岩');assert.equal(rock.normalization.before.name,'sandstone');assert.match(rock.evidence.raw,/sandstone/);assert.equal(rock.evidence.line,2);assert.equal(rock.evidence.versionId,f.input.versionId);assert.ok(rock.evidence.span);assert.deepEqual(task.sources,pinned);assert.equal(f.db.construction.publications.length,0);
   const other=f.run(f.create(f.engineer,{config:{extractRelations:false,normalizeTerms:false}}).id);assert.ok(!other.candidates.some(c=>c.kind==='relation'));assert.equal(other.candidates.find(c=>c.typeId==='lithology').value.name,'sandstone');
+});
+test('05 默认任务名按井与资料类型生成，历史通用名称可辨认且自定义名称保留',()=>{
+  const f=fixture(),first=f.create(f.engineer,{name:'地质资料知识抽取'}),second=f.create(f.engineer,{name:''});
+  assert.equal(first.name,'JH-01 · 地层知识抽取');assert.equal(second.name,first.name);assert.notEqual(first.id,second.id);
+  f.db.construction.tasks.find(t=>t.id===first.id).name='地质资料知识抽取';
+  const dashboard=kcDashboard(f.db,f.admin,'p1'),visible=dashboard.tasks.find(t=>t.id===first.id);assert.equal(visible.displayName,'JH-01 · 地层知识抽取');assert.deepEqual(visible.sourceNames,['地层.csv']);assert.deepEqual(visible.sourceVersions,[f.input.versionId]);assert.equal(dashboard.sources[0].wellCode,'JH-01');assert.equal(dashboard.sources[0].objectType,'stratum');assert.equal(f.get(first.id).displayName,visible.displayName);assert.equal(f.db.construction.tasks.find(t=>t.id===first.id).name,'地质资料知识抽取');
+  const custom=f.create(f.engineer,{name:'专家复查第二批'});assert.equal(custom.name,'专家复查第二批');assert.equal(f.get(custom.id).displayName,custom.name);
+  assert.equal(kcDefaultTaskName([{wellCode:'JH-01',objectType:'stratum'},{wellCode:'JH-02',objectType:'log'}],'更新'),'JH-01、JH-02 · 地层、测井知识更新');
 });
 test('05 拒绝跨项目、未发布本体、重复资产版本及未治理输入，版本不随资料更新漂移',()=>{
   const f=fixture();assert.throws(()=>f.create(f.engineer,{projectId:'p2'}),{status:403});assert.throws(()=>f.create(f.engineer,{ontologyVersionId:'missing'}),/已发布/);assert.throws(()=>f.create(f.engineer,{handoffIds:[]}),/请选择/);

@@ -1,7 +1,7 @@
 import {clone,fault,can,requirePermission,resourceAllowed,auditEvent,permittedWells} from './access-model.js';
 import {ingEnsure,ingFindAsset,ingId} from './ingestion-model.js';
 import {ontoEnsure} from './ontology-model.js';
-import {kcStages,kcEngine,kcEntities,kcRelations,kcNormalize,kcCheck,kcMetric,kcEvaluationItems,kcName,kcStable} from './construction-core.js';
+import {kcStages,kcEngine,kcEntities,kcRelations,kcNormalize,kcCheck,kcMetric,kcEvaluationItems,kcName,kcStable,kcTaskDisplayName} from './construction-core.js';
 
 export function kcEnsure(db){
   db.construction??={tasks:[],samples:[],evaluations:[],triggers:[],events:[],publications:[],facts:[],issues:[],indexes:{},caches:{},permissionVersion:0};
@@ -34,10 +34,10 @@ function kcSource(db,user,handoffId,projectId){
 }
 export function kcDashboard(db,user,projectId){
   kcScope(db,user,projectId);const model=kcEnsure(db),ig=ingEnsure(db),visibleTasks=model.tasks.filter(t=>t.projectId===projectId&&kcVisible(db,user,t)),ids=new Set(visibleTasks.map(t=>t.id));
-  const sources=ig.handoffs.filter(h=>h.projectId===projectId).filter(h=>{try{kcAssetAccess(db,user,h);return true;}catch{return false;}}).map(h=>({...clone(h),name:db.assets.find(a=>a.id===h.assetId)?.name,binding:clone(ontoEnsure(db).bindings.find(b=>b.handoffId===h.id)||null)}));
-  return {projectId,sources,versions:ontoEnsure(db).versions.filter(v=>v.projectId===projectId&&v.status==='published').map(({id,name,number,revision})=>({id,name,number,revision})),tasks:visibleTasks.map(t=>({id:t.id,name:t.name,status:t.status,revision:t.revision,ontologyVersionId:t.ontologyVersionId,ontologyNumber:t.ontologyNumber,createdAt:t.createdAt,createdByName:t.createdByName,origin:t.origin,error:t.error,stages:clone(t.stages),sourceCount:t.sources.length,candidateCount:t.candidates.length,pending:t.candidates.filter(c=>c.state==='pending').length,accepted:t.candidates.filter(c=>c.state==='accepted').length})),samples:clone(model.samples.filter(s=>ids.has(s.taskId))),evaluations:clone(model.evaluations.filter(e=>ids.has(e.taskId))),triggers:clone(model.triggers.filter(t=>t.projectId===projectId&&t.createdBy===user.id)),events:clone(model.events.filter(e=>e.projectId===projectId&&e.createdBy===user.id)),publications:clone(model.publications.filter(p=>ids.has(p.taskId))),capabilities:{review:can(db,user,'review',projectId),publish:can(db,user,'publish',projectId),export:can(db,user,'export',projectId)}};
+  const sources=ig.handoffs.filter(h=>h.projectId===projectId).filter(h=>{try{kcAssetAccess(db,user,h);return true;}catch{return false;}}).map(h=>({...clone(h),name:db.assets.find(a=>a.id===h.assetId)?.name,wellCode:db.wells.find(w=>w.id===h.wellId)?.short,objectType:db.assets.find(a=>a.id===h.assetId)?.objectType,binding:clone(ontoEnsure(db).bindings.find(b=>b.handoffId===h.id)||null)}));
+  return {projectId,sources,versions:ontoEnsure(db).versions.filter(v=>v.projectId===projectId&&v.status==='published').map(({id,name,number,revision})=>({id,name,number,revision})),tasks:visibleTasks.map(t=>({id:t.id,name:t.name,displayName:kcTaskDisplayName(t),sourceNames:t.sources.map(s=>s.fileName),sourceVersions:t.sources.map(s=>s.versionId),status:t.status,revision:t.revision,ontologyVersionId:t.ontologyVersionId,ontologyNumber:t.ontologyNumber,createdAt:t.createdAt,createdByName:t.createdByName,origin:t.origin,error:t.error,stages:clone(t.stages),sourceCount:t.sources.length,candidateCount:t.candidates.length,pending:t.candidates.filter(c=>c.state==='pending').length,accepted:t.candidates.filter(c=>c.state==='accepted').length})),samples:clone(model.samples.filter(s=>ids.has(s.taskId))),evaluations:clone(model.evaluations.filter(e=>ids.has(e.taskId))),triggers:clone(model.triggers.filter(t=>t.projectId===projectId&&t.createdBy===user.id)),events:clone(model.events.filter(e=>e.projectId===projectId&&e.createdBy===user.id)),publications:clone(model.publications.filter(p=>ids.has(p.taskId))),capabilities:{review:can(db,user,'review',projectId),publish:can(db,user,'publish',projectId),export:can(db,user,'export',projectId)}};
 }
-export function kcDetail(db,user,projectId,taskId){kcScope(db,user,projectId);return clone(kcTask(db,user,taskId,projectId));}
+export function kcDetail(db,user,projectId,taskId){kcScope(db,user,projectId);const task=kcTask(db,user,taskId,projectId);return {...clone(task),displayName:kcTaskDisplayName(task)};}
 export function kcGraph(db,user,projectId){
   kcScope(db,user,projectId,'graph');const model=kcEnsure(db);
   const facts=model.facts.filter(f=>f.projectId===projectId&&f.active).filter(f=>{try{kcAssetAccess(db,user,f);return true;}catch{return false;}}),ids=new Set(facts.map(f=>f.id));
@@ -69,7 +69,8 @@ function kcCreate(db,user,body,origin='manual'){
   const ontology=ontoEnsure(db).versions.find(v=>v.id===body.ontologyVersionId&&v.projectId===projectId&&v.status==='published');if(!ontology)fault('请选择已发布的本体版本。',409);
   const confidence=body.config?.confidence??0.9;if(typeof confidence!=='number'||confidence<0||confidence>1||!Number.isFinite(confidence))fault('置信度分流阈值须在 0～1 之间。');
   if(body.stages!==undefined&&kcStable(body.stages)!==kcStable(kcStages.map(([id])=>id)))fault('当前流水线需按依赖顺序执行全部七个步骤。');
-  const name=String(body.name||'知识抽取任务').trim();if(!name||name.length>100)fault('任务名称需为 1～100 字。');
+  const providedName=String(body.name??'').trim();if(providedName.length>100)fault('任务名称需为 1～100 字。');
+  const name=kcTaskDisplayName({name:providedName,sources});
   const now=kcNow(),task={id:ingId(db,'KC'),projectId,name,revision:1,status:'queued',origin,createdBy:user.id,createdByName:user.name,createdAt:now,updatedAt:now,ontologyVersionId:ontology.id,ontologyNumber:ontology.number,schemaRevision:ontology.revision,schema:clone(ontology.schema),engine:kcEngine,config:{confidence,extractRelations:body.config?.extractRelations!==false,normalizeTerms:body.config?.normalizeTerms!==false},sources,candidates:[],stages:kcStages.map(([id,name])=>({id,name,status:'pending',attempt:0})),error:''};model.tasks.unshift(task);return task;
 }
 export function kcMutation(db,user,action,body,context={}){

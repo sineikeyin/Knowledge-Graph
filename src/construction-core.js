@@ -2,6 +2,14 @@ import {ontoCheckRecord} from './ontology-core.js';
 
 export const kcStages=[['parse','解析'],['sentence','分句 / 记录切分'],['ner','实体识别'],['relation','关系抽取'],['normalize','术语归一'],['quality','Schema 质检'],['store','候选入库']];
 export const kcEngine='structured-geoscience-v1';
+const kcGenericTaskNames=new Set(['地质资料知识抽取','知识抽取任务','抽取任务','知识更新任务','增量事件重试']);
+export function kcDefaultTaskName(sources,purpose='抽取'){
+  const wells=[...new Set(sources.map(s=>s.wellCode||s.rows?.[0]?.well||s.wellId).filter(Boolean))];
+  const types=[...new Set(sources.map(s=>({stratum:'地层',log:'测井',trajectory:'轨迹',model:'模型',instruction:'历史指令'}[s.objectType]||'资料')))];
+  const scope=wells.length>2?`${wells.slice(0,2).join('、')}等${wells.length}口井`:wells.join('、');
+  return `${scope||'所选资料'} · ${types.join('、')||'资料'}知识${purpose}`.slice(0,100);
+}
+export function kcTaskDisplayName(task){return !task.name||kcGenericTaskNames.has(task.name)?kcDefaultTaskName(task.sources||[]):task.name;}
 export const kcStable=value=>JSON.stringify(value&&typeof value==='object'?Array.isArray(value)?value.map(v=>JSON.parse(kcStable(v))):Object.fromEntries(Object.keys(value).sort().map(k=>[k,JSON.parse(kcStable(value[k]))])):value??null);
 export const kcName=(type,v)=>type==='well'?v.code:type==='stratum'?v.layer:type==='lithology'?v.name:type==='interval'?`${v.well} ${v.top}–${v.bottom}`:type==='log'?`${v.curve} @ ${v.depth}`:type==='trajectory'?`${v.well} @ ${v.depth}`:v.name||v.command||type;
 export function kcEvidence(source,rowIndex,field=''){
