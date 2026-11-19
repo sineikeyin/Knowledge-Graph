@@ -11,6 +11,16 @@ test('离线预览语法完整，离线登录、管理页数据及退出可用',
   vm.runInContext(beforeMain,ctx);const login=await vm.runInContext("api('/auth/login',{account:'admin',password:'GeoDemo!2026'})",ctx);assert.equal(login.user.id,'u1');
   const admin=await vm.runInContext("api('/admin')",ctx);assert.equal(admin.users.length,6);assert.equal(admin.roles.length,6);
   const seeded=await vm.runInContext("api('/ingestion?projectId=p1')",ctx);assert.equal(seeded.jobs.length,10);assert.equal(seeded.aliases.length,12);assert.equal(seeded.handoffs.length,3);
+  ctx.setTimeout=setTimeout;ctx.clearTimeout=clearTimeout;ctx.document={querySelector:()=>null};
+  assert.equal(vm.runInContext("ingAliasLabel({demo:true,rawName:'【演示】 旧层名'})",ctx),'旧层名');
+  await vm.runInContext(`let mappingModal='',mappingToast='',originalMapping;const mappingTestUI=createIngestionUI({getContext:()=>({projectId:'p1',wellId:'w1',canData:true,canImport:true,route:'data'}),repaint(){},refresh:async()=>{},modal:(_,html)=>{mappingModal=html;},toast:message=>{mappingToast=message;},go(){}});mappingTestUI.load();`,ctx);
+  await vm.runInContext("mappingTestUI.click({target:{closest:selector=>selector==='[data-ing]'?({dataset:{ing:'tab',id:'aliases'}}):null}})",ctx);
+  const mappingHtml=await vm.runInContext('mappingTestUI.html()',ctx);assert.ok(!mappingHtml.includes('[演示]'));assert.ok(mappingHtml.includes('JH-01旧井名'));
+  await vm.runInContext(`(async()=>{originalMapping=(await api('/ingestion?projectId=p1')).aliases.find(alias=>alias.wellId==='w1'&&alias.kind==='well');await mappingTestUI.click({target:{closest:selector=>selector==='[data-ing]'?({dataset:{ing:'alias-edit',id:originalMapping.id}}):null}});})()`,ctx);
+  const mappingModal=vm.runInContext('mappingModal',ctx);assert.match(mappingModal,/name="rawName"[^>]*value="JH-01旧井名"/);assert.ok(!mappingModal.includes('[演示]'));
+  await vm.runInContext(`mappingTestUI.submit({preventDefault(){},target:{id:'ing-alias',dataset:{id:originalMapping.id},querySelector:()=>null,elements:{rawName:{value:'JH-01旧井名'},standardName:{value:originalMapping.standardName}}}})`,ctx);
+  assert.match(vm.runInContext('mappingToast',ctx),/已保存/);
+  const preserved=await vm.runInContext("(async()=>(await api('/ingestion?projectId=p1')).aliases.find(alias=>alias.id===originalMapping.id))()",ctx);assert.equal(preserved.rawName,seeded.aliases.find(alias=>alias.id===preserved.id).rawName);assert.equal(preserved.revision,1);
   await vm.runInContext('offlineRequest=null',ctx);const restored=await vm.runInContext("api('/ingestion?projectId=p1')",ctx);assert.equal(restored.jobs.length,10);assert.equal(restored.aliases.length,12);
   const sample=await vm.runInContext("api('/ingestion/sample',{projectId:'p1',wellId:'w1'})",ctx);assert.ok(sample.assetId);
   const detail=await vm.runInContext(`api('/ingestion/assets/${sample.assetId}')`,ctx);assert.equal(detail.versions[0].rows.length,1);
