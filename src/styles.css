@@ -703,6 +703,9 @@ pre.snapshot {font-size:11px;line-height:1.8;background:#f7f9fc;border:1px solid
 .gm-filters h2,.gm-detail h2 {font-size:17px;line-height:1.5;margin:0 0 14px;overflow-wrap:anywhere;}
 .gm-detail h3 {font-size:14px;margin:20px 0 10px;}
 .gm-center {min-width:0;display:grid;gap:16px;}
+.gm-focus-control {padding:12px 18px;border-bottom:1px solid #edf1f7;font-size:13px;}
+.gm-focus-control label {display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.gm-focus-control select {flex:1;min-width:150px;max-width:100%;}
 .gm-form {display:grid;gap:14px;}
 .gm-form .form-field,.gm-query-form .form-field {margin:0;display:flex;flex-direction:column;gap:8px;min-width:0;font-size:13px;}
 .gm-form input,.gm-form select,.gm-query-form input,.gm-query-form select {width:100%;min-width:0;box-sizing:border-box;}

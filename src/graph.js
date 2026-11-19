@@ -13,8 +13,9 @@ const gmSelect=(name,items,current)=>`<select name="${name}">${items.map(([id,la
 const gmPercent=value=>value===null?'无可比数据':`${(value*100).toFixed(1)}%`;
 const gmTabs=[['browse','实体与关系'],['paths','多跳路径'],['spatial','空间邻近'],['similar','相似井'],['algorithms','图算法'],['history','时序与版本'],['snapshots','快照与恢复']];
 
-export function createGraphUI({getContext,repaint,modal,toast,go,onContext,openAsset}){
+export function createGraphUI({getContext,repaint,modal,toast,go,onContext,onSelect,openAsset}){
   let inputs={};
+  let selectionContext='';
   let model=null,project='',loading=false,error='',ticket=0,busy=false,dataset='published',tab='browse',selectedId='',page=1,kind='entity',filter={well:'',type:'',text:''},result=null,transferred=null;
   const ctx=()=>getContext(),wellName=id=>model?.wells.find(w=>w.id===id)?.name||id;
   const close=()=>document.querySelector('dialog')?.close();
@@ -24,27 +25,46 @@ export function createGraphUI({getContext,repaint,modal,toast,go,onContext,openA
     try{const data=await api('/graph?'+new URLSearchParams({projectId:p,dataset}));if(id!==ticket||p!==ctx().projectId)return;
       if(project!==p){inputs={};tab='browse';filter={well:'',type:'',text:''};selectedId='';transferred=null;resetResults();}
       if(model&&data.revision!==model.revision)result=null;
-      model=data;project=p;error='';if(!data.nodes.some(n=>n.id===selectedId)&&!data.edges.some(n=>n.id===selectedId))selectedId=data.nodes[0]?.id||'';
+      model=data;project=p;error='';syncSelection();alignSelection();
     }catch(cause){if(id===ticket){model=null;project=p;error=cause.message;}}
     finally{if(id===ticket){loading=false;repaint({preserveScroll:true});}}
   }
   function ready(){if(project!==ctx().projectId){if(!loading)load();return false;}return Boolean(model);}
   const selected=()=>model?.nodes.find(n=>n.id===selectedId)||model?.edges.find(n=>n.id===selectedId);
+  const contextKey=()=>`${ctx().projectId}|${ctx().wellId||''}|${ctx().selectedType||'well'}`;
+  const itemWell=item=>item?.wellId||model?.nodes.find(n=>n.id===item?.subjectId)?.wellId||'';
+  function filteredItems(){return (kind==='entity'?model.nodes:model.edges).filter(n=>(!filter.type||n.typeId===filter.type)&&(!filter.well||itemWell(n)===filter.well)&&(!filter.text||`${n.id} ${n.name} ${JSON.stringify(n.value||{})}`.toLowerCase().includes(filter.text.toLowerCase())));}
+  function notifySelection(item,wellId=filter.well){if(item||wellId)onSelect?.({wellId:itemWell(item)||wellId,type:item?.kind==='entity'?item.typeId:'well'});selectionContext=contextKey();}
+  function alignSelection({notify=false}={}){
+    if(!model)return;const rows=filteredItems();if(!rows.some(n=>n.id===selectedId))selectedId=(rows.find(n=>n.typeId==='well')||rows[0])?.id||'';
+    if(notify)notifySelection(selected());
+  }
+  function syncSelection(force=false){
+    if(!model||project!==ctx().projectId||!force&&selectionContext===contextKey())return;
+    const type=ctx().selectedType||'well';kind='entity';filter={well:ctx().wellId||'',type:type==='well'?'':type,text:''};inputs={};resetResults();transferred=null;
+    const rows=filteredItems();selectedId=(rows.find(n=>n.typeId===type)||rows[0])?.id||'';selectionContext=contextKey();
+  }
+  function applyFilter(values){kind=values.kind;filter={well:values.well||'',type:values.type||'',text:values.text||''};page=1;transferred=null;alignSelection({notify:true});}
+  function selectItem(id){
+    const item=model?.nodes.find(n=>n.id===id)||model?.edges.find(n=>n.id===id);if(!item)return;
+    selectedId=id;kind=item.kind;filter={well:itemWell(item),type:'',text:''};tab='browse';notifySelection(item);page=Math.floor(filteredItems().findIndex(n=>n.id===id)/12)+1;transferred=null;
+  }
   const opts=()=>model.nodes.map(n=>[n.id,`${wellName(n.wellId)} · ${n.name} · ${gmTypes[n.typeId]||n.typeName}`]);
   const relationOpts=()=>[['all','全部关系'],...[...new Map(model.edges.map(e=>[e.typeId,[e.typeId,e.typeName]])).values()]];
   function scopeInputs(){return `<input type="hidden" name="projectId" value="${gmEsc(ctx().projectId)}"><input type="hidden" name="dataset" value="${dataset}">`;}
   function header(){return `<div class="page-heading"><div><div class="breadcrumb">工作台 / 图谱管理</div><h1>图谱管理与关系查询</h1><p>围绕实体、关系和来源查询知识，保留计算依据与历史版本。</p></div>${gmButton('refresh','刷新图谱')}</div><section class="panel gm-scope"><label>知识范围 <select id="gm-dataset">${gmOpt('published','正式知识（已校核发布）',dataset)}${gmOpt('demo','虚构图谱演示',dataset)}</select></label><span class="badge ${dataset==='demo'?'amber':'teal'}">${dataset==='demo'?'虚构演示数据':'正式知识'}</span><span>实体 <b>${model.nodes.length}</b> · 发布关系 <b>${model.storage.visibleRelations}</b> · 计算关系 <b>${model.storage.derivedRelations}</b></span><span class="subtle">正式图版本 v${model.revision}</span></section><div class="workspace-tabs gm-tabs" role="tablist" aria-label="图谱管理功能">${gmTabs.map(([id,label])=>`<button data-gm="tab" data-id="${id}" role="tab" aria-selected="${tab===id}" class="${tab===id?'active':''}">${label}</button>`).join('')}</div>`;}
   function html(){
     if(!ready())return `<div class="page-heading"><div><h1>图谱管理与关系查询</h1><p>${gmEsc(error||'正在读取授权图谱…')}</p></div>${gmButton('refresh','重试')}</div>`;
+    syncSelection();
     return `<div class="gm-module" ${busy?'aria-busy="true"':''}>${header()}${dataset==='demo'?'<div class="notice">当前为虚构图谱、坐标与指令演示；演示知识与正式发布数据分别保存。</div>':!model.nodes.length?'<div class="notice">暂无可访问的正式知识。请先在“知识构建”完成逐项校核和发布，或切换到虚构图谱演示体验查询。</div>':''}${({browse:browseHtml,paths:pathsHtml,spatial:spatialHtml,similar:similarHtml,algorithms:algorithmHtml,history:historyHtml,snapshots:snapshotsHtml}[tab])()}</div>`;
   }
   function browseHtml(){
-    const all=kind==='entity'?model.nodes:model.edges,rows=all.filter(n=>(!filter.type||n.typeId===filter.type)&&(!filter.well||(n.wellId||model.nodes.find(x=>x.id===n.subjectId)?.wellId)===filter.well)&&(!filter.text||`${n.id} ${n.name} ${JSON.stringify(n.value||{})}`.toLowerCase().includes(filter.text.toLowerCase())));
+    const rows=filteredItems();
     page=Math.min(page,Math.max(1,Math.ceil(rows.length/12)));
-    return `<div class="gm-browser"><aside class="panel gm-filters"><h2>类型与筛选</h2><form id="gm-filter" class="gm-form">${gmLabel('实体 / 关系',gmSelect('kind',[['entity','实体'],['relation','关系']],kind))}${gmLabel('所属井',gmSelect('well',[['','全部授权井'],...model.wells.map(w=>[w.id,w.name])],filter.well))}${gmLabel('对象 / 关系类型',gmSelect('type',[['','全部类型'],...(kind==='entity'?Object.entries(gmTypes):relationOpts().slice(1))],filter.type))}${gmLabel('名称 / 属性 / 编号',gmInput('text',filter.text,'maxlength="100" placeholder="输入后点击应用"'))}<button class="button primary">应用筛选</button>${gmButton('reset-filter','重置')}</form><details class="gm-storage"><summary>存储与索引状态</summary><dl><dt>知识存储</dt><dd>${gmEsc(model.storage.knowledge)}</dd><dt>原件</dt><dd>${gmEsc(model.storage.originals)}</dd><dt>名称索引版本</dt><dd>${gmEsc(model.storage.index)}</dd><dt>外部服务</dt><dd>${gmEsc(model.storage.external)}</dd></dl></details></aside><div class="gm-center"><section class="panel"><div class="panel-heading"><h2>${kind==='entity'?'知识实体':'知识关系'}</h2><span>${rows.length} 项</span></div>${gmTable(['名称 / 编号','类型','井 / 关联','查看'],rows.slice((page-1)*12,page*12).map(n=>[`${gmEsc(n.name)}<small class="block mono">${gmEsc(n.id)}</small>`,`${gmEsc(n.typeName||gmTypes[n.typeId])}${n.computed?'<small class="block">计算关系</small>':''}`,gmEsc(n.wellId?wellName(n.wellId):`${model.nodes.find(x=>x.id===n.subjectId)?.name||''} → ${model.nodes.find(x=>x.id===n.objectId)?.name||''}`),gmButton('select','详情',`data-id="${gmEsc(n.id)}"`)]))}<div class="gm-pagination">${gmButton('prev','上一页',page===1?'disabled':'')}<span>${page} / ${Math.max(1,Math.ceil(rows.length/12))}</span>${gmButton('next','下一页',page*12>=rows.length?'disabled':'')}</div></section><section class="panel"><div class="panel-heading"><h2>所选对象的关联图</h2><span class="subtle">最多展示 14 个相邻节点</span></div>${miniGraph()}</section></div><aside class="panel gm-detail">${detailHtml(selected())}</aside></div>`;
+    return `<div class="gm-browser"><aside class="panel gm-filters"><h2>类型与筛选</h2><form id="gm-filter" class="gm-form">${gmLabel('实体 / 关系',gmSelect('kind',[['entity','实体'],['relation','关系']],kind))}${gmLabel('所属井',gmSelect('well',[['','全部授权井'],...model.wells.map(w=>[w.id,w.name])],filter.well))}${gmLabel('对象 / 关系类型',gmSelect('type',[['','全部类型'],...(kind==='entity'?Object.entries(gmTypes):relationOpts().slice(1))],filter.type))}${gmLabel('名称 / 属性 / 编号',gmInput('text',filter.text,'maxlength="100" placeholder="输入后点击应用"'))}<button class="button primary">应用筛选</button>${gmButton('reset-filter','重置')}</form><details class="gm-storage"><summary>存储与索引状态</summary><dl><dt>知识存储</dt><dd>${gmEsc(model.storage.knowledge)}</dd><dt>原件</dt><dd>${gmEsc(model.storage.originals)}</dd><dt>名称索引版本</dt><dd>${gmEsc(model.storage.index)}</dd><dt>外部服务</dt><dd>${gmEsc(model.storage.external)}</dd></dl></details></aside><div class="gm-center"><section class="panel"><div class="panel-heading"><h2>${kind==='entity'?'知识实体':'知识关系'}</h2><span>${rows.length} 项</span></div>${gmTable(['名称 / 编号','类型','井 / 关联','查看'],rows.slice((page-1)*12,page*12).map(n=>[`${gmEsc(n.name)}<small class="block mono">${gmEsc(n.id)}</small>`,`${gmEsc(n.typeName||gmTypes[n.typeId])}${n.computed?'<small class="block">计算关系</small>':''}`,gmEsc(n.wellId?wellName(n.wellId):`${model.nodes.find(x=>x.id===n.subjectId)?.name||''} → ${model.nodes.find(x=>x.id===n.objectId)?.name||''}`),gmButton('select','详情',`data-id="${gmEsc(n.id)}"`)]))}<div class="gm-pagination">${gmButton('prev','上一页',page===1?'disabled':'')}<span>${page} / ${Math.max(1,Math.ceil(rows.length/12))}</span>${gmButton('next','下一页',page*12>=rows.length?'disabled':'')}</div></section><section class="panel"><div class="panel-heading"><h2>所选对象的关联图${selected()?` · ${gmEsc(wellName(itemWell(selected())))}`:""}</h2><span class="subtle">最多展示 14 个相邻节点</span></div><div class="gm-focus-control"><label>关联图对象 <select id="gm-focus" ${model.nodes.length?"":"disabled"}>${selected()?.kind!=="entity"?gmOpt("","请选择实体",""):""}${model.nodes.map(n=>gmOpt(n.id,`${wellName(n.wellId)} · ${n.name} · ${gmTypes[n.typeId]||n.typeName}`,selectedId)).join("")}</select></label></div>${miniGraph()}</section></div><aside class="panel gm-detail">${detailHtml(selected())}</aside></div>`;
   }
   function miniGraph(){
-    const focus=selected(),id=focus?.kind==='relation'?focus.subjectId:focus?.id,edges=model.edges.filter(e=>e.subjectId===id||e.objectId===id).slice(0,20),ids=[...new Set([id,...edges.flatMap(e=>[e.subjectId,e.objectId])])].filter(Boolean).slice(0,15),nodes=ids.map(x=>model.nodes.find(n=>n.id===x)).filter(Boolean);if(!nodes.length)return '<p class="ing-empty">选择实体查看关联图。</p>';
+    const focus=selected(),id=focus?.kind==='relation'?focus.subjectId:focus?.id,edges=model.edges.filter(e=>e.subjectId===id||e.objectId===id).slice(0,20),ids=[...new Set([id,...edges.flatMap(e=>[e.subjectId,e.objectId])])].filter(Boolean).slice(0,15),nodes=ids.map(x=>model.nodes.find(n=>n.id===x)).filter(Boolean);if(!nodes.length)return `<p class="ing-empty">${filter.well?`${gmEsc(wellName(filter.well))}${filter.type?` 的${gmEsc(gmTypes[filter.type]||filter.type)}`:''}${dataset==='published'?'暂无可访问的已发布知识，请先在知识构建中完成校核与发布。':'在当前筛选条件下暂无可访问的知识。'}`:'当前筛选条件下没有可选对象，请调整筛选。'}</p>`;
     const pos=new Map(nodes.map((n,i)=>[n.id,i===0?[300,170]:[300+220*Math.cos(2*Math.PI*(i-1)/Math.max(1,nodes.length-1)),170+125*Math.sin(2*Math.PI*(i-1)/Math.max(1,nodes.length-1))]]));
     return `<svg class="gm-canvas" viewBox="0 0 600 340" role="group" aria-label="所选知识的实际关联图">${edges.filter(e=>pos.has(e.subjectId)&&pos.has(e.objectId)).map(e=>{const a=pos.get(e.subjectId),b=pos.get(e.objectId);return `<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" stroke="${e.computed?'#a8b7cc':'#648dd5'}" ${e.computed?'stroke-dasharray="5 4"':''}/>`;}).join('')}${nodes.map((n,i)=>{const [x,y]=pos.get(n.id);return `<g data-gm="select" data-id="${gmEsc(n.id)}" role="button" tabindex="0" aria-label="查看 ${gmEsc(n.name)}" transform="translate(${x},${y})"><title>${gmEsc(n.name)} · ${gmEsc(n.id)}</title><rect x="-64" y="-23" width="128" height="46" rx="8" fill="${i?'#f3f7ff':'#e0edff'}" stroke="#7d9ccc"/><text text-anchor="middle" y="-2">${gmEsc(n.name.slice(0,13))}</text><text class="gm-node-type" text-anchor="middle" y="14">${gmEsc(gmTypes[n.typeId]||n.typeName)}</text></g>`;}).join('')}</svg><p class="gm-note">虚线为按同井或同基准井段计算的关联；实线为当前数据范围中的关系。</p>`;
   }
@@ -68,9 +88,10 @@ export function createGraphUI({getContext,repaint,modal,toast,go,onContext,openA
   }
   async function mutate(action,body){if(busy)return;busy=true;const p=ctx().projectId;try{const data=await api('/graph/'+action,{...body,projectId:p});if(p!==ctx().projectId)return;close();await load();toast(action==='restore'?'快照已恢复，索引、缓存与关系完整性核查通过。':'记录已保存。');return data;}finally{busy=false;}}
   function transfer(nodes,description,referenceWellId,targetWellId){
-    transferred={projectId:ctx().projectId,dataset,revision:model.revision,nodeIds:nodes.map(n=>n.id),description,referenceWellId};const first=nodes.find(n=>n.wellId===targetWellId)||nodes[0];onContext?.({wellId:first?.wellId,type:first?.typeId,referenceWellId});go('retrieval');
+    transferred={projectId:ctx().projectId,dataset,revision:model.revision,nodeIds:nodes.map(n=>n.id),description,referenceWellId};const first=nodes.find(n=>n.wellId===targetWellId)||nodes[0];onContext?.({wellId:first?.wellId,type:first?.typeId,referenceWellId});selectionContext=contextKey();go('retrieval');
   }
   function retrievalHtml(){
+    syncSelection();
     if(!transferred||transferred.projectId!==ctx().projectId)return '';
     if(!ready())return '<section class="panel"><p class="gm-note">正在重新核对图谱查询上下文…</p></section>';
     const nodes=model.nodes.filter(n=>transferred.nodeIds.includes(n.id)),valid=transferred.revision===model.revision&&transferred.dataset===dataset&&nodes.length===transferred.nodeIds.length;
@@ -81,10 +102,10 @@ export function createGraphUI({getContext,repaint,modal,toast,go,onContext,openA
     try{
       if(action==='refresh')await load();
       if(action==='tab'){tab=id;resetResults();repaint({preserveScroll:true});}
-      if(action==='select'){selectedId=id;tab='browse';repaint({preserveScroll:true});}
+      if(action==='select'){selectItem(id);repaint({preserveScroll:true});}
       if(action==='evidence'){const n=model.nodes.find(n=>n.id===id);if(n)modal('图谱对象与固定来源',detailHtml(n),{wide:true});}
       if(action==='prev'||action==='next'){page+=action==='next'?1:-1;repaint({preserveScroll:true});}
-      if(action==='reset-filter'){kind='entity';filter={well:'',type:'',text:''};page=1;repaint({preserveScroll:true});}
+      if(action==='reset-filter'){kind='entity';filter={well:'',type:'',text:''};page=1;alignSelection({notify:true});repaint({preserveScroll:true});}
       if(action==='asset')await openAsset(id);
       if(action==='back')go('graph');
       if(action==='context'){const n=model.nodes.find(n=>n.id===id);if(n)transfer([n],`所选对象：${n.name}`);}
@@ -99,7 +120,7 @@ export function createGraphUI({getContext,repaint,modal,toast,go,onContext,openA
   async function submit(event){
     const form=event.target;if(!form.id.startsWith('gm-'))return false;event.preventDefault();const values=Object.fromEntries(new FormData(form));inputs[form.id.slice(3)]={...values};
     try{
-      if(form.id==='gm-filter'){kind=values.kind;filter={well:values.well,type:values.type,text:values.text};page=1;repaint({preserveScroll:true});return true;}
+      if(form.id==='gm-filter'){applyFilter(values);repaint({preserveScroll:true});return true;}
       if(form.id==='gm-paths')await query('paths',{...values,maxHops:Number(values.maxHops),directed:values.directed==='true'});
       if(form.id==='gm-spatial'){const keys=['minX','maxX','minY','maxY'],filled=keys.filter(k=>values[k]!=='');if(filled.length&&filled.length!==4)throw new Error('空间范围需填写完整的 X / Y 上下限。');await query('spatial',{...values,radius:Number(values.radius),...(filled.length?{bounds:Object.fromEntries(keys.map(k=>[k,Number(values[k])]))}:{})});}
       if(form.id==='gm-similar'){await query('similar',{...values,weights:{layer:Number(values.layer),curve:Number(values.curve),engineering:Number(values.engineering)}});if(result?.action==='similar')result.targetWellId=values.targetWellId;}
@@ -111,9 +132,10 @@ export function createGraphUI({getContext,repaint,modal,toast,go,onContext,openA
     }catch(cause){toast(cause.message);}return true;
   }
   function change(event){
-    if(event.target.id==='gm-dataset'){dataset=event.target.value;inputs={};model=null;resetResults();selectedId='';transferred=null;load();}
+    if(event.target.id==='gm-dataset'){dataset=event.target.value;inputs={};model=null;selectionContext='';resetResults();selectedId='';transferred=null;load();}
+    if(event.target.id==='gm-focus'){selectItem(event.target.value);repaint({preserveScroll:true});}
     if(event.target.id==='gm-spatial-target'){const record=model.spatial.find(r=>r.id===event.target.value),form=event.target.form;if(record&&form){form.elements.crs.value=record.crs;form.elements.frame.value=record.frame;}}
-    if(event.target.form?.id==='gm-filter'&&event.target.name==='kind'){kind=event.target.value;filter.type='';page=1;repaint({preserveScroll:true});}
+    if(event.target.form?.id==='gm-filter'&&['kind','well','type'].includes(event.target.name)){const values=Object.fromEntries(new FormData(event.target.form));if(event.target.name==='kind')values.type='';applyFilter(values);repaint({preserveScroll:true});}
   }
-  return {html,load,click,submit,change,retrievalHtml,clear(){ticket++;inputs={};model=null;project='';loading=false;error='';busy=false;dataset='published';tab='browse';selectedId='';transferred=null;resetResults();}};
+  return {html,load,click,submit,change,retrievalHtml,selectContext(){syncSelection(true);},clear(){ticket++;inputs={};selectionContext='';model=null;project='';loading=false;error='';busy=false;dataset='published';tab='browse';selectedId='';transferred=null;resetResults();}};
 }

@@ -129,3 +129,35 @@ test('06 离线图谱七页签、查询、上下文、算法、快照和恢复�
   await vm.runInContext(`gmUi.submit({preventDefault(){},target:{id:'gm-algorithm',values:{algorithm:'components',relation:'all',wellId:'',iterations:'20'}}})`,sandbox);assert.ok((await vm.runInContext("api('/graph?projectId=p1&dataset=demo')",sandbox)).jobs.length);
   const snapshot=await vm.runInContext("api('/graph/snapshot',{projectId:'p1',name:'离线恢复验收',expectedRevision:1})",sandbox);sandbox.gmSnapshotId=snapshot.id;await vm.runInContext("api('/graph/restore',{projectId:'p1',snapshotId:gmSnapshotId,confirm:gmSnapshotId,expectedRevision:1})",sandbox);await vm.runInContext('offlineRequest=null',sandbox);assert.equal((await vm.runInContext("api('/graph?projectId=p1')",sandbox)).restores.length,1);
 });
+
+async function selectionSandbox(db){
+  const html=await fs.readFile(new URL('../首页预览.html',import.meta.url),'utf8'),script=html.match(/<script type="module">([\s\S]*?)<\/script>/)[1],source=script.slice(0,script.indexOf('// ===== src/main.js =====')),memory=new Map(),storage={getItem:key=>memory.get(key)||null,setItem:(key,value)=>memory.set(key,value),removeItem:key=>memory.delete(key)};
+  if(db)storage.setItem('geokg-offline-users-v1',JSON.stringify(db));
+  const sandbox=vm.createContext({location:{protocol:'file:'},localStorage:storage,sessionStorage:storage,console,Date,URLSearchParams,window:{dispatchEvent(){}},document:{querySelector:()=>null},FormData:class{constructor(form){return Object.entries(form.values)[Symbol.iterator]();}}});
+  vm.runInContext(source,sandbox);await vm.runInContext("api('/auth/login',{account:'admin',password:'GeoDemo!2026'})",sandbox);
+  await vm.runInContext(`var selectionState={projectId:'p1',wellId:'w3',selectedType:'well',canGraph:true},selectionUi;selectionUi=createGraphUI({getContext:()=>selectionState,repaint(){},modal(){},toast(){},go(){},onSelect:context=>{selectionState.wellId=context.wellId;selectionState.selectedType=context.type;},onContext:context=>{selectionState.wellId=context.wellId;selectionState.selectedType=context.type;},openAsset:async()=>{}});selectionUi.load();`,sandbox);
+  return sandbox;
+}
+const selectionGraph=(sandbox)=>vm.runInContext('selectionUi.html()',sandbox).match(/<svg class="gm-canvas"[\s\S]*?<\/svg>/)?.[0]||'';
+test('06 关联图跟随当前井与对象，筛选即时更新、独立对象选择和刷新均保留正确中心',async()=>{
+  const sandbox=await selectionSandbox();await vm.runInContext("selectionUi.change({target:{id:'gm-dataset',value:'demo'}})",sandbox);await vm.runInContext('selectionUi.load()',sandbox);
+  assert.match(selectionGraph(sandbox),/JH-03/);assert.doesNotMatch(selectionGraph(sandbox),/JH-01/);
+  await vm.runInContext(`selectionState.wellId='w2';selectionState.selectedType='well';selectionUi.selectContext();`,sandbox);assert.match(selectionGraph(sandbox),/JH-02/);assert.doesNotMatch(selectionGraph(sandbox),/JH-03/);
+  await vm.runInContext(`selectionState.selectedType='log';selectionUi.selectContext();`,sandbox);assert.match(selectionGraph(sandbox),/JH-02 GR/);assert.match(vm.runInContext('selectionUi.html()',sandbox),/<option value="demo:p1:w2:log" selected>/);
+  await vm.runInContext(`selectionUi.change({target:{name:'well',form:{id:'gm-filter',values:{kind:'entity',well:'w3',type:'',text:''}}}})`,sandbox);assert.equal(vm.runInContext('selectionState.wellId',sandbox),'w3');assert.match(selectionGraph(sandbox),/JH-03/);
+  await vm.runInContext(`selectionUi.change({target:{id:'gm-focus',value:'demo:p1:w1:trajectory'}})`,sandbox);assert.equal(vm.runInContext('selectionState.wellId',sandbox),'w1');assert.equal(vm.runInContext('selectionState.selectedType',sandbox),'trajectory');assert.match(vm.runInContext('selectionUi.html()',sandbox),/<option value="demo:p1:w1:trajectory" selected>/);
+  await vm.runInContext('selectionUi.load()',sandbox);assert.match(vm.runInContext('selectionUi.html()',sandbox),/<option value="demo:p1:w1:trajectory" selected>/);
+  await vm.runInContext(`selectionUi.click({target:{closest:()=>({dataset:{gm:'select',id:'demo:p1:w3:stratum'}})}})`,sandbox);assert.equal(vm.runInContext('selectionState.wellId',sandbox),'w3');assert.match(selectionGraph(sandbox),/JH-03/);
+  await vm.runInContext(`selectionUi.click({target:{closest:()=>({dataset:{gm:'context',id:'demo:p1:w3:stratum'}})}})`,sandbox);assert.match(vm.runInContext('selectionUi.retrievalHtml()',sandbox),/来自图谱的检索上下文/);
+  await vm.runInContext(`selectionUi.change({target:{name:'well',form:{id:'gm-filter',values:{kind:'entity',well:'w1',type:'',text:''}}}})`,sandbox);assert.equal(vm.runInContext('selectionUi.retrievalHtml()',sandbox),'');
+  await vm.runInContext(`selectionState.projectId='p2';selectionState.wellId='w5';selectionState.selectedType='well';selectionUi.load();`,sandbox);assert.match(selectionGraph(sandbox),/SL-02/);assert.doesNotMatch(selectionGraph(sandbox),/JH-01/);
+});
+test('06 正式库只含部分井时，选择空井或无匹配对象清空旧图，恢复筛选后可重新选择',async()=>{
+  const f=graphFixture();f.publish();const sandbox=await selectionSandbox(f.db);
+  let view=vm.runInContext('selectionUi.html()',sandbox);assert.equal(selectionGraph(sandbox),'');assert.match(view,/JH-03暂无可访问的已发布知识/);assert.doesNotMatch(view,/<aside class="panel gm-detail"><h2>JH-01/);
+  await vm.runInContext(`selectionUi.change({target:{name:'well',form:{id:'gm-filter',values:{kind:'entity',well:'w1',type:'',text:''}}}})`,sandbox);assert.match(selectionGraph(sandbox),/JH-01/);
+  await vm.runInContext(`selectionUi.change({target:{name:'well',form:{id:'gm-filter',values:{kind:'entity',well:'w2',type:'',text:''}}}})`,sandbox);assert.equal(selectionGraph(sandbox),'');assert.match(vm.runInContext('selectionUi.html()',sandbox),/JH-02暂无可访问的已发布知识/);assert.equal(vm.runInContext('selectionState.wellId',sandbox),'w2');
+  await vm.runInContext(`selectionUi.submit({preventDefault(){},target:{id:'gm-filter',values:{kind:'entity',well:'w1',type:'',text:'不存在的名称'}}})`,sandbox);assert.equal(selectionGraph(sandbox),'');
+  await vm.runInContext(`selectionUi.click({target:{closest:()=>({dataset:{gm:'reset-filter'}})}})`,sandbox);assert.match(selectionGraph(sandbox),/JH-01/);
+  await vm.runInContext(`selectionState.selectedType='trajectory';selectionUi.selectContext();`,sandbox);assert.equal(selectionGraph(sandbox),'');assert.match(vm.runInContext('selectionUi.html()',sandbox),/井轨迹暂无可访问的已发布知识/);
+});

@@ -224,7 +224,8 @@ document.addEventListener('click',async event=>{
     state.wellId=well;state.selectedType=type;state.expanded.add(well);
     if(changed)state.activeResult=null;
     persist();
-    if(changed)render();else updateObjectSelection();
+    graphUI.selectContext();
+    if(changed||['graph','retrieval'].includes(route()))render({preserveScroll:true});else updateObjectSelection();
     return;
   }
   if(action==='home-tab'){state.homeTab=control.dataset.tab;render();return;}
@@ -259,7 +260,7 @@ document.addEventListener('change',event=>{
   graphUI.change(event);
   if(event.target.id==='project-select'&&ontologyUI.hasUnsaved()&&!window.confirm('当前本体有未保存修改，切换项目将放弃这些修改。是否继续？')){event.target.value=state.projectId;return;}
   if(event.target.id==='project-select'){state.selectedAssetId='';state.graphReferenceWellId='';state.projectId=event.target.value;state.wellId=currentProject().wells[0];state.selectedType='well';state.expanded=new Set([state.wellId]);state.activeResult=null;state.treeFilter='';persist();render();}
-  if(event.target.id==='analysis-well'){state.wellId=event.target.value;state.selectedType='well';state.expanded.add(state.wellId);state.activeResult=null;persist();render();}
+  if(event.target.id==='analysis-well'){state.wellId=event.target.value;state.selectedType='well';state.expanded.add(state.wellId);state.activeResult=null;graphUI.selectContext();persist();render();}
   if(event.target.id==='sample-select'){state.sampleId=event.target.value;state.formDirty=false;state.activeResult=null;render();}
   if(event.target.id==='scenario-select'){state.scenario=event.target.value;state.activeResult=null;render();}
 });
@@ -291,7 +292,7 @@ const usersUI=createUsersUI({modal,toast,refresh:refreshWorkspace,getUser:()=>cu
 const ingestionUI=createIngestionUI({getContext:()=>({projectId:state.projectId,wellId:state.wellId,block:currentProject().block,canData:permitted('data'),canImport:permitted('import'),route:route()}),repaint:render,refresh:refreshWorkspace,modal,toast,go,constructionSelector:id=>ontologyUI.constructionSelector(id),selectAsset:asset=>{state.wellId=asset.wellId;state.selectedType=asset.objectType;state.selectedAssetId=asset.id;state.expanded.add(asset.wellId);}});
 const ontologyUI=createOntologyUI({getContext:()=>({projectId:state.projectId,canOntology:permitted('ontology'),canConstruction:permitted('construction'),assets:getAssets()}),repaint:render,modal,toast,go});
 const constructionUI=createConstructionUI({getContext:()=>({projectId:state.projectId,wellId:state.wellId,canConstruction:permitted('construction'),route:route()}),repaint:render,modal,toast,go});
-const graphUI=createGraphUI({getContext:()=>({projectId:state.projectId,wellId:state.wellId,canGraph:permitted('graph')}),repaint:render,modal,toast,go,openAsset:id=>ingestionUI.open(id),onContext:context=>{if(context.wellId){state.wellId=context.wellId;state.expanded.add(context.wellId);}state.selectedType=objectTypes.some(t=>t.id===context.type)?context.type:'well';state.selectedAssetId='';state.graphReferenceWellId=context.referenceWellId||'';state.activeResult=null;}});
+const graphUI=createGraphUI({getContext:()=>({projectId:state.projectId,wellId:state.wellId,selectedType:state.selectedType,canGraph:permitted('graph')}),repaint:render,modal,toast,go,openAsset:id=>ingestionUI.open(id),onSelect:context=>{if(context.wellId){if(state.wellId!==context.wellId)state.graphReferenceWellId='';state.wellId=context.wellId;state.expanded.add(context.wellId);}state.selectedType=objectTypes.some(t=>t.id===context.type)?context.type:'well';state.selectedAssetId='';state.activeResult=null;},onContext:context=>{if(context.wellId){state.wellId=context.wellId;state.expanded.add(context.wellId);}state.selectedType=objectTypes.some(t=>t.id===context.type)?context.type:'well';state.selectedAssetId='';state.graphReferenceWellId=context.referenceWellId||'';state.activeResult=null;}});
 document.addEventListener('keydown',event=>{if((event.key==='Enter'||event.key===' ')&&event.target.matches('.gm-canvas [data-gm]')){event.preventDefault();event.target.dispatchEvent(new MouseEvent('click',{bubbles:true}));}});
 document.addEventListener('dragstart',event=>ontologyUI.dragstart(event));
 document.addEventListener('dragover',event=>{if(event.target.closest('.onto-canvas'))event.preventDefault();});
