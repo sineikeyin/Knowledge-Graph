@@ -6,7 +6,7 @@ const root=path.dirname(fileURLToPath(import.meta.url));
 let html=await fs.readFile(path.join(root,'index.html'),'utf8');
 const css=await fs.readFile(path.join(root,'src/styles.css'),'utf8');
 const parts=[];
-for(const name of ['icons.js','sample-data.js','data.js','rules.js','access-model.js','offline-service.js','api.js','users.js','main.js']) {
+for(const name of ['icons.js','sample-data.js','data.js','rules.js','access-model.js','ingestion-core.js','ingestion-model.js','offline-service.js','api.js','users.js','ingestion.js','main.js']) {
   const source=await fs.readFile(path.join(root,'src',name),'utf8');
   parts.push(`// ===== src/${name} =====\n`+source.replace(/^\uFEFF/,'').replace(/^import .+;\r?\n/gm,'').replace(/^export /gm,'').replace("await import('./offline-service.js')",'await Promise.resolve({createOfflineService})'));
 }

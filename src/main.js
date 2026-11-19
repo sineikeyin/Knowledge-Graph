@@ -2,6 +2,7 @@ import {icon} from './icons.js';
 import {objectTypes, defaultRule, demoCases, moduleDefinitions} from './data.js';
 import {api,offlineMode} from './api.js';
 import {createUsersUI,loginHtml} from './users.js';
+import {createIngestionUI} from './ingestion.js';
 let projects=[],wells=[],initialTasks=[],authorizedAssets=[],allowedActions={},currentUser=null,authLoading=true,loginNotice='',sessionTimer;
 const permitted=(permission)=>['import','run','export','rule-edit'].includes(permission)?(allowedActions[state.wellId]||[]).includes(permission):currentUser?.permissions.includes('manage')||((projects.find(p=>p.id===state.projectId)?.permissions||currentUser?.permissions||[]).includes(permission));
 import {evaluateThicknessRule} from './rules.js';
@@ -60,7 +61,7 @@ function render() {
   <nav class="main-nav" aria-label="主菜单">${navigation.filter(([id])=>permitted(id)).map(([id,glyph,label])=>`<button data-route="${id}" class="nav-item ${page===id?'active':''}" ${page===id?'aria-current="page"':''}>${icon(glyph,17)}<span>${label}</span></button>`).join('')}</nav>
   <div class="context-bar"><div class="context-controls"><label for="project-select">当前项目</label><select id="project-select">${projects.map(p=>`<option value="${p.id}" ${p.id===state.projectId?'selected':''}>${p.name}</option>`).join('')}</select><span class="context-stat">井数 <b>${projectWells().length}</b></span><span class="context-stat">资料 <b>${getAssets().length}</b></span><span class="context-stat current-well">当前井 <b>${currentWell().short}</b></span></div><div class="context-steps"><span>工作流程</span><button data-action="import">1 导入资料</button>${icon('chevron',12)}<button data-route="construction">2 构建知识</button>${icon('chevron',12)}<button data-route="retrieval">3 检索与推理</button></div></div>
   <div class="app-body ${page==='users'?'admin-layout':''}"><aside class="data-sidebar" aria-label="数据树与属性"><section class="tree-pane"><div class="pane-heading"><h2>${icon('folder',17)}数据资源</h2><button class="icon-button small" data-action="expand-tree" aria-label="展开全部井">${icon('layers',16)}</button></div><label class="tree-search">${icon('search',15)}<input id="tree-search" placeholder="搜索井、资料或对象" aria-label="搜索数据树" value="${escape(state.treeFilter)}"></label><div id="tree-list" class="tree-list">${treeHtml()}</div><button class="tree-import" data-action="import">${icon('upload',15)}导入资料</button></section><section id="properties" class="properties-pane">${propertiesHtml()}</section></aside><main class="main-content" id="main-content" tabindex="-1">${pageHtml(page)}</main></div>
-  <footer class="status-bar"><span><i class="status-dot"></i>示例数据 · ${currentProject().block} / ${currentWell().short}</span><span>资料版本 ${currentWell().version}<span class="footer-separator">|</span>知识可追溯 · 结果可校核</span></footer>`;
+  <footer class="status-bar"><span><i class="status-dot"></i>${authorizedAssets.some(asset=>asset.managed)?'本机资料与演示样例':'示例数据'} · ${currentProject().block} / ${currentWell().short}</span><span>资料版本 ${authorizedAssets.find(asset=>asset.id===state.selectedAssetId)?.version||currentWell().version}<span class="footer-separator">|</span>知识可追溯 · 结果可校核</span></footer>`;
   applyPermissions();
 }
 function treeHtml() {
@@ -88,6 +89,8 @@ function updateObjectSelection() {
   }
 }
 function propertiesHtml() {
+  const asset=authorizedAssets.find(item=>item.id===state.selectedAssetId);
+  if(asset)return `<div class="pane-heading"><h2>${icon('panel',16)}资料属性</h2>${badge(asset.type,'neutral')}</div><div class="property-name"><strong>${escape(asset.name)}</strong></div><dl class="property-list">${[['所属项目',currentProject().name],['归属井',currentWell().short],['资料版本',asset.version],['处理状态',asset.status],['质量状态',asset.quality||'未校验'],['来源',asset.source??'来源受限']].map(([label,value])=>`<div><dt>${escape(label)}</dt><dd>${escape(value)}</dd></div>`).join('')}</dl><button class="text-button property-link" data-action="asset-detail" data-asset="${escape(asset.id)}">查看资料详情</button>`;
   const well=currentWell();const type=objectTypes.find(t=>t.id===state.selectedType);
   return `<div class="pane-heading"><h2>${icon('panel',16)}对象属性</h2>${badge(type?.type || '井','neutral')}</div><div class="property-name">${icon(type?.icon||'well',20)}<strong>${type ? type.name : well.name}</strong></div><dl class="property-list"><div><dt>所属项目</dt><dd>${currentProject().name}</dd></div><div><dt>井号</dt><dd>${well.short}</dd></div><div><dt>目标层位</dt><dd>${escape(well.layer??'受限或未提供')}</dd></div><div><dt>井段范围</dt><dd>${escape(well.depth??'受限或未提供')}</dd></div><div><dt>深度基准</dt><dd>MD · m</dd></div><div><dt>资料版本</dt><dd>${well.version}</dd></div><div><dt>来源</dt><dd>${escape(well.source??'受限或未提供')}</dd></div></dl><button class="text-button property-link" data-action="evidence" data-evidence="target">查看来源记录 ${icon('arrow',14)}</button>`;
 }
@@ -100,7 +103,8 @@ function pageHtml(page) {
   if(page==='retrieval') return retrievalHtml();
   if(page==='reasoning') return reasoningHtml();
   if(page==='graph') return heading('图谱管理','知识关联与来源','围绕当前井查看五类知识对象及其关联依据。',`<button class="button primary" data-route="retrieval">${icon('search',15)}进入混合检索</button>`)+`<section class="panel graph-full"><div class="panel-heading"><h2>${icon('graph',18)}当前井知识关联</h2>${badge('示例图谱','neutral')}</div>${graphHtml()}${graphLegend()}</section>`+assetTable();
-  if(page==='data') return heading('数据接入','数据资产目录','按井浏览地层、测井、井轨迹、模型与历史指令资料。',`<button class="button primary" data-action="import">${icon('upload',15)}导入资料</button>`)+assetTable()+moduleRoadmap('data');
+  if(page==='data') return ingestionUI.html();
+  if(page==='construction') return heading('知识构建','知识构建与校核','接收治理后的固定资料版本，准备实体与关系抽取。')+ingestionUI.constructionHtml()+moduleRoadmap(page);
   if(page==='operations') return heading('运行管理','运行记录','查看本次工作台中的规则判定记录及其输入快照。')+historyHtml()+moduleRoadmap(page);
   const definition=moduleDefinitions[page];
   if(!definition) return heading('页面不存在','未找到该页面','请通过顶部菜单返回工作台。',`<button class="button primary" data-route="home">返回首页</button>`);
@@ -197,6 +201,7 @@ document.addEventListener('click',async event=>{
   const actionPermission={import:'import','run-rule':'run','export-run':'export','joint-analysis':'run'}[permissionButton?.dataset.action];
   if(actionPermission&&!permitted(actionPermission)){toast('无权执行此操作。');return;}
   try {
+  if(await ingestionUI.click(event))return;
   const routeButton=event.target.closest('[data-route]');
   if(routeButton){go(routeButton.dataset.route);return;}
   const control=event.target.closest('[data-action]');if(!control)return;
@@ -205,6 +210,7 @@ document.addEventListener('click',async event=>{
   if(action==='toggle-well'){state.expanded.has(well)?state.expanded.delete(well):state.expanded.add(well);$('#tree-list').innerHTML=treeHtml();return;}
   if(action==='expand-tree'){projectWells().forEach(w=>state.expanded.add(w.id));$('#tree-list').innerHTML=treeHtml();return;}
   if(action==='select-node'){
+    state.selectedAssetId='';
     const changed=state.wellId!==well;
     state.wellId=well;state.selectedType=type;state.expanded.add(well);
     if(changed)state.activeResult=null;
@@ -227,20 +233,19 @@ document.addEventListener('click',async event=>{
     modal('生成联合分析',`<div class="notice">${icon('info',18)}尚未配置大模型分析服务，本次没有生成联合分析结果。</div><p>当前已整理好可供分析使用的资料与证据包，可导出交由后续服务接入。</p><ul><li>场景：${state.scenario==='strata'?'地层对比':'邻井推荐'}</li><li>对象：${currentWell().short} / ${referenceWell().short}</li><li>规则：${escape(state.activeResult.result.rule.name)}（${escape(state.activeResult.result.rule.version)}）</li><li>判定：${escape(state.activeResult.result.title)}</li><li>内容：资料标识、实测输入、逐项判断、结论及来源快照</li></ul><button class="button primary" data-action="export-run" data-run="${state.activeResult.id}">${icon('download',15)}导出分析输入包</button>`);return;
   }
   if(action==='asset-detail'){
-    const asset=getAssets().find(a=>a.id===control.dataset.asset);if(!asset)return;
-    modal('资料详情',`<h3>${escape(asset.name)}</h3><dl class="evidence-attributes"><div><dt>类型</dt><dd>${escape(asset.type)}</dd></div><div><dt>来源</dt><dd>${escape(asset.source)}</dd></div><div><dt>版本</dt><dd>${escape(asset.version)}</dd></div><div><dt>状态</dt><dd>${escape(asset.status)}</dd></div></dl><p class="subtle">${asset.status==='待解析'?'已登记资料元信息，尚未解析或构建知识。':'该记录为首页布局与关联展示使用的示例资料。'}</p>`);return;
+    await ingestionUI.open(control.dataset.asset);return;
   }
   if(action==='import'){
-    modal('导入资料 · 登记清单',`<form id="import-form"><p class="subtle">将文件登记到当前井的待处理清单。当前演示不保存原文件内容，也不执行解析。</p><label class="form-field">归属井<input value="${currentWell().name}" readonly></label><label class="form-field">选择文件<input id="import-file" type="file" accept=".pdf,.docx,.las,.csv,.xlsx,.json" required></label><label class="form-field">资料类型<select id="import-type">${objectTypes.map(t=>`<option value="${t.type}">${t.type}</option>`).join('')}</select></label><div class="modal-actions"><button type="button" class="button" data-action="close-modal">取消</button><button class="button primary" type="submit">登记资料</button></div></form>`);return;
+    await ingestionUI.import();return;
   }
   if(action==='notifications'){modal('我的待办',`<div class="task-list">${taskList()}</div><p class="subtle">当前展示示例校核任务。</p>`);return;}
   if(action==='profile'){modal('个人信息',`<div class="profile-card"><span class="avatar large">${escape(currentUser.name.slice(0,1))}</span><h3>${escape(currentUser.name)}</h3><p>${escape(currentUser.roleName)}</p></div><dl class="evidence-attributes"><div><dt>账号</dt><dd>${escape(currentUser.account)}</dd></div><div><dt>组织</dt><dd>${escape(currentUser.orgName)}</dd></div><div><dt>可访问项目</dt><dd>${projects.map(p=>escape(p.name)).join('、')||'尚未分配'}</dd></div></dl><div class="modal-actions"><button class="button danger" data-auth="logout">退出登录</button></div>`);return;}
-  if(action==='help') modal('工作台使用说明','<ol><li>从左侧数据树选择井或知识对象，下方查看属性。</li><li>在首页查看资料、知识关联和待办，顶部菜单切换模块。</li><li>进入混合检索，选择演示样例并运行规则判定。</li><li>结果包含资料、规则、计算过程和引用，可保存与导出。</li><li>“规则与推理”中维护演示阈值并回看历史结果。</li></ol><p class="subtle">本版本为首页与规则判定交互原型；数据均为演示样例。</p>');
+  if(action==='help') modal('工作台使用说明','<ol><li>从左侧数据树选择井或知识对象，下方查看属性。</li><li>进入数据接入，上传CSV/JSON并确认字段、单位和深度基准。</li><li>查看质量问题，配置主数据映射或修正副本，再运行校验。</li><li>合格版本可提交至待知识构建清单，原件与历史版本保留。</li><li>混合检索与规则判定仍使用独立的虚构演示样例。</li></ol><p class="subtle">OCR、外部连接器、实时流及知识实体关系抽取尚未接入。</p>');
   }catch(error){toast(error.message);}
 });
 document.addEventListener('change',event=>{
   usersUI.change(event);
-  if(event.target.id==='project-select'){state.projectId=event.target.value;state.wellId=currentProject().wells[0];state.selectedType='well';state.expanded=new Set([state.wellId]);state.activeResult=null;state.treeFilter='';persist();render();}
+  if(event.target.id==='project-select'){state.selectedAssetId='';state.projectId=event.target.value;state.wellId=currentProject().wells[0];state.selectedType='well';state.expanded=new Set([state.wellId]);state.activeResult=null;state.treeFilter='';persist();render();}
   if(event.target.id==='analysis-well'){state.wellId=event.target.value;state.selectedType='well';state.expanded.add(state.wellId);state.activeResult=null;persist();render();}
   if(event.target.id==='sample-select'){state.sampleId=event.target.value;state.formDirty=false;state.activeResult=null;render();}
   if(event.target.id==='scenario-select'){state.scenario=event.target.value;state.activeResult=null;render();}
@@ -250,7 +255,9 @@ document.addEventListener('input',event=>{
   if(['target-thickness','reference-thickness'].includes(event.target.id))invalidateResult();
 });
 document.addEventListener('submit',async event=>{
-  if(['login-form','admin-edit-form','audit-filter-form','rule-form','import-form'].includes(event.target.id))event.preventDefault();
+  if(event.target.id.startsWith('ing-')||['login-form','admin-edit-form','audit-filter-form','rule-form'].includes(event.target.id))event.preventDefault();
+  if(await ingestionUI.submit(event))return;
+  if(['login-form','admin-edit-form','audit-filter-form','rule-form'].includes(event.target.id))event.preventDefault();
   if(event.target.id==='login-form'){event.preventDefault();await login(event.target);return;}
   if(await usersUI.submit(event))return;
   if(!currentUser)return;
@@ -259,14 +266,11 @@ document.addEventListener('submit',async event=>{
     event.preventDefault();const threshold=Number($('#rule-threshold').value);if(!Number.isFinite(threshold)||threshold<=0){toast('请输入大于零的阈值。');return;}
     state.rule=await api('/business/rule-edit',{projectId:state.projectId,wellId:state.wellId,threshold,enabled:$('#rule-enabled').checked});state.activeResult=null;await refreshWorkspace();toast('规则已保存，历史记录保留原版本。');
   }
-  if(event.target.id==='import-form'){
-    event.preventDefault();const file=$('#import-file').files[0];if(!file)return;
-    await api('/business/import',{projectId:state.projectId,wellId:state.wellId,name:file.name,type:$('#import-type').value});$('dialog').close();await refreshWorkspace();toast('资料已登记，尚未保存原文件或解析。');
-  }
   }catch(error){toast(error.message);}
 });
 document.addEventListener('keydown',event=>{if((event.key==='Enter'||event.key===' ')&&event.target.matches('.graph-node')){event.preventDefault();event.target.dispatchEvent(new MouseEvent('click',{bubbles:true}));}});
 const usersUI=createUsersUI({modal,toast,refresh:refreshWorkspace,getUser:()=>currentUser});
+const ingestionUI=createIngestionUI({getContext:()=>({projectId:state.projectId,wellId:state.wellId,block:currentProject().block,canData:permitted('data'),canImport:permitted('import'),route:route()}),repaint:render,refresh:refreshWorkspace,modal,toast,go,selectAsset:asset=>{state.wellId=asset.wellId;state.selectedType=asset.objectType;state.selectedAssetId=asset.id;state.expanded.add(asset.wellId);}});
 function applyPermissions(){
   for(const button of document.querySelectorAll('[data-route]'))if(!permitted(button.dataset.route))button.disabled=true;
   for(const button of document.querySelectorAll('[data-action]')){const key={import:'import','run-rule':'run','export-run':'export','joint-analysis':'run'}[button.dataset.action];if(key&&!permitted(key))button.hidden=true;}
@@ -274,6 +278,8 @@ function applyPermissions(){
   if(!projects.length||route()==='users'){document.querySelector('.context-bar')?.classList.add('hidden');document.querySelector('.data-sidebar')?.classList.add('hidden');document.querySelector('.app-body')?.classList.add('admin-layout');}
 }
 function clearSession(message=''){
+  ingestionUI.clear();
+  state.selectedAssetId='';
   currentUser=null;projects=[];wells=[];initialTasks=[];authorizedAssets=[];allowedActions={};state.runs=[];state.imported=[];state.activeResult=null;state.projectId='';state.wellId='';state.homeTab='overview';state.treeFilter='';state.selectedType='well';state.expanded=new Set();usersUI.clear();clearTimeout(sessionTimer);$('#overlay-root').innerHTML='';loginNotice=message;authLoading=false;location.hash='/login';render();
 }
 async function refreshWorkspace(fetchData=true){

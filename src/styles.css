@@ -467,3 +467,79 @@ pre.snapshot {font-size:11px;line-height:1.8;background:#f7f9fc;border:1px solid
 @media(min-width:1500px){.admin-layout .main-content {padding-left:max(30px,calc((100vw - 1440px)/2));padding-right:max(30px,calc((100vw - 1440px)/2));}}
 @media(max-width:1100px){.login-story {padding:30px;}.admin-split {grid-template-columns:180px minmax(0,1fr);}.admin-toolbar {align-items:start;flex-direction:column;}.admin-summary>div {padding:15px;gap:10px;}.admin-summary strong {font-size:23px;}}
 @media(max-width:760px){.login-page {grid-template-columns:1fr;}.login-story {display:none;}.login-side {padding:35px 24px;}.admin-tabs {gap:15px;}.admin-summary {grid-template-columns:repeat(2,1fr);gap:10px;}.admin-split {grid-template-columns:1fr;}.admin-side {border-right:0;border-bottom:1px solid var(--border);max-height:180px;overflow:auto;}.permission-preview,.check-grid {grid-template-columns:repeat(2,minmax(0,1fr));}.admin-tools input {width:130px;}.admin-tools {gap:5px;}.audit-filters input {width:125px;}.admin-summary>div {padding:13px;}.login-card {max-width:400px;}.login-card h2 {font-size:25px;}}
+
+/* M2 data ingestion and governance, retaining the workbench's blue visual language. */
+.ingestion {font-size:14px;line-height:1.7;min-width:0;}
+.ingestion .page-heading h1 {font-size:27px;}
+.ingestion .page-heading p {font-size:14px;color:#687a91;margin-top:8px;}
+.ingestion .button,.ingestion .text-button,.ingestion .badge {font-size:13px;}
+.ingestion .button {min-height:36px;}
+.ingestion .panel-heading h2 {font-size:16px;font-weight:600;}
+.ingestion .subtle {font-size:12px;}
+.ing-summary {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin:20px 0 22px;}
+.ing-summary>div {padding:20px 22px;background:white;border:1px solid var(--border);border-radius:9px;display:flex;align-items:center;gap:16px;box-shadow:0 2px 6px #293a5010;}
+.ing-summary strong {font-size:30px;line-height:1.2;font-weight:600;color:#245ec5;}
+.ing-summary span {color:#718095;font-size:14px;}
+.ing-tabs {gap:28px;overflow-x:auto;overflow-y:hidden;min-height:46px;height:auto;flex-shrink:0;}
+.ing-tabs>button:not(.refresh-button) {font-size:14px;white-space:nowrap;padding-bottom:14px;}
+.ing-filters {display:flex;align-items:end;gap:12px;flex-wrap:wrap;padding:20px;border-bottom:1px solid var(--border);background:#fafcff;border-radius:8px 8px 0 0;}
+.ing-filters label {display:grid;gap:7px;min-width:118px;color:#5c6c82;font-size:13px;}
+.ing-filters input,.ing-filters select {max-width:185px;min-height:36px;border:1px solid #d7e0ec;border-radius:5px;background:white;padding:7px 9px;color:#36485f;font-size:13px;}
+.ing-filters .ing-search {flex:1;min-width:160px;}
+.ing-search input {width:100%;max-width:240px;}
+.ing-table {width:100%;border-collapse:collapse;}
+.ing-table th {font-size:12px;background:#f7f9fc;color:#67788f;white-space:nowrap;}
+.ing-table td {font-size:14px;line-height:1.7;color:#3c506b;max-width:360px;overflow-wrap:anywhere;}
+.ing-table th,.ing-table td {padding:14px 18px;}
+.ing-table tbody tr:hover {background:#f7faff;}
+.ing-table .block {font-size:12px;color:#7c899c;font-weight:400;}
+.ing-asset-name {font-size:14px!important;text-align:left;line-height:1.7;font-weight:600;max-width:300px;overflow-wrap:anywhere;}
+.ing-pagination {padding:14px 20px;display:flex;gap:12px;justify-content:space-between;align-items:center;border-top:1px solid var(--border);color:#718095;font-size:12px;}
+.ing-pagination>div {display:flex;gap:8px;}
+.ing-empty {padding:44px 20px;text-align:center;color:#77879d;font-size:14px;line-height:1.9;}
+.ing-description {padding:0 20px 18px;color:#6b7d95;font-size:14px;line-height:1.9;}
+.modal-body .ing-description {padding:8px 0;}
+.ing-note {padding:22px;}
+.ing-note h3 {font-size:16px;margin-bottom:8px;}
+.ing-note p {color:#6b7d95;line-height:1.9;}
+.ing-connectors {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;}
+.ing-connector {padding:24px;margin:0!important;display:flex;align-items:start;flex-direction:column;gap:14px;}
+.ing-connector h3 {font-size:17px;}
+.ing-connector p {color:#6b7d95;font-size:14px;line-height:1.9;flex:1;}
+.ing-connector-icon {width:44px;height:44px;background:#eef4ff;color:#3169d2;font-size:27px;border-radius:10px;display:grid;place-items:center;}
+.ing-detail-heading {display:flex;gap:15px;flex-wrap:wrap;align-items:center;margin:20px 0;}
+.ing-detail-heading>div:nth-child(2) {flex:1;min-width:150px;}
+.ing-detail-heading h2 {font-size:21px;overflow-wrap:anywhere;}
+.ing-detail-heading p {font-size:13px;color:#718095;margin-top:5px;}
+.ing-detail-panel {overflow:hidden;}
+.ing-metadata {padding:8px 24px 20px;margin:0;}
+.ing-metadata>div {display:grid;grid-template-columns:150px minmax(0,1fr);padding:14px 0;gap:16px;border-bottom:1px solid #edf1f7;}
+.ing-metadata dt {color:#7b889c;}
+.ing-metadata dd {margin:0;overflow-wrap:anywhere;color:#3c506b;}
+.ing-detail-panel>a.button {display:inline-block;margin:0 24px 24px;}
+.ing-panel-actions {padding:16px 20px;background:#fafcff;border-bottom:1px solid var(--border);}
+.ing-quality-summary {padding:20px;display:flex;gap:15px;align-items:center;flex-wrap:wrap;background:#f8fbff;border-bottom:1px solid var(--border);}
+.ing-quality-summary small {color:#74859b;font-size:12px;}
+.ing-checks {padding:15px 20px;display:flex;gap:10px 20px;flex-wrap:wrap;border-bottom:1px solid var(--border);}
+.ing-checks>span {font-size:12px;display:flex;align-items:center;gap:7px;}
+.ing-lineage {display:flex;align-items:center;gap:12px;padding:22px;overflow-x:auto;}
+.ing-lineage>div {min-width:150px;flex:1;background:#f3f7fe;border:1px solid #dbe6f7;border-radius:7px;padding:15px;align-self:stretch;display:flex;flex-direction:column;gap:8px;}
+.ing-lineage small {color:#7186a3;font-size:12px;}
+.ing-lineage strong {font-size:13px;overflow-wrap:anywhere;color:#345b91;}
+.ing-lineage span {font-size:12px;overflow-wrap:anywhere;color:#7388a4;line-height:1.8;}
+.ing-lineage>b {color:#8ba4c6;font-weight:400;}
+.ing-raw-preview {margin:18px 20px;border:1px solid var(--border);border-radius:6px;overflow:hidden;}
+.ing-raw-preview summary {cursor:pointer;padding:12px 15px;background:#f7faff;color:#4d6e9e;font-size:13px;}
+.ing-raw-preview .ing-description {padding:12px 16px;}
+.ing-stepper {display:flex;gap:18px;justify-content:space-between;margin-bottom:24px;padding:14px 18px;border-radius:7px;background:#f3f7ff;color:#8a9ab1;font-size:13px;}
+.ing-stepper b {color:#2563eb;font-weight:600;}
+.ing-form-pair {display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.ing-map-grid {display:grid;grid-template-columns:140px minmax(140px,1fr) minmax(130px,1fr);gap:12px;align-items:center;margin:20px 0;font-size:14px;}
+.ing-map-heading {font-size:12px;color:#7c8da5;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.ing-map-grid input,.ing-map-grid select {width:100%;min-width:0;border:1px solid #d4dfed;border-radius:5px;background:white;padding:9px;color:#435871;font-size:14px;}
+.modal:has([id^="ing-"]) .modal-body {font-size:14px;}
+.modal:has([id^="ing-"]) .form-field {font-size:14px;color:#53677f;}
+.modal:has([id^="ing-"]) .form-field input,.modal:has([id^="ing-"]) .form-field select {font-size:14px;min-height:38px;}
+.modal:has([id^="ing-"]) .button {font-size:14px;}
+@media(max-width:1250px){.ing-summary {gap:10px;}.ing-summary>div {padding:16px;gap:10px;}.ing-summary strong {font-size:26px;}.ing-connectors {grid-template-columns:repeat(2,minmax(0,1fr));}.ing-detail-heading .heading-actions {width:100%;justify-content:start;}}
+@media(max-width:760px){.ing-summary {grid-template-columns:repeat(2,minmax(0,1fr));}.ing-summary span {font-size:13px;}.ing-connectors {grid-template-columns:1fr;}.ing-filters {padding:15px;gap:10px;}.ing-filters label {min-width:calc(50% - 10px);flex:1;}.ing-filters input,.ing-filters select {max-width:100%;width:100%;}.ing-tabs {gap:20px;}.ing-map-grid {grid-template-columns:90px minmax(90px,1fr) minmax(90px,1fr);gap:8px;font-size:12px;}.ing-map-grid input,.ing-map-grid select {font-size:12px;padding:7px 4px;}.ing-form-pair {grid-template-columns:1fr;gap:0;}.ing-stepper {font-size:12px;gap:10px;padding:10px;}.ing-metadata>div {grid-template-columns:95px minmax(0,1fr);gap:10px;}.ing-pagination {flex-wrap:wrap;}.ing-table th,.ing-table td {padding:12px;}}

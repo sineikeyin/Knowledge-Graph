@@ -2,4 +2,5 @@
 await import('./rules.test.mjs');
 await import('./access.test.mjs');
 await import('./server.test.mjs');
+await import('./ingestion.test.mjs');
 await import('./preview.test.mjs');

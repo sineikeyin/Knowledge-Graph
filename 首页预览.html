@@ -478,6 +478,82 @@ pre.snapshot {font-size:11px;line-height:1.8;background:#f7f9fc;border:1px solid
 @media(max-width:1100px){.login-story {padding:30px;}.admin-split {grid-template-columns:180px minmax(0,1fr);}.admin-toolbar {align-items:start;flex-direction:column;}.admin-summary>div {padding:15px;gap:10px;}.admin-summary strong {font-size:23px;}}
 @media(max-width:760px){.login-page {grid-template-columns:1fr;}.login-story {display:none;}.login-side {padding:35px 24px;}.admin-tabs {gap:15px;}.admin-summary {grid-template-columns:repeat(2,1fr);gap:10px;}.admin-split {grid-template-columns:1fr;}.admin-side {border-right:0;border-bottom:1px solid var(--border);max-height:180px;overflow:auto;}.permission-preview,.check-grid {grid-template-columns:repeat(2,minmax(0,1fr));}.admin-tools input {width:130px;}.admin-tools {gap:5px;}.audit-filters input {width:125px;}.admin-summary>div {padding:13px;}.login-card {max-width:400px;}.login-card h2 {font-size:25px;}}
 
+/* M2 data ingestion and governance, retaining the workbench's blue visual language. */
+.ingestion {font-size:14px;line-height:1.7;min-width:0;}
+.ingestion .page-heading h1 {font-size:27px;}
+.ingestion .page-heading p {font-size:14px;color:#687a91;margin-top:8px;}
+.ingestion .button,.ingestion .text-button,.ingestion .badge {font-size:13px;}
+.ingestion .button {min-height:36px;}
+.ingestion .panel-heading h2 {font-size:16px;font-weight:600;}
+.ingestion .subtle {font-size:12px;}
+.ing-summary {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin:20px 0 22px;}
+.ing-summary>div {padding:20px 22px;background:white;border:1px solid var(--border);border-radius:9px;display:flex;align-items:center;gap:16px;box-shadow:0 2px 6px #293a5010;}
+.ing-summary strong {font-size:30px;line-height:1.2;font-weight:600;color:#245ec5;}
+.ing-summary span {color:#718095;font-size:14px;}
+.ing-tabs {gap:28px;overflow-x:auto;overflow-y:hidden;min-height:46px;height:auto;flex-shrink:0;}
+.ing-tabs>button:not(.refresh-button) {font-size:14px;white-space:nowrap;padding-bottom:14px;}
+.ing-filters {display:flex;align-items:end;gap:12px;flex-wrap:wrap;padding:20px;border-bottom:1px solid var(--border);background:#fafcff;border-radius:8px 8px 0 0;}
+.ing-filters label {display:grid;gap:7px;min-width:118px;color:#5c6c82;font-size:13px;}
+.ing-filters input,.ing-filters select {max-width:185px;min-height:36px;border:1px solid #d7e0ec;border-radius:5px;background:white;padding:7px 9px;color:#36485f;font-size:13px;}
+.ing-filters .ing-search {flex:1;min-width:160px;}
+.ing-search input {width:100%;max-width:240px;}
+.ing-table {width:100%;border-collapse:collapse;}
+.ing-table th {font-size:12px;background:#f7f9fc;color:#67788f;white-space:nowrap;}
+.ing-table td {font-size:14px;line-height:1.7;color:#3c506b;max-width:360px;overflow-wrap:anywhere;}
+.ing-table th,.ing-table td {padding:14px 18px;}
+.ing-table tbody tr:hover {background:#f7faff;}
+.ing-table .block {font-size:12px;color:#7c899c;font-weight:400;}
+.ing-asset-name {font-size:14px!important;text-align:left;line-height:1.7;font-weight:600;max-width:300px;overflow-wrap:anywhere;}
+.ing-pagination {padding:14px 20px;display:flex;gap:12px;justify-content:space-between;align-items:center;border-top:1px solid var(--border);color:#718095;font-size:12px;}
+.ing-pagination>div {display:flex;gap:8px;}
+.ing-empty {padding:44px 20px;text-align:center;color:#77879d;font-size:14px;line-height:1.9;}
+.ing-description {padding:0 20px 18px;color:#6b7d95;font-size:14px;line-height:1.9;}
+.modal-body .ing-description {padding:8px 0;}
+.ing-note {padding:22px;}
+.ing-note h3 {font-size:16px;margin-bottom:8px;}
+.ing-note p {color:#6b7d95;line-height:1.9;}
+.ing-connectors {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;}
+.ing-connector {padding:24px;margin:0!important;display:flex;align-items:start;flex-direction:column;gap:14px;}
+.ing-connector h3 {font-size:17px;}
+.ing-connector p {color:#6b7d95;font-size:14px;line-height:1.9;flex:1;}
+.ing-connector-icon {width:44px;height:44px;background:#eef4ff;color:#3169d2;font-size:27px;border-radius:10px;display:grid;place-items:center;}
+.ing-detail-heading {display:flex;gap:15px;flex-wrap:wrap;align-items:center;margin:20px 0;}
+.ing-detail-heading>div:nth-child(2) {flex:1;min-width:150px;}
+.ing-detail-heading h2 {font-size:21px;overflow-wrap:anywhere;}
+.ing-detail-heading p {font-size:13px;color:#718095;margin-top:5px;}
+.ing-detail-panel {overflow:hidden;}
+.ing-metadata {padding:8px 24px 20px;margin:0;}
+.ing-metadata>div {display:grid;grid-template-columns:150px minmax(0,1fr);padding:14px 0;gap:16px;border-bottom:1px solid #edf1f7;}
+.ing-metadata dt {color:#7b889c;}
+.ing-metadata dd {margin:0;overflow-wrap:anywhere;color:#3c506b;}
+.ing-detail-panel>a.button {display:inline-block;margin:0 24px 24px;}
+.ing-panel-actions {padding:16px 20px;background:#fafcff;border-bottom:1px solid var(--border);}
+.ing-quality-summary {padding:20px;display:flex;gap:15px;align-items:center;flex-wrap:wrap;background:#f8fbff;border-bottom:1px solid var(--border);}
+.ing-quality-summary small {color:#74859b;font-size:12px;}
+.ing-checks {padding:15px 20px;display:flex;gap:10px 20px;flex-wrap:wrap;border-bottom:1px solid var(--border);}
+.ing-checks>span {font-size:12px;display:flex;align-items:center;gap:7px;}
+.ing-lineage {display:flex;align-items:center;gap:12px;padding:22px;overflow-x:auto;}
+.ing-lineage>div {min-width:150px;flex:1;background:#f3f7fe;border:1px solid #dbe6f7;border-radius:7px;padding:15px;align-self:stretch;display:flex;flex-direction:column;gap:8px;}
+.ing-lineage small {color:#7186a3;font-size:12px;}
+.ing-lineage strong {font-size:13px;overflow-wrap:anywhere;color:#345b91;}
+.ing-lineage span {font-size:12px;overflow-wrap:anywhere;color:#7388a4;line-height:1.8;}
+.ing-lineage>b {color:#8ba4c6;font-weight:400;}
+.ing-raw-preview {margin:18px 20px;border:1px solid var(--border);border-radius:6px;overflow:hidden;}
+.ing-raw-preview summary {cursor:pointer;padding:12px 15px;background:#f7faff;color:#4d6e9e;font-size:13px;}
+.ing-raw-preview .ing-description {padding:12px 16px;}
+.ing-stepper {display:flex;gap:18px;justify-content:space-between;margin-bottom:24px;padding:14px 18px;border-radius:7px;background:#f3f7ff;color:#8a9ab1;font-size:13px;}
+.ing-stepper b {color:#2563eb;font-weight:600;}
+.ing-form-pair {display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.ing-map-grid {display:grid;grid-template-columns:140px minmax(140px,1fr) minmax(130px,1fr);gap:12px;align-items:center;margin:20px 0;font-size:14px;}
+.ing-map-heading {font-size:12px;color:#7c8da5;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.ing-map-grid input,.ing-map-grid select {width:100%;min-width:0;border:1px solid #d4dfed;border-radius:5px;background:white;padding:9px;color:#435871;font-size:14px;}
+.modal:has([id^="ing-"]) .modal-body {font-size:14px;}
+.modal:has([id^="ing-"]) .form-field {font-size:14px;color:#53677f;}
+.modal:has([id^="ing-"]) .form-field input,.modal:has([id^="ing-"]) .form-field select {font-size:14px;min-height:38px;}
+.modal:has([id^="ing-"]) .button {font-size:14px;}
+@media(max-width:1250px){.ing-summary {gap:10px;}.ing-summary>div {padding:16px;gap:10px;}.ing-summary strong {font-size:26px;}.ing-connectors {grid-template-columns:repeat(2,minmax(0,1fr));}.ing-detail-heading .heading-actions {width:100%;justify-content:start;}}
+@media(max-width:760px){.ing-summary {grid-template-columns:repeat(2,minmax(0,1fr));}.ing-summary span {font-size:13px;}.ing-connectors {grid-template-columns:1fr;}.ing-filters {padding:15px;gap:10px;}.ing-filters label {min-width:calc(50% - 10px);flex:1;}.ing-filters input,.ing-filters select {max-width:100%;width:100%;}.ing-tabs {gap:20px;}.ing-map-grid {grid-template-columns:90px minmax(90px,1fr) minmax(90px,1fr);gap:8px;font-size:12px;}.ing-map-grid input,.ing-map-grid select {font-size:12px;padding:7px 4px;}.ing-form-pair {grid-template-columns:1fr;gap:0;}.ing-stepper {font-size:12px;gap:10px;padding:10px;}.ing-metadata>div {grid-template-columns:95px minmax(0,1fr);gap:10px;}.ing-pagination {flex-wrap:wrap;}.ing-table th,.ing-table td {padding:12px;}}
+
 </style>
 </head>
 <body>
@@ -761,10 +837,265 @@ function business(db,user,action,body,context={}) {
 }
 
 
+// ===== src/ingestion-core.js =====
+// Pure parsers and deterministic governance rules; shared by the local service and offline demo.
+const ingLimits = {bytes:5*1024*1024,rows:5000,columns:128,cell:4096};
+const ingFieldSets = {
+  stratum:[['well','井名',true],['layer','层位',true],['top','顶深',true],['bottom','底深',true],['thickness','厚度',false],['unit','深度单位',true],['depthType','深度类型',true],['datum','参考基准',true],['lithology','岩性',false],['block','区块',false]],
+  log:[['well','井名',true],['depth','井深',true],['curve','曲线名',true],['value','曲线值',true],['valueUnit','曲线单位',true],['unit','深度单位',true],['depthType','深度类型',true],['datum','参考基准',true],['time','事件时间',false]],
+  trajectory:[['well','井名',true],['depth','井深',true],['inclination','井斜角',true],['azimuth','方位角',true],['unit','深度单位',true],['depthType','深度类型',true],['datum','参考基准',true]],
+};
+const ingRuleCatalog = [
+  ['required','必填与数值格式','阻断','按资料类型检查必要字段和数值'],
+  ['master','主数据归一','阻断','井归属、层位及别名匹配'],
+  ['basis','单位与深度基准','阻断','m/ft 统一；MD/TVD 和参考基准明确'],
+  ['interval','区间与重复','阻断','顶底深、重复记录及分层重叠'],
+  ['time','事件时间','阻断','时间含明确时区；保留原始时间'],
+  ['continuity','井深连续性','警告','配置允许的最大采样间距，未配置则不适用'],
+  ['curve','曲线范围与突变','警告','可配置范围与相邻值差；阈值需业务确认'],
+];
+function ingError(message,status=400){const error=new Error(message);error.status=status;throw error;}
+function ingKey(value){return String(value??'').trim().toLowerCase().replace(/[\s_\-]/g,'');}
+function ingParse(text,extension){
+  text=String(text).replace(/^\uFEFF/,'');
+  let headers,rows,locations;
+  if(extension==='json'){
+    let value;try{value=JSON.parse(text);}catch{ingError('JSON 格式错误，请检查引号、逗号与括号。');}
+    const list=Array.isArray(value)?value:value?.records;
+    if(!Array.isArray(list)||!list.length||list.length>ingLimits.rows)ingError('JSON 需为非空对象数组，或包含 records 数组；最多 5000 行。');
+    if(list.some(row=>!row||Array.isArray(row)||typeof row!=='object'))ingError('JSON 每条记录必须是对象。');
+    headers=[...new Set(list.flatMap(row=>Object.keys(row)))];
+    rows=list.map(row=>headers.map(key=>{const cell=row[key];if(cell!==null&&typeof cell==='object')ingError('JSON 仅支持一层字段，不能嵌套对象或数组。');return cell==null?'':String(cell);}));
+    locations=list.map((_,index)=>index+1);
+  }else if(extension==='csv'){
+    const records=[];let row=[],cell='',quoted=false,afterQuote=false,line=1,start=1;
+    const endCell=()=>{row.push(cell);cell='';afterQuote=false;if(row.length>ingLimits.columns)ingError('CSV 超过 128 列限制。');};
+    const endRow=()=>{endCell();if(row.some(value=>value.trim()))records.push({row,line:start});row=[];start=line+1;if(records.length>ingLimits.rows+1)ingError('CSV 最多 5000 条数据。');};
+    for(let i=0;i<text.length;i++){
+      const c=text[i];
+      if(quoted){if(c==='"'){if(text[i+1]==='"'){cell+='"';i++;}else{quoted=false;afterQuote=true;}}else{cell+=c;if(c==='\n')line++;}}
+      else if(c==='"'){if(cell||afterQuote)ingError(`CSV 第 ${line} 行引号位置错误。`);quoted=true;}
+      else if(c===',')endCell();
+      else if(c==='\r'||c==='\n'){if(c==='\r'&&text[i+1]==='\n')i++;endRow();line++;}
+      else {if(afterQuote&&!/\s/.test(c))ingError(`CSV 第 ${line} 行引号后存在多余内容。`);if(!afterQuote)cell+=c;}
+      if(cell.length>ingLimits.cell)ingError('单元格超过 4096 字符限制。');
+    }
+    if(quoted)ingError('CSV 引号未闭合。');if(cell||row.length||afterQuote)endRow();
+    if(records.length<2)ingError('CSV 需要表头和至少一条数据。');
+    headers=records.shift().row.map(value=>value.trim());
+    if(records.some(record=>record.row.length!==headers.length))ingError('CSV 数据列数与表头不一致，请检查逗号和引号。');
+    rows=records.map(record=>record.row);locations=records.map(record=>record.line);
+  }else ingError('该格式尚未配置解析器。当前支持 CSV、JSON；原件已保存，可在接入解析器后重试。');
+  if(!headers.length||headers.length>ingLimits.columns||headers.some(header=>!header.trim()||header.length>100)||new Set(headers.map(ingKey)).size!==headers.length)ingError('表头不能为空或重复，最多 128 列，每个名称不超过 100 字。');
+  if(rows.some(row=>row.some(cell=>cell.length>ingLimits.cell)))ingError('单元格超过 4096 字符限制。');
+  return {headers,rows,locations,parserVersion:'structured-v1',format:extension};
+}
+function ingGuess(headers,objectType){
+  const aliases={well:['井号','井名','well','wellname'],layer:['层位','地层','layer','formation'],top:['顶深','top','topdepth'],bottom:['底深','bottom','bottomdepth'],thickness:['厚度','thickness'],unit:['深度单位','单位','unit','depthunit'],depthType:['深度类型','depthtype'],datum:['参考基准','基准','datum'],lithology:['岩性','lithology'],block:['区块','区块名','block'],depth:['井深','depth','md'],curve:['曲线','曲线名','curve'],value:['曲线值','数值','value'],valueUnit:['曲线单位','valueunit'],time:['事件时间','时间','time','timestamp'],inclination:['井斜角','井斜','inclination','inc'],azimuth:['方位角','方位','azimuth','azi']};
+  return Object.fromEntries((ingFieldSets[objectType]||[]).map(([key])=>[key,headers.find(header=>(aliases[key]||[key]).some(alias=>ingKey(alias)===ingKey(header)))||'']));
+}
+function ingNormalize(parsed,objectType,config,scope){
+  const fields=ingFieldSets[objectType]||[];const mapping=config.fields||ingGuess(parsed.headers,objectType),defaults=config.defaults||{};
+  const resolve=(kind,value)=>{const key=ingKey(value);const alias=scope.aliases.find(item=>item.kind===kind&&ingKey(item.rawName)===key);return alias?.standardName||String(value??'').trim();};
+  return parsed.rows.map((cells,index)=>{
+    const record={};for(const [key]of fields){const header=mapping[key];if(header&&!parsed.headers.includes(header))ingError(`映射字段不存在：${header}`);record[key]=String(header?cells[parsed.headers.indexOf(header)]??'':defaults[key]??'').trim();}
+    const wellRaw=record.well;const resolvedWell=resolve('well',wellRaw);
+    record.wellId=wellRaw&&[scope.well.id,scope.well.short,scope.well.name].some(name=>ingKey(name)===ingKey(resolvedWell))?scope.well.id:'';
+    if(record.layer)record.layer=resolve('layer',record.layer);
+    if(record.lithology)record.lithology=resolve('lithology',record.lithology);
+    if(record.block)record.block=resolve('block',record.block);
+    record.rawUnit=record.unit;record.depthType=String(record.depthType||'').toUpperCase();
+    const factor={m:1,米:1,ft:0.3048,英尺:0.3048}[String(record.unit||'').toLowerCase()];
+    const invalidFields=[],missingThickness=record.thickness===''||/^(null|-999\.25)$/i.test(record.thickness||'');
+    for(const key of ['top','bottom','thickness','depth','value','inclination','azimuth'])if(key in record){const raw=record[key],missing=raw===''||/^(null|-999\.25)$/i.test(raw);record[key]=missing?null:/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?$/.test(raw)?Number(raw):NaN;if(!Number.isFinite(record[key])){if(!missing)invalidFields.push(key);record[key]=null;}if(factor&&['top','bottom','thickness','depth'].includes(key)&&record[key]!==null)record[key]=Number((record[key]*factor).toFixed(6));}
+    if(factor)record.unit='m';
+    record.thicknessMethod='原始值';
+    if(objectType==='stratum'&&missingThickness&&record.thickness===null&&record.top!==null&&record.bottom!==null){record.thickness=Number((record.bottom-record.top).toFixed(6));record.thicknessMethod='同深度类型与参考基准的底深减顶深';}
+    return {row:index+1,location:parsed.locations[index],record,raw:cells,invalidFields};
+  });
+}
+function ingValidate(rows,objectType,scope,options={}){
+  const issues=[];const add=(rule,row,field,message,severity='block')=>issues.push({rule,row:row.row,location:row.location,field,message,severity,value:row.record[field]??''});
+  const fields=ingFieldSets[objectType];
+  if(!fields)return {status:'阻断',issues:[{rule:'template',row:0,location:0,field:'',message:'此资料类型尚无治理模板，请先使用地层、测井或井轨迹模板。',severity:'block',value:''}],checks:[]};
+  const seen=new Set(),previousByCurve=new Map(),curveUnits=new Map();
+  for(const row of rows){
+    const r=row.record;
+    for(const field of row.invalidFields||[])add('required',row,field,'原始值不是合法的有限十进制数值。');
+    for(const [key,label,required]of fields)if(required&&(r[key]===null||r[key]===undefined||r[key]===''))add('required',row,key,`${label}为空或格式不合法。`);
+    if(!r.wellId)add('master',row,'well','井名未匹配到本次导入的归属井，请配置别名或检查归属。');
+    if(objectType==='stratum'&&r.layer&&!scope.layers.some(layer=>ingKey(layer)===ingKey(r.layer)))add('master',row,'layer','层位未归一，请在主数据映射中确认标准层位。');
+    if(r.block&&scope.block&&ingKey(r.block)!==ingKey(scope.block))add('master',row,'block','区块名称与归属项目不匹配，请确认区块别名。');
+    if(r.unit!=='m')add('basis',row,'unit','仅支持 m/米 或 ft/英尺；需明确原始深度单位。');
+    if(!['MD','TVD'].includes(r.depthType))add('basis',row,'depthType','深度类型必须明确为 MD 或 TVD。');
+    if(!r.datum||/^(未知|unknown|待确认)$/i.test(r.datum))add('basis',row,'datum','参考基准未明确。');
+    if(objectType==='stratum'){
+      if(r.top!==null&&r.bottom!==null&&r.bottom<=r.top)add('interval',row,'bottom','底深必须大于顶深。');
+      if(r.thickness!==null&&r.thickness<=0)add('interval',row,'thickness','厚度必须大于零。');
+      if(r.top!==null&&r.bottom!==null&&r.thickness!==null&&Math.abs(r.bottom-r.top-r.thickness)>0.01)add('interval',row,'thickness','厚度与顶底深之差不一致，请核对深度类型及厚度含义。');
+    }
+    for(const key of ['top','bottom','depth'])if(r[key]!==null&&r[key]!==undefined&&r[key]<0)add('required',row,key,'本版模板仅接受非负井深。');
+    if(objectType==='trajectory'){if(r.inclination!==null&&(r.inclination<0||r.inclination>180))add('required',row,'inclination','井斜角应在 0～180°。');if(r.azimuth!==null&&(r.azimuth<0||r.azimuth>=360))add('required',row,'azimuth','方位角应在 0～360°，不含 360°。');}
+    const identity=objectType==='stratum'?[r.wellId,r.layer,r.top,r.bottom,r.depthType,r.datum]:[r.wellId,r.depth,r.curve||'',r.time||'',r.depthType,r.datum];const key=JSON.stringify(identity);
+    if(seen.has(key))add('interval',row,objectType==='stratum'?'top':'depth','发现重复区间或采样记录。');seen.add(key);
+    if(r.time&&(!/(Z|[+-]\d\d:\d\d)$/i.test(r.time)||Number.isNaN(Date.parse(r.time))))add('time',row,'time','事件时间需为含时区的 ISO 时间，例如 2026-11-19T10:00:00+08:00。');
+    if(objectType==='log'&&r.value!==null){if(options.min!==null&&options.min!==undefined&&r.value<options.min)add('curve',row,'value','低于配置的曲线最小值。','warning');if(options.max!==null&&options.max!==undefined&&r.value>options.max)add('curve',row,'value','超过配置的曲线最大值。','warning');}
+    if(objectType==='log'&&r.curve&&r.valueUnit){const unit=curveUnits.get(r.curve);if(unit&&unit!==r.valueUnit)add('basis',row,'valueUnit','同一曲线存在不同单位，请先统一曲线单位。');curveUnits.set(r.curve,r.valueUnit);}
+    const curveKey=JSON.stringify([r.wellId,r.curve||'',r.valueUnit||'',r.datum,r.depthType]),previous=previousByCurve.get(curveKey);
+    if(previous&&r.depth!==null&&r.depth!==undefined){const gap=r.depth-previous.record.depth;if(gap<0)add('continuity',row,'depth','井深记录顺序倒退，请核对采集顺序。','warning');if(options.maxGap>0&&gap>options.maxGap)add('continuity',row,'depth','井深间距超过配置上限。','warning');if(objectType==='log'&&options.maxJump>0&&r.value!==null&&previous.record.value!==null&&Math.abs(r.value-previous.record.value)>options.maxJump)add('curve',row,'value','相邻曲线值变化超过配置阈值。','warning');}if(r.depth!==null&&r.depth!==undefined)previousByCurve.set(curveKey,row);
+  }
+  if(objectType==='stratum'){
+    const sorted=rows.filter(row=>row.record.top!==null&&row.record.bottom!==null).slice().sort((a,b)=>a.record.top-b.record.top);const ends=new Map();
+    for(const row of sorted){const r=row.record,key=JSON.stringify([r.wellId,r.depthType,r.datum]);const end=ends.get(key);if(end!==undefined&&r.top<end)add('interval',row,'top','分层区间与其他记录重叠。');ends.set(key,Math.max(end??-Infinity,r.bottom));}
+  }
+  const checks=ingRuleCatalog.map(([id,name])=>({id,name,status:issues.some(issue=>issue.rule===id)?'有问题':id==='time'&&!rows.some(row=>row.record.time)||id==='continuity'&&(objectType==='stratum'||!(options.maxGap>0))||id==='curve'&&(objectType!=='log'||![options.min,options.max,options.maxJump].some(value=>value!==null&&value!==undefined))?'不适用':'通过'}));
+  return {status:issues.some(issue=>issue.severity==='block')?'阻断':issues.length?'警告':'通过',issues,checks};
+}
+
+
+// ===== src/ingestion-model.js =====
+
+function ingEnsure(db){db.ingestion??={schema:1,versions:[],jobs:[],aliases:[],handoffs:[],mappingRevisions:{}};return db.ingestion;}
+function ingId(db,prefix){return `${prefix}-${db.sequence++}`;}
+function ingScope(db,user,projectId,wellId,action='view',asset){
+  const project=db.projects.find(item=>item.id===projectId);const well=db.wells.find(item=>item.id===wellId);
+  if(!project||!well||!project.wells.includes(wellId))fault('项目与井归属不匹配。',403);
+  requirePermission(db,user,'data',projectId);if(action!=='view')requirePermission(db,user,'import',projectId);
+  for(const [kind,id]of [['well',wellId],...(asset?[['document',asset.id],['object',`${wellId}-${asset.objectType}`]]:[])])if(!resourceAllowed(db,user,projectId,kind,id,wellId,action))fault('无权访问此资料或执行此操作。',403);
+  return {project,well};
+}
+function ingContentAllowed(db,user,asset){
+  const probe={...asset,layer:'',depth:'',thickness:'',distance:'',source:asset.source||''};
+  const doc=protectFields(db,user,asset.projectId,'document',probe,asset.wellId);
+  const well=protectFields(db,user,asset.projectId,'well',{...db.wells.find(item=>item.id===asset.wellId),layer:'',depth:'',thickness:'',distance:'',source:''},asset.wellId);
+  return ['layer','depth','thickness','distance','source'].every(key=>key in doc&&key in well);
+}
+function ingFindAsset(db,user,id,action='view',content=false){
+  const asset=db.assets.find(item=>item.id===id);if(!asset)fault('资料不存在或不可访问。',404);
+  const projectId=asset.projectId||db.projects.find(item=>item.wells.includes(asset.wellId))?.id;
+  ingScope(db,user,projectId,asset.wellId,action,asset);
+  if(content&&!ingContentAllowed(db,user,{...asset,projectId}))fault('资料包含受限字段，不能访问原件、解析内容或治理结果。',403);
+  return asset;
+}
+function ingMappingRevision(db,asset){return ingEnsure(db).mappingRevisions[`${asset.projectId}:${asset.wellId}`]||0;}
+function ingStandards(db,asset){
+  const aliases=ingEnsure(db).aliases.filter(item=>item.projectId===asset.projectId&&item.wellId===asset.wellId);
+  const well=db.wells.find(item=>item.id===asset.wellId);
+  return {well,aliases,block:db.projects.find(project=>project.id===asset.projectId)?.block,layers:[...new Set([well.layer,...aliases.filter(item=>item.kind==='layer').map(item=>item.standardName)].filter(Boolean))]};
+}
+function ingSyncAsset(db,asset){
+  const version=ingEnsure(db).versions.find(item=>item.id===asset.currentVersionId);if(!version)return;
+  const stale=Boolean(version.parsed&&version.mappingRevision!==ingMappingRevision(db,asset));
+  asset.version=`v${version.number}`;asset.status=stale?'待重新标准化':version.status;asset.quality=stale?'未校验':version.qualityRuns.at(-1)?.status||'未校验';asset.tone=asset.quality==='通过'?'teal':asset.quality==='阻断'?'red':'amber';
+}
+function ingRecordUpload(db,user,input,context={}){
+  const {project,well}=ingScope(db,user,input.projectId,input.wellId,'import');
+  const type=objectTypes.find(item=>item.id===input.objectType);if(!type)fault('资料类型无效。');
+  if(!resourceAllowed(db,user,project.id,'object',`${well.id}-${type.id}`,well.id,'import'))fault('无权向该类型对象导入资料。',403);
+  let asset;
+  if(input.assetId){asset=ingFindAsset(db,user,input.assetId,'import',true);if(asset.projectId!==project.id||asset.wellId!==well.id||asset.objectType!==type.id)fault('新版本归属与原资产不一致。');if(asset.currentVersionId!==input.expectedVersionId)fault('资料已更新，请刷新后再上传版本。',409);}
+  const ig=ingEnsure(db);
+  const same=ig.versions.find(version=>version.hash===input.hash&&version.fileName===input.name&&db.assets.some(item=>item.id===version.assetId&&item.projectId===project.id&&item.wellId===well.id&&item.objectType===type.id));
+  if(same&&(!asset||same.assetId===asset.id)){
+    const existing=db.assets.find(item=>item.id===same.assetId);ingFindAsset(db,user,existing.id,'import',true);return {assetId:existing.id,versionId:same.id,duplicate:true};
+  }
+  if(!asset){asset={id:ingId(db,'ASSET'),projectId:project.id,wellId:well.id,objectType:type.id,type:type.type,name:input.name,source:'本地文件',uploadedAt:new Date().toISOString(),uploader:user.name,managed:true};db.assets.unshift(asset);}
+  const previous=asset.currentVersionId||'';const number=ig.versions.filter(version=>version.assetId===asset.id).length+1;
+  const initialConfig={fields:{},defaults:{},patches:[]};
+  for(const [key]of ingFieldSets[type.id]||[]){for(const kind of ['fields','defaults']){const value=String(input.config?.[kind]?.[key]??'');if(value.length>100)fault('字段或默认值不能超过 100 字。');initialConfig[kind][key]=value;}}
+  const version={id:ingId(db,'VER'),assetId:asset.id,number,parentId:previous,fileId:input.fileId,fileName:input.name,size:input.size,hash:input.hash,encoding:input.encoding,createdAt:new Date().toISOString(),createdBy:user.name,status:'待解析',config:input.config?initialConfig:{},qualityRuns:[],mappingRevision:ingMappingRevision(db,asset),reason:previous?'上传新原件':'首次上传'};
+  ig.versions.push(version);asset.currentVersionId=version.id;ingSyncAsset(db,asset);
+  const job={id:ingId(db,'PARSE'),assetId:asset.id,versionId:version.id,status:'待解析',attempt:1,createdAt:version.createdAt,error:''};ig.jobs.unshift(job);
+  auditEvent(db,user,'上传资料',asset.id,{versionId:version.id,fileName:input.name,size:input.size},{...context,projectId:project.id,wellId:well.id});
+  return {assetId:asset.id,versionId:version.id,jobId:job.id,duplicate:false};
+}
+function ingSetParsed(db,jobId,parsed,error){
+  const ig=ingEnsure(db),job=ig.jobs.find(item=>item.id===jobId);if(!job)return;
+  const version=ig.versions.find(item=>item.id===job.versionId);const asset=db.assets.find(item=>item.id===job.assetId);if(!version||!asset)return;
+  job.finishedAt=new Date().toISOString();job.error=error||'';job.status=error?'失败':'完成';version.status=error?'解析失败':'待校验';
+  if(!error){try{version.parsed=parsed;version.config=version.config.fields?version.config:{fields:ingGuess(parsed.headers,asset.objectType),defaults:{},patches:[]};version.mappingRevision=ingMappingRevision(db,asset);version.rows=ingNormalize(parsed,asset.objectType,version.config,ingStandards(db,asset));version.parserVersion=parsed.parserVersion;}catch(cause){job.error=cause.message;job.status='失败';version.status='解析失败';}}
+  if(asset.currentVersionId===version.id)ingSyncAsset(db,asset);
+}
+function ingDashboard(db,user,projectId){
+  ingEnsure(db);const ws=workspace(db,user);const project=ws.projects.find(item=>item.id===projectId);if(!project||!can(db,user,'data',projectId))fault('项目不可访问。',403);
+  const assets=ws.assets.filter(item=>project.wells.includes(item.wellId)).map(item=>{const raw=db.assets.find(asset=>asset.id===item.id);const full=raw.managed&&ingContentAllowed(db,user,raw);const version=db.ingestion.versions.find(version=>version.id===raw.currentVersionId);return {...item,contentAllowed:Boolean(full),mappingStale:Boolean(full&&version?.parsed&&version.mappingRevision!==ingMappingRevision(db,raw)),canEdit:Boolean(full&&can(db,user,'import',projectId)&&resourceAllowed(db,user,projectId,'document',item.id,item.wellId,'import')&&resourceAllowed(db,user,projectId,'object',`${item.wellId}-${item.objectType}`,item.wellId,'import')&&resourceAllowed(db,user,projectId,'well',item.wellId,item.wellId,'import')),canSubmit:Boolean(full&&can(db,user,'construction',projectId)&&can(db,user,'import',projectId)),hasFile:Boolean(raw.managed)};});
+  const fullIds=new Set(assets.filter(item=>item.contentAllowed).map(item=>item.id));
+  const aliasWells=ws.wells.filter(well=>project.wells.includes(well.id)&&['layer','depth','thickness','distance','source'].every(key=>key in protectFields(db,user,projectId,'well',{...well,layer:'',depth:'',thickness:'',distance:'',source:''},well.id))).map(well=>well.id);
+  return {projectId,assets,wells:ws.wells.filter(well=>project.wells.includes(well.id)),jobs:clone(db.ingestion.jobs.filter(job=>fullIds.has(job.assetId))),aliases:clone(db.ingestion.aliases.filter(item=>item.projectId===projectId&&aliasWells.includes(item.wellId))),handoffs:clone(db.ingestion.handoffs.filter(item=>fullIds.has(item.assetId))),rules:ingRuleCatalog,capabilities:{editWells:aliasWells.filter(id=>can(db,user,'import',projectId)&&resourceAllowed(db,user,projectId,'well',id,id,'import')),construct:can(db,user,'construction',projectId)}};
+}
+function ingDetail(db,user,assetId){
+  const asset=ingFindAsset(db,user,assetId);const projectId=asset.projectId||db.projects.find(project=>project.wells.includes(asset.wellId)).id;
+  const dashboard=ingDashboard(db,user,projectId);const metadata=dashboard.assets.find(item=>item.id===asset.id);
+  if(!asset.managed||!metadata.contentAllowed)return {asset:metadata,versions:[],jobs:[],handoffs:[]};
+  const versions=ingEnsure(db).versions.filter(item=>item.assetId===asset.id).map(item=>{const {fileId,...publicVersion}=clone(item);return publicVersion;});
+  return {asset:metadata,versions,jobs:dashboard.jobs.filter(job=>job.assetId===asset.id),handoffs:dashboard.handoffs.filter(item=>item.assetId===asset.id)};
+}
+function ingMutation(db,user,action,body,context={}){
+  const ig=ingEnsure(db);
+  if(action==='alias'){
+    const {well}=ingScope(db,user,body.projectId,body.wellId,'import');
+    const probe={projectId:body.projectId,wellId:well.id,id:'',source:''};if(!ingContentAllowed(db,user,probe))fault('字段受限，不能配置主数据。',403);
+    if(!['well','layer','lithology','block'].includes(body.kind))fault('主数据类型不支持。');
+    const rawName=String(body.rawName||'').trim(),standardName=String(body.standardName||'').trim();if(!rawName||!standardName||rawName.length>100||standardName.length>100)fault('原始名与标准名需为 1～100 字。');
+    if(body.kind==='well'&&![well.id,well.name,well.short].some(name=>ingKey(name)===ingKey(standardName)))fault('井别名只能指向本次归属井。');
+    if(body.kind==='block'&&ingKey(standardName)!==ingKey(db.projects.find(project=>project.id===body.projectId).block))fault('区块别名只能指向当前项目区块。');
+    const key=`${body.projectId}:${well.id}`;const existing=ig.aliases.find(item=>item.projectId===body.projectId&&item.wellId===well.id&&item.kind===body.kind&&ingKey(item.rawName)===ingKey(rawName));
+    if(existing&&existing.standardName!==standardName&&body.expectedRevision!==existing.revision)fault('此别名已存在其他映射，请打开原记录编辑并确认。',409);
+    if(existing&&existing.standardName===standardName)return clone(existing);
+    const entry={id:existing?.id||ingId(db,'MAP'),projectId:body.projectId,wellId:well.id,kind:body.kind,rawName,standardName,revision:(existing?.revision||0)+1,updatedAt:new Date().toISOString(),updatedBy:user.name};
+    ig.aliases=ig.aliases.filter(item=>item.id!==entry.id).concat(entry);ig.mappingRevisions[key]=(ig.mappingRevisions[key]||0)+1;
+    for(const asset of db.assets.filter(item=>item.managed&&item.projectId===body.projectId&&item.wellId===well.id))ingSyncAsset(db,asset);
+    auditEvent(db,user,'确认主数据映射',entry.id,{before:existing||null,after:entry},{...context,projectId:body.projectId,wellId:well.id});return clone(entry);
+  }
+  const asset=ingFindAsset(db,user,body.assetId,'import',true);const version=ig.versions.find(item=>item.id===asset.currentVersionId);
+  if(!version)fault('此资料没有原件版本，请先上传。');if(body.versionId!==version.id)fault('当前版本已变化，请刷新后操作。',409);
+  const audit=(operation,details={})=>auditEvent(db,user,operation,asset.id,details,{...context,projectId:asset.projectId,wellId:asset.wellId});
+  if(action==='retry'){
+    if(version.status!=='解析失败')fault('只能重试失败的解析任务。');
+    const last=ig.jobs.find(job=>job.versionId===version.id);version.status='待解析';const job={id:ingId(db,'PARSE'),assetId:asset.id,versionId:version.id,status:'待解析',attempt:(last?.attempt||0)+1,createdAt:new Date().toISOString(),error:''};ig.jobs.unshift(job);ingSyncAsset(db,asset);audit('重试资料解析',{jobId:job.id});return clone(job);
+  }
+  if(!version.parsed||!version.rows)fault('解析尚未完成。');
+  if(action==='standardize'||action==='correct'){
+    if(ig.jobs.some(job=>job.versionId===version.id&&['待解析','解析中'].includes(job.status)))fault('请等待解析任务结束。');
+    let config=clone(version.config);
+    if(action==='standardize'){
+      const validFields=(ingFieldSets[asset.objectType]||[]).map(([key])=>key);if(!validFields.length)fault('该资料类型暂无治理模板。');
+      config.fields={};config.defaults={};
+      for(const key of validFields){const field=String(body.fields?.[key]||''),value=String(body.defaults?.[key]||'');if(field&&!version.parsed.headers.includes(field)||value.length>100)fault('字段映射或默认值不合法。');config.fields[key]=field;config.defaults[key]=value;}
+      config.patches=[];
+    }else{
+      const index=Number(body.row)-1;const key=body.field;const value=String(body.value??'');
+      if(!Number.isInteger(index)||index<0||index>=version.rows.length||!(ingFieldSets[asset.objectType]||[]).some(([field])=>field===key)||value.length>4096)fault('修正行、字段或内容不合法。');
+      config.patches=(config.patches||[]).filter(patch=>!(patch.row===index&&patch.field===key)).concat({row:index,field:key,value});
+    }
+    const parsed=clone(version.parsed),effective=clone(parsed);
+    for(const patch of config.patches||[]){let header=config.fields[patch.field];if(!header){header=`__corrected_${patch.field}`;effective.headers.push(header);effective.rows.forEach(row=>row.push(config.defaults?.[patch.field]||''));config.fields[patch.field]=header;}effective.rows[patch.row][effective.headers.indexOf(header)]=patch.value;}
+    const next={...clone(version),id:ingId(db,'VER'),number:ig.versions.filter(item=>item.assetId===asset.id).length+1,parentId:version.id,createdAt:new Date().toISOString(),createdBy:user.name,status:'待校验',reason:action==='correct'?`修正第 ${body.row} 行 ${body.field}`:'更新字段与主数据映射',config,parsed:effective,qualityRuns:[],mappingRevision:ingMappingRevision(db,asset)};
+    // Materialize patches once into this immutable input snapshot, then reset patch history for future edits.
+    next.rows=ingNormalize(effective,asset.objectType,{...config,patches:[]},ingStandards(db,asset));next.config.patches=[];
+    ig.versions.push(next);asset.currentVersionId=next.id;ingSyncAsset(db,asset);audit(action==='correct'?'修正标准数据':'标准化资料',{from:version.id,to:next.id,reason:next.reason});return {assetId:asset.id,versionId:next.id};
+  }
+  if(version.mappingRevision!==ingMappingRevision(db,asset))fault('主数据映射已更新，请先重新标准化，再进行校验或交接。',409);
+  if(action==='validate'){
+    const options={};for(const key of ['min','max','maxGap','maxJump']){const value=body.options?.[key];options[key]=value===''||value===null||value===undefined?null:Number(value);if(options[key]!==null&&!Number.isFinite(options[key]))fault('质量阈值必须是合法数字。');}if(options.min!==null&&options.max!==null&&options.min>options.max)fault('曲线最小值不能大于最大值。');if(['maxGap','maxJump'].some(key=>options[key]!==null&&options[key]<=0))fault('采样间距和突变阈值需大于零。');
+    const result=ingValidate(version.rows,asset.objectType,ingStandards(db,asset),options);const run={id:ingId(db,'QA'),versionId:version.id,ruleVersion:'quality-v1',mappingRevision:version.mappingRevision,createdAt:new Date().toISOString(),createdBy:user.name,options,...result};version.qualityRuns.push(run);version.status='处理完成';ingSyncAsset(db,asset);audit('校验资料',{versionId:version.id,runId:run.id,status:run.status});return clone(run);
+  }
+  if(action==='handoff'){
+    requirePermission(db,user,'construction',asset.projectId);const quality=version.qualityRuns.at(-1);
+    if(!quality||quality.status==='阻断'||quality.mappingRevision!==version.mappingRevision)fault('当前版本尚未通过质量校验，不能构建知识。',409);
+    if(quality.status==='警告'&&body.confirmWarnings!==true)fault('存在警告，请确认问题后再提交。',409);
+    const existing=ig.handoffs.find(item=>item.assetId===asset.id&&item.versionId===version.id);if(existing)return clone(existing);
+    const handoff={id:ingId(db,'BUILD'),assetId:asset.id,versionId:version.id,qualityRunId:quality.id,projectId:asset.projectId,wellId:asset.wellId,recordCount:version.rows.length,createdAt:new Date().toISOString(),createdBy:user.name,status:'待知识构建',warningsConfirmed:body.confirmWarnings===true};ig.handoffs.unshift(handoff);audit('提交知识构建',handoff);return clone(handoff);
+  }
+  fault('治理操作不存在。',404);
+}
+
+
 // ===== src/offline-service.js =====
 function createOfflineService() {
   let db;try{db=JSON.parse(localStorage.getItem('geokg-offline-users-v1'));}catch{}if(!db?.users)db=makeDatabase();
   let session;try{session=JSON.parse(sessionStorage.getItem('geokg-offline-session-v1'));}catch{}
+  ingEnsure(db);
   const save=()=>{localStorage.setItem('geokg-offline-users-v1',JSON.stringify(db));if(session)sessionStorage.setItem('geokg-offline-session-v1',JSON.stringify(session));else sessionStorage.removeItem('geokg-offline-session-v1');};
   return async(pathname,body)=>{
     if(pathname==='/auth/login') {const user=db.users.find(u=>u.account===body.account);if(!user||body.password!=='GeoDemo!2026')fault('账号或密码不正确。',401);if(!user.enabled)fault('账号已停用，请联系管理员。',403);session={userId:user.id,expires:Date.now()+30*60*1000};user.lastLogin=new Date().toISOString();auditEvent(db,user,'登录（离线演示）','会话');save();return {user:identity(db,user),expires:session.expires};}
@@ -772,6 +1103,23 @@ function createOfflineService() {
     if(pathname==='/auth/me')return {user:identity(db,user),expires:session.expires};
     if(pathname==='/auth/logout'){auditEvent(db,user,'退出登录（离线演示）','会话');session=null;save();return {ok:true};}
     if(pathname==='/workspace')return workspace(db,user);
+    if(pathname.startsWith('/ingestion')){
+      const [endpoint,query='']=pathname.split('?');const params=new URLSearchParams(query);
+      if(endpoint==='/ingestion')return ingDashboard(db,user,params.get('projectId'));
+      if(endpoint.startsWith('/ingestion/assets/'))return ingDetail(db,user,endpoint.split('/').pop());
+      if(endpoint==='/ingestion/sample'){
+        const well=db.wells.find(item=>item.id===body.wellId);if(!well)fault('井不存在。');
+        const text=`井名,层位,顶深,底深,深度单位,深度类型,参考基准\n${well.short},${well.layer},100,108,m,MD,KB\n`;
+        const result=ingRecordUpload(db,user,{projectId:body.projectId,wellId:well.id,objectType:'stratum',name:`${well.short}_虚构演示分层.csv`,hash:`offline-demo-${well.id}`,fileId:ingId(db,'DEMO'),size:text.length*2,encoding:'utf-8'});
+        if(!result.duplicate)ingSetParsed(db,result.jobId,ingParse(text,'csv'));
+        save();return result;
+      }
+      if(['alias','standardize','correct','validate','retry','handoff'].includes(endpoint.split('/').pop())){
+        if(endpoint.endsWith('/retry'))fault('离线样例解析已完成；真实解析重试请使用本机服务。');
+        const result=ingMutation(db,user,endpoint.split('/').pop(),body);save();return result;
+      }
+      fault('离线模式不支持该数据接口。',404);
+    }
     if(pathname==='/admin')return adminView(db,user);
     if(pathname.startsWith('/business/')){const result=business(db,user,pathname.split('/').pop(),body);save();return result;}
     const entity=pathname.slice(1);const clean={...body};delete clean.password;const result=mutate(db,user,entity,clean);save();return result;
@@ -789,6 +1137,11 @@ async function api(pathname,body) {
     else {const response=await fetch('/api'+pathname,{method:body===undefined?'GET':'POST',credentials:'same-origin',headers:body===undefined?{}:{'Content-Type':'application/json','X-CSRF-Token':csrfToken},body:body===undefined?undefined:JSON.stringify(body)});data=await response.json();if(!response.ok){const error=new Error(data.message);error.status=response.status;error.requestId=data.requestId;throw error;}}
     if(data.csrf)csrfToken=data.csrf;return data;
   }catch(error){if(error.status===401&&pathname!=='/auth/login'&&pathname!=='/auth/me')window.dispatchEvent(new CustomEvent('session-expired'));throw error;}
+}
+async function uploadAsset(file,metadata,config){
+  if(offlineMode)throw new Error('真实文件上传需启动本机服务；离线模式请使用演示样例。');
+  const response=await fetch('/api/ingestion/upload?'+new URLSearchParams(metadata),{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/octet-stream','X-CSRF-Token':csrfToken,...(config?{'X-Import-Config':encodeURIComponent(JSON.stringify(config))}:{})},body:file});
+  const data=await response.json();if(!response.ok){const error=new Error(data.message);error.status=response.status;if(response.status===401)window.dispatchEvent(new CustomEvent('session-expired'));throw error;}return data;
 }
 
 
@@ -878,6 +1231,120 @@ function createUsersUI({modal,toast,refresh,getUser}) {
 }
 
 
+// ===== src/ingestion.js =====
+
+const ingEscape=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+const ingDate=value=>value?new Date(value).toLocaleString('zh-CN',{timeZone:'Asia/Shanghai',hour12:false}):'—';
+const ingBadge=(value,tone)=>`<span class="badge ${tone||({'通过':'teal','阻断':'red','警告':'amber','未校验':'neutral','解析失败':'red'}[value]||'blue')}">${ingEscape(value||'未校验')}</span>`;
+const ingButton=(action,label,extra='')=>`<button type="button" class="button" data-ing="${action}" ${extra}>${label}</button>`;
+const ingOption=(value,label,selected)=>`<option value="${ingEscape(value)}" ${value===selected?'selected':''}>${ingEscape(label)}</option>`;
+function createIngestionUI({getContext,repaint,refresh,modal,toast,go,selectAsset}){
+  let model=null,loadedProject='',loadingProject='',loading=false,error='',selected=null,detailTab='original',versionId='',tab='assets',page=1,previewPage=1,issuePage=1,pollTimer,requestGeneration=0,wizard=null,busy=false;
+  let filters={well:'current',type:'',quality:'',status:'',search:'',from:'',to:''};
+  let scopeWell='';
+  const context=()=>getContext();
+  const selectedVersion=()=>selected?.versions.find(version=>version.id===versionId)||selected?.versions.at(-1);
+  function schedule(){clearTimeout(pollTimer);if(model?.jobs.some(job=>['待解析','解析中'].includes(job.status))&&context().route==='data')pollTimer=setTimeout(()=>load().catch(fail),1200);}
+  function fail(cause){error=cause.message;loading=false;repaint();toast(cause.message);}
+  async function load(){
+    const projectId=context().projectId;if(!projectId||!context().canData)return;
+    const generation=++requestGeneration;loading=true;loadingProject=projectId;
+    try{const data=await api('/ingestion?'+new URLSearchParams({projectId}));if(generation!==requestGeneration||context().projectId!==projectId)return;model=data;loadedProject=projectId;error='';
+      if(selected){const detail=await api('/ingestion/assets/'+selected.asset.id);if(generation!==requestGeneration||context().projectId!==projectId)return;selected=detail;if(!detail.versions.some(version=>version.id===versionId))versionId=detail.asset.currentVersionId;}
+      loading=false;repaint();schedule();
+    }catch(cause){if(generation===requestGeneration){loading=false;loadedProject=projectId;error=cause.message;repaint();}throw cause;}
+  }
+  function ready(){if(loadedProject!==context().projectId){model=null;selected=null;versionId='';if(!loading||loadingProject!==context().projectId)load().catch(fail);return false;}return Boolean(model);}
+  function contentTable(headers,rows){return `<div class="table-scroll"><table class="ing-table"><thead><tr>${headers.map(header=>`<th>${ingEscape(header)}</th>`).join('')}</tr></thead><tbody>${rows.length?rows.map(row=>`<tr>${row.map(cell=>`<td>${cell}</td>`).join('')}</tr>`).join(''):`<tr><td colspan="${headers.length}" class="ing-empty">暂无记录</td></tr>`}</tbody></table></div>`;}
+  function wellName(id){return model?.wells.find(well=>well.id===id)?.short||id;}
+  function filtered(){return model.assets.filter(asset=>(filters.well==='all'||asset.wellId===(filters.well==='current'?context().wellId:filters.well))&&(!filters.type||asset.objectType===filters.type)&&(!filters.quality||(asset.quality||'未校验')===filters.quality)&&(!filters.status||asset.status===filters.status)&&(!filters.search||asset.name.toLowerCase().includes(filters.search.toLowerCase()))&&(!filters.from||asset.uploadedAt&&new Date(asset.uploadedAt)>=new Date(filters.from+'T00:00:00+08:00'))&&(!filters.to||asset.uploadedAt&&new Date(asset.uploadedAt)<new Date(new Date(filters.to+'T00:00:00+08:00').getTime()+86400000)));}
+  function filterHtml(){return `<form id="ing-filter" class="ing-filters"><label>当前区块<input readonly value="${ingEscape(context().block||'—')}" aria-label="当前区块"></label><label>井<select name="well">${ingOption('current','当前井',filters.well)}${ingOption('all','全部授权井',filters.well)}${model.wells.map(well=>ingOption(well.id,well.short,filters.well)).join('')}</select></label><label>资料类型<select name="type">${ingOption('','全部类型',filters.type)}${objectTypes.map(type=>ingOption(type.id,type.type,filters.type)).join('')}</select></label><label>质量状态<select name="quality">${['','未校验','通过','警告','阻断'].map(value=>ingOption(value,value||'全部',filters.quality)).join('')}</select></label><label>处理状态<select name="status">${['',...new Set(model.assets.map(asset=>asset.status))].map(value=>ingOption(value,value||'全部',filters.status)).join('')}</select></label><label>上传开始日期<input type="date" name="from" value="${ingEscape(filters.from)}"></label><label>上传结束日期<input type="date" name="to" value="${ingEscape(filters.to)}"></label><label class="ing-search">资料名称<input name="search" placeholder="搜索资料名称" value="${ingEscape(filters.search)}"></label><button class="button primary" type="submit">筛选</button>${ingButton('reset-filters','重置')}</form>`;}
+  function coverage(){return `<section class="panel"><div class="panel-heading"><h2>资料覆盖情况</h2><span class="subtle">当前项目 · 仅统计授权资料</span></div>${contentTable(['井',...objectTypes.map(type=>type.type)],model.wells.map(well=>[ingEscape(well.short),...objectTypes.map(type=>{const assets=model.assets.filter(asset=>asset.wellId===well.id&&asset.objectType===type.id);return assets.some(asset=>asset.hasFile&&asset.quality==='通过'&&!asset.mappingStale)?ingBadge('有合格资料','teal'):assets.length?ingBadge(`${assets.length} 份待治理`,'amber'):ingBadge('缺少资料','neutral');})]))}</section>`;}
+  function assetsHtml(){const rows=filtered();const pages=Math.max(1,Math.ceil(rows.length/15));page=Math.min(page,pages);return `<section class="panel">${filterHtml()}${contentTable(['资料名称 / 来源','归属井','类型','版本','处理状态','质量状态','上传时间（北京时间）','操作'],rows.slice((page-1)*15,page*15).map(asset=>[`<button class="text-button ing-asset-name" data-ing="detail" data-id="${ingEscape(asset.id)}">${ingEscape(asset.name)}</button><small class="block">${ingEscape(asset.source||'来源受限')} · ${asset.hasFile?'原件已保存':'无原件记录'}</small>`,ingEscape(wellName(asset.wellId)),ingEscape(asset.type),ingEscape(asset.version),ingBadge(asset.status,'neutral'),asset.mappingStale?ingBadge('映射已变更','amber'):ingBadge(asset.quality),ingDate(asset.uploadedAt),`<button class="text-button" data-ing="detail" data-id="${ingEscape(asset.id)}">查看详情</button>`]))}<div class="ing-pagination"><span>共 ${rows.length} 份 · 第 ${page}/${pages} 页</span><div>${ingButton('page-prev','上一页',page===1?'disabled':'')}${ingButton('page-next','下一页',page===pages?'disabled':'')}</div></div></section>${coverage()}`;}
+  function jobsHtml(){return `<section class="panel"><div class="panel-heading"><h2>解析任务</h2><span class="subtle">任务独立处理；失败原因与重试次数保留</span></div>${contentTable(['任务编号 / 资料','状态','尝试次数','提交时间','失败原因','操作'],model.jobs.map(job=>[`${ingEscape(job.id)}<small class="block">${ingEscape(model.assets.find(asset=>asset.id===job.assetId)?.name||job.assetId)}</small>`,ingBadge(job.status,job.status==='失败'?'red':job.status==='完成'?'teal':'amber'),ingEscape(job.attempt),ingDate(job.createdAt),ingEscape(job.error||'—'),`<button class="text-button" data-ing="detail" data-id="${ingEscape(job.assetId)}">查看资料</button>`]))}</section><section class="panel ing-note"><h3>随钻实时接入</h3><p>WITSML / MQTT / Kafka 尚未接入。后续连接后将在这里展示事件时间、接收时间、井深、延迟及异常记录。</p></section>`;}
+  function aliasesHtml(){return `<section class="panel"><div class="panel-heading"><h2>主数据与别名映射</h2>${model.capabilities.editWells.length?ingButton('alias-add','新增映射'):''}</div><p class="ing-description">映射按项目与井生效。井别名指向归属井；层位标准名经人工确认后参与校验。修改后，相关资料需重新标准化和校验。</p>${contentTable(['归属井','实体类型','原始名称 / 别名','标准名称','映射版本','确认人 / 时间','操作'],model.aliases.map(alias=>[ingEscape(wellName(alias.wellId)),ingEscape({well:'井',layer:'层位',lithology:'岩性',block:'区块'}[alias.kind]),ingEscape(alias.rawName),ingEscape(alias.standardName),`v${alias.revision}`,`${ingEscape(alias.updatedBy)}<small class="block">${ingDate(alias.updatedAt)}</small>`,model.capabilities.editWells.includes(alias.wellId)?`<button class="text-button" data-ing="alias-edit" data-id="${alias.id}">编辑</button>`:'只读']))}</section>`;}
+  function qualityHtml(){const assets=model.assets.filter(asset=>asset.hasFile);return `<section class="panel"><div class="panel-heading"><h2>质量规则</h2>${ingBadge('quality-v1','neutral')}</div>${contentTable(['规则','默认等级','检查内容'],ingRuleCatalog.map(([,name,level,description])=>[ingEscape(name),ingBadge(level,level==='阻断'?'red':'amber'),ingEscape(description)]))}</section><section class="panel"><div class="panel-heading"><h2>资料治理进度</h2><span class="subtle">在资料详情中定位问题、修正副本及重新校验</span></div>${contentTable(['资料','版本','质量状态','处理状态','操作'],assets.map(asset=>[ingEscape(asset.name),ingEscape(asset.version),asset.mappingStale?ingBadge('需重新标准化','amber'):ingBadge(asset.quality),ingEscape(asset.status),`<button class="text-button" data-ing="quality-detail" data-id="${asset.id}">查看问题</button>`]))}</section>`;}
+  function connectorsHtml(){return `<section class="ing-connectors">${[['file','文件 / CSV / JSON','已接入','真实上传、结构化解析与质量治理'],['las','LAS 测井资料','待接入解析器','原件可保存；LAS 版本与曲线头段解析待实现'],['document','PDF / DOCX / OCR','待配置','原件可保存；文本、表格提取与扫描件 OCR 待接入'],['witsml','WITSML','未接入','需要服务地址、认证与现场数据样例'],['database','数据库 / API','未接入','后续配置连接、查询范围和增量游标'],['stream','MQTT / Kafka','未接入','后续支持启停、断线重连、去重和乱序处理']].map(([id,name,status,description])=>`<article class="panel ing-connector"><div class="ing-connector-icon">${id==='file'?'▤':'◇'}</div><h3>${name}</h3>${ingBadge(status,id==='file'?'teal':'neutral')}<p>${description}</p>${id==='file'?ingButton('import','导入资料'):ingButton('connector-info','查看接入条件',`data-id="${id}"`)}</article>`).join('')}</section>`;}
+  function mapFieldsHtml(parsed,objectType,config={}){const fields=config.fields||ingGuess(parsed.headers,objectType),defaults=config.defaults||{};return `<div class="ing-map-grid"><div class="ing-map-heading">标准字段</div><div class="ing-map-heading">来源列</div><div class="ing-map-heading">无来源列时的默认值</div>${(ingFieldSets[objectType]||[]).map(([key,label,required])=>`<label for="ing-map-${key}">${label}${required?' *':''}</label><select id="ing-map-${key}" name="map-${key}">${ingOption('','不映射 / 使用默认值',fields[key]||'')}${parsed.headers.map(header=>ingOption(header,header,fields[key])).join('')}</select><input aria-label="${label}默认值" name="default-${key}" value="${ingEscape(defaults[key]||'')}" placeholder="${key==='unit'?'m 或 ft':key==='depthType'?'MD 或 TVD':key==='datum'?'例如 KB（需确认）':'未映射时使用'}"></input>`).join('')}</div>`;}
+  function readConfig(form,objectType){const result={fields:{},defaults:{}};for(const [key]of ingFieldSets[objectType]||[]){result.fields[key]=form.elements['map-'+key]?.value||'';result.defaults[key]=form.elements['default-'+key]?.value.trim()||'';}return result;}
+  function previewTable(version){if(!version?.rows)return '<div class="ing-empty">暂无解析结果，请先查看任务状态。</div>';const fields=ingFieldSets[selected.asset.objectType]||[];const pages=Math.max(1,Math.ceil(version.rows.length/25));previewPage=Math.min(previewPage,pages);return `${contentTable(['行 / 来源位置',...fields.map(([,label])=>label)],version.rows.slice((previewPage-1)*25,previewPage*25).map(row=>[`${row.row}<small class="block">${version.parsed?.format==='json'?'记录':'原文件行'} ${row.location}</small>`,...fields.map(([key])=>ingEscape(row.record[key]??'—'))]))}<div class="ing-pagination"><span>${version.rows.length} 条 · 深度已统一为 m，保留深度类型和参考基准 · ${previewPage}/${pages} 页</span><div>${ingButton('preview-prev','上一页',previewPage===1?'disabled':'')}${ingButton('preview-next','下一页',previewPage===pages?'disabled':'')}</div></div>`;}
+  function issuesHtml(version){const quality=version?.qualityRuns.at(-1);if(!quality)return '<div class="ing-empty">当前版本尚未校验。确认字段与主数据后运行质量校验。</div>';const pages=Math.max(1,Math.ceil(quality.issues.length/50));issuePage=Math.min(issuePage,pages);return `<div class="ing-quality-summary">${ingBadge(quality.status)}<span>${quality.issues.filter(issue=>issue.severity==='block').length} 项阻断 · ${quality.issues.filter(issue=>issue.severity==='warning').length} 项警告</span><small>${ingEscape(quality.id)} · ${ingDate(quality.createdAt)} · ${ingEscape(quality.ruleVersion)}</small></div><div class="ing-checks">${quality.checks.map(check=>`<span>${ingEscape(check.name)} ${ingBadge(check.status,check.status==='通过'?'teal':check.status==='不适用'?'neutral':'amber')}</span>`).join('')}</div>${contentTable(['等级','行 / 来源位置','字段','当前值','问题','操作'],quality.issues.slice((issuePage-1)*50,issuePage*50).map(issue=>[ingBadge(issue.severity==='block'?'阻断':'警告'),`${issue.row||'—'} / ${issue.location||'—'}`,ingEscape((ingFieldSets[selected.asset.objectType]||[]).find(([key])=>key===issue.field)?.[1]||issue.field),ingEscape(issue.value),ingEscape(issue.message),issue.row&&selected.asset.canEdit&&version.id===selected.asset.currentVersionId?`<button class="text-button" data-ing="correct" data-row="${issue.row}" data-field="${ingEscape(issue.field)}">修正</button>`:'—']))}<div class="ing-pagination"><span>第 ${issuePage}/${pages} 页；修正生成新版本，需再次校验。</span><div>${ingButton('issues-prev','上一页',issuePage===1?'disabled':'')}${ingButton('issues-next','下一页',issuePage===pages?'disabled':'')}</div></div>`;}
+  function rawPreview(version){
+    const parsed=selected.versions.find(item=>item.hash===version.hash&&item.parsed)?.parsed;
+    if(!parsed)return '';
+    return `<details class="ing-raw-preview"><summary>查看原始解析输入（前 10 行）</summary><p class="ing-description">来源于此原件的首次解析快照；当前修正副本和标准化结果见上表。</p>${contentTable(parsed.headers,parsed.rows.slice(0,10).map(row=>row.map(ingEscape)))}</details>`;
+  }
+  function qualityHistory(version){return `<details class="ing-raw-preview"><summary>查看此数据版本的历次质量校验（${version.qualityRuns.length} 次）</summary>${contentTable(['记录编号','状态','规则版本','阈值快照','时间'],version.qualityRuns.slice().reverse().map(run=>[ingEscape(run.id),ingBadge(run.status),ingEscape(run.ruleVersion),ingEscape(JSON.stringify(run.options)),ingDate(run.createdAt)]))}</details>`;}
+  function lineageHtml(version){
+    const handoff=selected.handoffs.find(item=>item.versionId===version.id);
+    const quality=handoff?version.qualityRuns.find(run=>run.id===handoff.qualityRunId):version.qualityRuns.at(-1);
+    return `<div class="ing-lineage"><div><small>原始文件</small><strong>${ingEscape(version.fileName)}</strong><span>SHA-256 ${ingEscape(version.hash)}</span></div><b>→</b><div><small>解析与标准化</small><strong>${ingEscape(version.id)} / v${version.number}</strong><span>${ingEscape(version.parserVersion||'尚未解析')} · 映射快照 ${version.mappingRevision}</span></div><b>→</b><div><small>${handoff?'交接时固定的质量校验':'最近质量校验'}</small><strong>${ingEscape(quality?.id||'尚未校验')}</strong><span>${ingEscape(quality?.status||'未校验')}</span></div><b>→</b><div><small>知识构建交接</small><strong>${ingEscape(handoff?.id||'尚未提交')}</strong><span>知识实体与结论由后续模块生成</span></div></div>${qualityHistory(version)}${contentTable(['版本','父版本','变更原因','操作者 / 时间','操作'],selected.versions.slice().reverse().map(item=>[`v${item.number}`,ingEscape(item.parentId||'首次上传'),ingEscape(item.reason),`${ingEscape(item.createdBy)}<small class="block">${ingDate(item.createdAt)}</small>`,`<button class="text-button" data-ing="version" data-id="${item.id}">查看此版本</button>`]))}`;
+  }
+  function detailHtml(){const asset=selected.asset,version=selectedVersion(),current=version?.id===asset.currentVersionId;const latestJob=selected.jobs.find(job=>job.versionId===version?.id);return `<div class="ing-detail-heading"><button class="text-button" data-ing="back">返回数据资产</button><div><h2>${ingEscape(asset.name)}</h2><p>${ingEscape(wellName(asset.wellId))} · ${ingEscape(asset.type)} · ${ingEscape(version?`v${version.number}`:asset.version)}</p></div><div class="heading-actions">${asset.canEdit?ingButton('new-version','上传新版本'):''}${asset.canEdit&&current&&latestJob?.status==='失败'?ingButton('retry','重试解析'):''}${asset.canEdit&&current&&version?.rows?`${ingButton('mapping','字段映射')}${ingButton('validate','运行质量校验')}`:''}${asset.canSubmit&&asset.canEdit&&current&&version?.qualityRuns.at(-1)&&!asset.mappingStale&&version.qualityRuns.at(-1).status!=='阻断'?`<button class="button primary" data-ing="handoff">构建知识</button>`:''}</div></div>${!asset.hasFile?'<div class="notice">此记录没有原件。演示资料和旧清单登记不会自动转为合格资料，请使用“导入资料”上传文件。</div>':!asset.contentAllowed?'<div class="notice">资料包含受限字段，当前账号只能查看元信息，不能读取原件、解析内容或治理结果。</div>':`${asset.mappingStale?'<div class="notice">主数据映射已更新。点击“字段映射”保存新标准化版本，再重新校验。</div>':''}${latestJob?.error?`<div class="auth-message">解析失败：${ingEscape(latestJob.error)}</div>`:''}<div class="workspace-tabs ing-tabs">${[['original','原件'],['parsed','解析预览'],['issues','质量问题'],['lineage','来源与版本']].map(([id,label])=>`<button data-ing="detail-tab" data-id="${id}" class="${detailTab===id?'active':''}" aria-pressed="${detailTab===id}">${label}</button>`).join('')}</div><section class="panel ing-detail-panel">${detailTab==='original'?`<dl class="ing-metadata">${[['原文件',version?.fileName],['文件大小',version?`${(version.size/1024).toFixed(1)} KB`:''],['上传/变更人',version?.createdBy],['时间（北京时间）',ingDate(version?.createdAt)],['处理状态',version?.status],['质量状态',version?.qualityRuns.at(-1)?.status||'未校验'],['编码',version?.encoding],['原件摘要',version?.hash]].map(([label,value])=>`<div><dt>${label}</dt><dd>${ingEscape(value||'—')}</dd></div>`).join('')}</dl>${!offlineMode&&version?`<a class="button" href="/api/ingestion/files/${version.id}">下载原始文件</a>`:'<p class="ing-description">离线模式仅展示虚构样例，真实原件由本机服务保存。</p>'}`:detailTab==='parsed'?`${version?.rows&&asset.canEdit&&current?`<div class="ing-panel-actions">${ingButton('correct','修正指定行')}</div>`:''}${previewTable(version)}${version?.parsed?rawPreview(version):''}`:detailTab==='issues'?issuesHtml(version)+(version?qualityHistory(version):''):lineageHtml(version)}</section>`}`;}
+  function html(){if(scopeWell&&scopeWell!==context().wellId){selected=null;versionId='';}scopeWell=context().wellId;if(!ready())return `<div class="ing-empty">${ingEscape(error||'正在加载数据资产…')}${error?ingButton('refresh','重试'):''}</div>`;return `<div class="ingestion"><div class="page-heading"><div><div class="breadcrumb">工作台 / 数据接入与治理</div><h1>数据接入与治理</h1><p>保存原件、统一数据口径，让知识构建有可靠来源。</p></div><div class="heading-actions">${ingButton('refresh','刷新')}${context().canImport?`<button class="button primary" data-ing="import">${offlineMode?'导入演示样例':'导入资料'}</button>`:''}</div></div>${offlineMode?'<div class="notice">离线演示：仅使用虚构样例。真实文件上传、持久化与访问控制请启动本机服务。</div>':''}${error?`<div class="auth-message">${ingEscape(error)}</div>`:''}${selected?detailHtml():`<div class="ing-summary"><div><strong>${model.assets.length}</strong><span>可访问资料</span></div><div><strong>${model.assets.filter(asset=>asset.hasFile).length}</strong><span>已保存原件</span></div><div><strong>${model.assets.filter(asset=>asset.quality==='通过'&&!asset.mappingStale).length}</strong><span>质量通过</span></div><div><strong>${model.jobs.filter(job=>['待解析','解析中'].includes(job.status)).length}</strong><span>正在处理</span></div></div><div class="workspace-tabs ing-tabs" role="tablist" aria-label="数据治理模块">${[['assets','数据资产'],['jobs','接入任务'],['aliases','主数据映射'],['quality','质量治理'],['connectors','连接器']].map(([id,label])=>`<button role="tab" aria-selected="${tab===id}" data-ing="tab" data-id="${id}" class="${tab===id?'active':''}">${label}</button>`).join('')}</div>${tab==='assets'?assetsHtml():tab==='jobs'?jobsHtml():tab==='aliases'?aliasesHtml():tab==='quality'?qualityHtml():connectorsHtml()}`}</div>`;}
+  async function open(assetId,initialTab='original'){if(!ready()){await load();}const project=context().projectId;const detail=await api('/ingestion/assets/'+assetId);if(project!==context().projectId)return;selected=detail;selectAsset?.(detail.asset);scopeWell=context().wellId;versionId=detail.asset.currentVersionId||'';detailTab=initialTab;previewPage=issuePage=1;go('data');repaint();schedule();}
+  function uploadDialog(asset){
+    if(offlineMode){modal('导入演示样例',`<p>将为当前井生成一份虚构地层分层 CSV，演示解析、校验和知识构建交接。</p><p class="ing-description">样例不会保存至本机服务，也不会上传任何用户文件。</p><div class="modal-actions">${ingButton('close-dialog','取消')}<button class="button primary" data-ing="sample">导入样例</button></div>`);return;}
+    wizard={step:1,asset,file:null,parsed:null,config:null,metadata:null,projectId:context().projectId};
+    modal(asset?'上传资料新版本':'导入资料 · 选择来源与文件',`<div class="ing-stepper"><b>1 选择来源与归属</b><span>2 字段映射</span><span>3 预览提交</span></div><form id="ing-upload-start"><label class="form-field">数据来源<select disabled><option>本地文件</option></select></label><div class="ing-form-pair"><label class="form-field">归属井<select name="wellId" ${asset?'disabled':''}>${model.wells.filter(well=>model.capabilities.editWells.includes(well.id)).map(well=>ingOption(well.id,well.name,asset?.wellId||context().wellId)).join('')}</select></label><label class="form-field">资料类型<select name="objectType" ${asset?'disabled':''}>${objectTypes.map(type=>ingOption(type.id,type.type,asset?.objectType||'stratum')).join('')}</select></label></div><label class="form-field">文件编码<select name="encoding"><option value="utf-8">UTF-8</option><option value="gb18030">GB18030</option></select></label><label class="form-field">选择文件（最多 5 MB）<input type="file" name="file" required accept=".csv,.json,.pdf,.docx,.las,.xlsx,.txt"></label><p class="ing-description">CSV / JSON 可解析；地层、测井和井轨迹可治理。PDF、DOCX、LAS 等可保存原件，解析器接入后再处理。</p><div class="modal-actions">${ingButton('close-dialog','取消')}<button type="submit" class="button primary">下一步</button></div></form>`,{wide:true});
+  }
+  function wizardMapping(){modal('导入资料 · 字段映射',`<div class="ing-stepper"><span>1 选择来源与归属</span><b>2 字段映射</b><span>3 预览提交</span></div><p class="ing-description">${ingEscape(wizard.file.name)} · ${ingEscape(wellName(wizard.metadata.wellId))}。默认值仅用于未映射的字段，基准请按原始资料确认。</p><form id="ing-upload-mapping">${mapFieldsHtml(wizard.parsed,wizard.metadata.objectType,wizard.config||{})}<div class="modal-actions">${ingButton('close-dialog','取消')}<button type="submit" class="button primary">预览</button></div></form>`,{wide:true});}
+  function wizardReview(){const well=model.wells.find(well=>well.id===wizard.metadata.wellId),aliases=model.aliases.filter(alias=>alias.wellId===well.id);let preview='此格式或资料类型暂无治理模板，提交后保存原件并显示具体处理状态。';if(wizard.parsed&&ingFieldSets[wizard.metadata.objectType]){const scope={well,aliases,layers:[well.layer,...aliases.filter(alias=>alias.kind==='layer').map(alias=>alias.standardName)]};const rows=ingNormalize(wizard.parsed,wizard.metadata.objectType,wizard.config,scope),result=ingValidate(rows,wizard.metadata.objectType,scope);preview=`<div class="ing-quality-summary">${ingBadge(result.status)}<span>${rows.length} 条记录 · ${result.issues.length} 项预检查问题</span></div><p class="ing-description">预检查用于确认映射；正式结果以服务端运行质量校验为准。问题资料可先保存，再治理。</p>${contentTable(['行号','井名','层位 / 曲线','深度类型','参考基准'],rows.slice(0,5).map(row=>[ingEscape(row.row),ingEscape(row.record.well),ingEscape(row.record.layer||row.record.curve||'—'),ingEscape(row.record.depthType),ingEscape(row.record.datum)]))}`;}
+    modal('导入资料 · 预览与提交',`<div class="ing-stepper"><span>1 选择来源与归属</span><span>2 字段映射</span><b>3 预览提交</b></div><p>${ingEscape(wizard.file.name)} · ${(wizard.file.size/1024).toFixed(1)} KB · ${ingEscape(wellName(wizard.metadata.wellId))}</p>${preview}<div class="modal-actions">${wizard.parsed&&ingFieldSets[wizard.metadata.objectType]?ingButton('wizard-back','返回映射'):ingButton('close-dialog','取消')}<button class="button primary" data-ing="upload-confirm">确认上传</button></div>`,{wide:true});}
+  function aliasDialog(existing){modal(existing?'编辑主数据映射':'新增主数据映射',`<form id="ing-alias" data-id="${ingEscape(existing?.id||'')}"><label class="form-field">归属井<select name="wellId" ${existing?'disabled':''}>${model.wells.filter(well=>model.capabilities.editWells.includes(well.id)).map(well=>ingOption(well.id,well.short,existing?.wellId||context().wellId)).join('')}</select></label><label class="form-field">实体类型<select name="kind" ${existing?'disabled':''}>${[['well','井'],['layer','层位'],['lithology','岩性'],['block','区块']].map(([id,label])=>ingOption(id,label,existing?.kind||'layer')).join('')}</select></label><label class="form-field">原始名称 / 别名<input name="rawName" maxlength="100" required value="${ingEscape(existing?.rawName||'')}" ${existing?'readonly':''}></label><label class="form-field">标准名称<input name="standardName" maxlength="100" required value="${ingEscape(existing?.standardName||'')}"></label><p class="ing-description">确认后按此映射处理本井后续标准化。井别名只能指向此归属井；同名冲突将被拒绝。</p><div class="modal-actions">${ingButton('close-dialog','取消')}<button class="button primary" type="submit">确认映射</button></div></form>`);}
+  async function perform(action,body={}){if(busy)return;busy=true;try{const assetId=selected?.asset.id;const result=await api('/ingestion/'+action,{assetId,versionId:selectedVersion()?.id,...body});document.querySelector('dialog')?.close();await refresh();await load();if(assetId&&selected)await open(assetId,detailTab);return result;}finally{busy=false;}}
+  async function click(event){const button=event.target.closest('[data-ing]');if(!button)return false;const action=button.dataset.ing;
+    try{
+      if(busy){toast('正在处理，请稍候。');return true;}
+      if(action==='refresh'){await refresh();await load();}
+      if(action==='tab'){tab=button.dataset.id;repaint();}
+      if(action==='back'){selected=null;tab='assets';repaint();}
+      if(action==='detail'||action==='quality-detail')await open(button.dataset.id,action==='quality-detail'?'issues':'original');
+      if(action==='page-prev'||action==='page-next'){page+=action==='page-next'?1:-1;repaint();}
+      if(action==='preview-prev'||action==='preview-next'){previewPage+=action==='preview-next'?1:-1;repaint();}
+      if(action==='issues-prev'||action==='issues-next'){issuePage+=action==='issues-next'?1:-1;repaint();}
+      if(action==='reset-filters'){filters={well:'current',type:'',quality:'',status:'',search:'',from:'',to:''};page=1;repaint();}
+      if(action==='detail-tab'){detailTab=button.dataset.id;repaint();}
+      if(action==='version'){versionId=button.dataset.id;previewPage=issuePage=1;repaint();}
+      if(action==='import'||action==='new-version'){if(!ready())await load();uploadDialog(action==='new-version'?selected.asset:null);}
+      if(action==='close-dialog'){document.querySelector('dialog')?.close();wizard=null;}
+      if(action==='wizard-back')wizardMapping();
+      if(action==='upload-confirm'){
+        if(!wizard||wizard.projectId!==context().projectId)throw new Error('项目已切换，请重新导入。');busy=true;button.disabled=true;button.textContent='正在上传…';
+        try{const result=await uploadAsset(wizard.file,wizard.metadata,wizard.config);document.querySelector('dialog')?.close();wizard=null;await refresh();await load();await open(result.assetId);toast(result.duplicate?'相同文件已存在，已打开原记录。':'原件已保存，解析完成后请运行质量校验。');}finally{busy=false;button.disabled=false;button.textContent='确认上传';}
+      }
+      if(action==='sample'){const result=await api('/ingestion/sample',{projectId:context().projectId,wellId:context().wellId});document.querySelector('dialog')?.close();await refresh();await load();await open(result.assetId);toast('已导入虚构演示样例。');}
+      if(action==='mapping'){const version=selectedVersion();modal('字段映射与重新标准化',`<form id="ing-remap">${mapFieldsHtml(version.parsed,selected.asset.objectType,version.config)}<p class="ing-description">保存会生成新版本，原件与旧校验结果保留。主数据映射按当前已确认版本重新应用。</p><div class="modal-actions">${ingButton('close-dialog','取消')}<button type="submit" class="button primary">保存新版本</button></div></form>`,{wide:true});}
+      if(action==='correct'){const version=selectedVersion();const fields=ingFieldSets[selected.asset.objectType]||[];modal('修正数据副本',`<form id="ing-correct"><label class="form-field">数据行号<input type="number" name="row" min="1" max="${version.rows.length}" required value="${ingEscape(button.dataset.row||1)}"></label><label class="form-field">标准字段<select name="field">${fields.map(([key,label])=>ingOption(key,label,button.dataset.field||fields[0]?.[0])).join('')}</select></label><label class="form-field">修正原始值<input name="value" maxlength="4096" required></label><p class="ing-description">输入值遵循原字段单位；深度为 ft 时会再次换算为 m。原件不变，修正生成新版本并要求复检。</p><div class="modal-actions">${ingButton('close-dialog','取消')}<button type="submit" class="button primary">保存修正</button></div></form>`);}
+      if(action==='validate'){const options=selectedVersion().qualityRuns.at(-1)?.options||{};modal('运行质量校验',`<form id="ing-validate"><p>基础规则自动执行。下列采样与曲线规则为可选配置，留空表示不适用；阈值需经业务确认。</p><div class="ing-form-pair">${[['maxGap','最大采样间距（m）'],['min','曲线最小值'],['max','曲线最大值'],['maxJump','相邻曲线最大变化值']].map(([key,label])=>`<label class="form-field">${label}<input name="${key}" type="number" step="any" value="${ingEscape(options[key]??'')}"></label>`).join('')}</div><div class="modal-actions">${ingButton('close-dialog','取消')}<button class="button primary" type="submit">开始校验</button></div></form>`);}
+      if(action==='retry'){await perform('retry');toast('解析任务已重新提交。');}
+      if(action==='handoff'){const version=selectedVersion(),warning=version.qualityRuns.at(-1)?.status==='警告';modal('提交知识构建',`<p>将固定 v${version.number}（${ingEscape(version.id)}）及其校验记录交给知识构建。共 ${version.rows.length} 条标准数据。</p><p class="ing-description">提交后状态为“待知识构建”；实体抽取、人工校核和发布将在后续模块实现。</p>${warning?'<label class="form-field"><span><input type="checkbox" id="ing-confirm-warnings"> 我已查看并确认此版本的质量警告</span></label>':''}<div class="modal-actions">${ingButton('close-dialog','取消')}<button class="button primary" data-ing="handoff-confirm" data-warning="${warning}">确认提交</button></div>`);}
+      if(action==='handoff-confirm'){const confirmed=Boolean(document.querySelector('#ing-confirm-warnings')?.checked);if(button.dataset.warning==='true'&&!confirmed)throw new Error('请先确认质量警告。');const result=await perform('handoff',{confirmWarnings:confirmed});if(result){toast('已提交至待知识构建清单。');selected=null;go('construction');}}
+      if(action==='alias-add')aliasDialog();if(action==='alias-edit')aliasDialog(model.aliases.find(alias=>alias.id===button.dataset.id));
+      if(action==='connector-info')modal('连接器接入条件','<p>此连接器尚未接入。开发联调需要真实服务地址、协议版本、认证方式、授权范围和样例数据。</p><p class="ing-description">WITSML、数据库、API、MQTT 和 Kafka 接入将在后续批次实现。</p>');
+    }catch(cause){toast(cause.message);}return true;
+  }
+  async function submit(event){if(!event.target.id.startsWith('ing-'))return false;event.preventDefault();const form=event.target;if(busy)return true;const submitter=form.querySelector('[type="submit"]');if(submitter)submitter.disabled=true;
+    try{
+      if(form.id==='ing-filter'){const data=new FormData(form);for(const key of Object.keys(filters))filters[key]=String(data.get(key)||'');if(filters.from&&filters.to&&filters.from>filters.to)throw new Error('开始日期不能晚于结束日期。');page=1;repaint();}
+      if(form.id==='ing-upload-start'){
+        const file=form.elements.file.files[0];if(!file||!file.size||file.size>ingLimits.bytes)throw new Error('请选择非空且不超过 5 MB 的文件。');
+        wizard.file=file;wizard.metadata={projectId:context().projectId,wellId:wizard.asset?.wellId||form.elements.wellId.value,objectType:wizard.asset?.objectType||form.elements.objectType.value,encoding:form.elements.encoding.value,name:file.name,...(wizard.asset?{assetId:wizard.asset.id,expectedVersionId:wizard.asset.currentVersionId}:{})};
+        const extension=file.name.split('.').at(-1).toLowerCase();wizard.parsed=['csv','json'].includes(extension)?ingParse(new TextDecoder(wizard.metadata.encoding,{fatal:true}).decode(await file.arrayBuffer()),extension):null;
+        if(wizard.parsed&&ingFieldSets[wizard.metadata.objectType])wizardMapping();else wizardReview();
+      }
+      if(form.id==='ing-upload-mapping'){wizard.config=readConfig(form,wizard.metadata.objectType);wizardReview();}
+      if(form.id==='ing-remap'){await perform('standardize',readConfig(form,selected.asset.objectType));toast('已生成标准化新版本，请重新校验。');}
+      if(form.id==='ing-correct'){await perform('correct',{row:Number(form.elements.row.value),field:form.elements.field.value,value:form.elements.value.value});toast('已保存修正版本，请重新校验。');}
+      if(form.id==='ing-validate'){const options=Object.fromEntries(['min','max','maxGap','maxJump'].map(key=>[key,form.elements[key].value]));await perform('validate',{options});detailTab='issues';repaint();toast('质量校验完成。');}
+      if(form.id==='ing-alias'){const existing=model.aliases.find(alias=>alias.id===form.dataset.id);await perform('alias',{projectId:context().projectId,wellId:existing?.wellId||form.elements.wellId.value,kind:existing?.kind||form.elements.kind.value,rawName:form.elements.rawName.value,standardName:form.elements.standardName.value,expectedRevision:existing?.revision});toast('主数据映射已保存，相关资料需重新标准化。');}
+    }catch(cause){toast(cause.message);}finally{if(submitter)submitter.disabled=false;}return true;
+  }
+  function constructionHtml(){if(!context().canData)return '<div class="notice">查看待构建资料需要资料目录权限，请联系管理员配置。</div>';if(!ready())return '<div class="ing-empty">正在读取待知识构建资料…</div>';return `<section class="panel ingestion"><div class="panel-heading"><h2>待知识构建资料</h2>${ingBadge(`${model.handoffs.length} 项`,'blue')}</div><p class="ing-description">以下资料已固定版本并通过接入治理门槛。实体关系抽取、人工校核和图谱发布将在后续知识构建模块实现。</p>${contentTable(['交接编号','资料 / 归属井','固定数据版本','校验记录','记录数','状态','操作'],model.handoffs.map(item=>[ingEscape(item.id),`${ingEscape(model.assets.find(asset=>asset.id===item.assetId)?.name)}<small class="block">${ingEscape(wellName(item.wellId))}</small>`,ingEscape(item.versionId),ingEscape(item.qualityRunId),ingEscape(item.recordCount),ingBadge(item.status,'amber'),`<button class="text-button" data-ing="handoff-detail" data-id="${item.assetId}" data-version="${item.versionId}">查看输入</button>`]))}</section>`;}
+  return {html,load,open,constructionHtml,async click(event){const button=event.target.closest('[data-ing="handoff-detail"]');if(button){try{await open(button.dataset.id,'lineage');versionId=button.dataset.version;repaint();}catch(cause){toast(cause.message);}return true;}return click(event);},submit,import:async()=>{if(!ready())await load();uploadDialog();},clear(){requestGeneration++;clearTimeout(pollTimer);model=null;loadedProject='';loading=false;error='';selected=null;wizard=null;busy=false;filters={well:'current',type:'',quality:'',status:'',search:'',from:'',to:''};tab='assets';page=previewPage=issuePage=1;}};
+}
+
+
 // ===== src/main.js =====
 let projects=[],wells=[],initialTasks=[],authorizedAssets=[],allowedActions={},currentUser=null,authLoading=true,loginNotice='',sessionTimer;
 const permitted=(permission)=>['import','run','export','rule-edit'].includes(permission)?(allowedActions[state.wellId]||[]).includes(permission):currentUser?.permissions.includes('manage')||((projects.find(p=>p.id===state.projectId)?.permissions||currentUser?.permissions||[]).includes(permission));
@@ -936,7 +1403,7 @@ function render() {
   <nav class="main-nav" aria-label="主菜单">${navigation.filter(([id])=>permitted(id)).map(([id,glyph,label])=>`<button data-route="${id}" class="nav-item ${page===id?'active':''}" ${page===id?'aria-current="page"':''}>${icon(glyph,17)}<span>${label}</span></button>`).join('')}</nav>
   <div class="context-bar"><div class="context-controls"><label for="project-select">当前项目</label><select id="project-select">${projects.map(p=>`<option value="${p.id}" ${p.id===state.projectId?'selected':''}>${p.name}</option>`).join('')}</select><span class="context-stat">井数 <b>${projectWells().length}</b></span><span class="context-stat">资料 <b>${getAssets().length}</b></span><span class="context-stat current-well">当前井 <b>${currentWell().short}</b></span></div><div class="context-steps"><span>工作流程</span><button data-action="import">1 导入资料</button>${icon('chevron',12)}<button data-route="construction">2 构建知识</button>${icon('chevron',12)}<button data-route="retrieval">3 检索与推理</button></div></div>
   <div class="app-body ${page==='users'?'admin-layout':''}"><aside class="data-sidebar" aria-label="数据树与属性"><section class="tree-pane"><div class="pane-heading"><h2>${icon('folder',17)}数据资源</h2><button class="icon-button small" data-action="expand-tree" aria-label="展开全部井">${icon('layers',16)}</button></div><label class="tree-search">${icon('search',15)}<input id="tree-search" placeholder="搜索井、资料或对象" aria-label="搜索数据树" value="${escape(state.treeFilter)}"></label><div id="tree-list" class="tree-list">${treeHtml()}</div><button class="tree-import" data-action="import">${icon('upload',15)}导入资料</button></section><section id="properties" class="properties-pane">${propertiesHtml()}</section></aside><main class="main-content" id="main-content" tabindex="-1">${pageHtml(page)}</main></div>
-  <footer class="status-bar"><span><i class="status-dot"></i>示例数据 · ${currentProject().block} / ${currentWell().short}</span><span>资料版本 ${currentWell().version}<span class="footer-separator">|</span>知识可追溯 · 结果可校核</span></footer>`;
+  <footer class="status-bar"><span><i class="status-dot"></i>${authorizedAssets.some(asset=>asset.managed)?'本机资料与演示样例':'示例数据'} · ${currentProject().block} / ${currentWell().short}</span><span>资料版本 ${authorizedAssets.find(asset=>asset.id===state.selectedAssetId)?.version||currentWell().version}<span class="footer-separator">|</span>知识可追溯 · 结果可校核</span></footer>`;
   applyPermissions();
 }
 function treeHtml() {
@@ -964,6 +1431,8 @@ function updateObjectSelection() {
   }
 }
 function propertiesHtml() {
+  const asset=authorizedAssets.find(item=>item.id===state.selectedAssetId);
+  if(asset)return `<div class="pane-heading"><h2>${icon('panel',16)}资料属性</h2>${badge(asset.type,'neutral')}</div><div class="property-name"><strong>${escape(asset.name)}</strong></div><dl class="property-list">${[['所属项目',currentProject().name],['归属井',currentWell().short],['资料版本',asset.version],['处理状态',asset.status],['质量状态',asset.quality||'未校验'],['来源',asset.source??'来源受限']].map(([label,value])=>`<div><dt>${escape(label)}</dt><dd>${escape(value)}</dd></div>`).join('')}</dl><button class="text-button property-link" data-action="asset-detail" data-asset="${escape(asset.id)}">查看资料详情</button>`;
   const well=currentWell();const type=objectTypes.find(t=>t.id===state.selectedType);
   return `<div class="pane-heading"><h2>${icon('panel',16)}对象属性</h2>${badge(type?.type || '井','neutral')}</div><div class="property-name">${icon(type?.icon||'well',20)}<strong>${type ? type.name : well.name}</strong></div><dl class="property-list"><div><dt>所属项目</dt><dd>${currentProject().name}</dd></div><div><dt>井号</dt><dd>${well.short}</dd></div><div><dt>目标层位</dt><dd>${escape(well.layer??'受限或未提供')}</dd></div><div><dt>井段范围</dt><dd>${escape(well.depth??'受限或未提供')}</dd></div><div><dt>深度基准</dt><dd>MD · m</dd></div><div><dt>资料版本</dt><dd>${well.version}</dd></div><div><dt>来源</dt><dd>${escape(well.source??'受限或未提供')}</dd></div></dl><button class="text-button property-link" data-action="evidence" data-evidence="target">查看来源记录 ${icon('arrow',14)}</button>`;
 }
@@ -976,7 +1445,8 @@ function pageHtml(page) {
   if(page==='retrieval') return retrievalHtml();
   if(page==='reasoning') return reasoningHtml();
   if(page==='graph') return heading('图谱管理','知识关联与来源','围绕当前井查看五类知识对象及其关联依据。',`<button class="button primary" data-route="retrieval">${icon('search',15)}进入混合检索</button>`)+`<section class="panel graph-full"><div class="panel-heading"><h2>${icon('graph',18)}当前井知识关联</h2>${badge('示例图谱','neutral')}</div>${graphHtml()}${graphLegend()}</section>`+assetTable();
-  if(page==='data') return heading('数据接入','数据资产目录','按井浏览地层、测井、井轨迹、模型与历史指令资料。',`<button class="button primary" data-action="import">${icon('upload',15)}导入资料</button>`)+assetTable()+moduleRoadmap('data');
+  if(page==='data') return ingestionUI.html();
+  if(page==='construction') return heading('知识构建','知识构建与校核','接收治理后的固定资料版本，准备实体与关系抽取。')+ingestionUI.constructionHtml()+moduleRoadmap(page);
   if(page==='operations') return heading('运行管理','运行记录','查看本次工作台中的规则判定记录及其输入快照。')+historyHtml()+moduleRoadmap(page);
   const definition=moduleDefinitions[page];
   if(!definition) return heading('页面不存在','未找到该页面','请通过顶部菜单返回工作台。',`<button class="button primary" data-route="home">返回首页</button>`);
@@ -1073,6 +1543,7 @@ document.addEventListener('click',async event=>{
   const actionPermission={import:'import','run-rule':'run','export-run':'export','joint-analysis':'run'}[permissionButton?.dataset.action];
   if(actionPermission&&!permitted(actionPermission)){toast('无权执行此操作。');return;}
   try {
+  if(await ingestionUI.click(event))return;
   const routeButton=event.target.closest('[data-route]');
   if(routeButton){go(routeButton.dataset.route);return;}
   const control=event.target.closest('[data-action]');if(!control)return;
@@ -1081,6 +1552,7 @@ document.addEventListener('click',async event=>{
   if(action==='toggle-well'){state.expanded.has(well)?state.expanded.delete(well):state.expanded.add(well);$('#tree-list').innerHTML=treeHtml();return;}
   if(action==='expand-tree'){projectWells().forEach(w=>state.expanded.add(w.id));$('#tree-list').innerHTML=treeHtml();return;}
   if(action==='select-node'){
+    state.selectedAssetId='';
     const changed=state.wellId!==well;
     state.wellId=well;state.selectedType=type;state.expanded.add(well);
     if(changed)state.activeResult=null;
@@ -1103,20 +1575,19 @@ document.addEventListener('click',async event=>{
     modal('生成联合分析',`<div class="notice">${icon('info',18)}尚未配置大模型分析服务，本次没有生成联合分析结果。</div><p>当前已整理好可供分析使用的资料与证据包，可导出交由后续服务接入。</p><ul><li>场景：${state.scenario==='strata'?'地层对比':'邻井推荐'}</li><li>对象：${currentWell().short} / ${referenceWell().short}</li><li>规则：${escape(state.activeResult.result.rule.name)}（${escape(state.activeResult.result.rule.version)}）</li><li>判定：${escape(state.activeResult.result.title)}</li><li>内容：资料标识、实测输入、逐项判断、结论及来源快照</li></ul><button class="button primary" data-action="export-run" data-run="${state.activeResult.id}">${icon('download',15)}导出分析输入包</button>`);return;
   }
   if(action==='asset-detail'){
-    const asset=getAssets().find(a=>a.id===control.dataset.asset);if(!asset)return;
-    modal('资料详情',`<h3>${escape(asset.name)}</h3><dl class="evidence-attributes"><div><dt>类型</dt><dd>${escape(asset.type)}</dd></div><div><dt>来源</dt><dd>${escape(asset.source)}</dd></div><div><dt>版本</dt><dd>${escape(asset.version)}</dd></div><div><dt>状态</dt><dd>${escape(asset.status)}</dd></div></dl><p class="subtle">${asset.status==='待解析'?'已登记资料元信息，尚未解析或构建知识。':'该记录为首页布局与关联展示使用的示例资料。'}</p>`);return;
+    await ingestionUI.open(control.dataset.asset);return;
   }
   if(action==='import'){
-    modal('导入资料 · 登记清单',`<form id="import-form"><p class="subtle">将文件登记到当前井的待处理清单。当前演示不保存原文件内容，也不执行解析。</p><label class="form-field">归属井<input value="${currentWell().name}" readonly></label><label class="form-field">选择文件<input id="import-file" type="file" accept=".pdf,.docx,.las,.csv,.xlsx,.json" required></label><label class="form-field">资料类型<select id="import-type">${objectTypes.map(t=>`<option value="${t.type}">${t.type}</option>`).join('')}</select></label><div class="modal-actions"><button type="button" class="button" data-action="close-modal">取消</button><button class="button primary" type="submit">登记资料</button></div></form>`);return;
+    await ingestionUI.import();return;
   }
   if(action==='notifications'){modal('我的待办',`<div class="task-list">${taskList()}</div><p class="subtle">当前展示示例校核任务。</p>`);return;}
   if(action==='profile'){modal('个人信息',`<div class="profile-card"><span class="avatar large">${escape(currentUser.name.slice(0,1))}</span><h3>${escape(currentUser.name)}</h3><p>${escape(currentUser.roleName)}</p></div><dl class="evidence-attributes"><div><dt>账号</dt><dd>${escape(currentUser.account)}</dd></div><div><dt>组织</dt><dd>${escape(currentUser.orgName)}</dd></div><div><dt>可访问项目</dt><dd>${projects.map(p=>escape(p.name)).join('、')||'尚未分配'}</dd></div></dl><div class="modal-actions"><button class="button danger" data-auth="logout">退出登录</button></div>`);return;}
-  if(action==='help') modal('工作台使用说明','<ol><li>从左侧数据树选择井或知识对象，下方查看属性。</li><li>在首页查看资料、知识关联和待办，顶部菜单切换模块。</li><li>进入混合检索，选择演示样例并运行规则判定。</li><li>结果包含资料、规则、计算过程和引用，可保存与导出。</li><li>“规则与推理”中维护演示阈值并回看历史结果。</li></ol><p class="subtle">本版本为首页与规则判定交互原型；数据均为演示样例。</p>');
+  if(action==='help') modal('工作台使用说明','<ol><li>从左侧数据树选择井或知识对象，下方查看属性。</li><li>进入数据接入，上传CSV/JSON并确认字段、单位和深度基准。</li><li>查看质量问题，配置主数据映射或修正副本，再运行校验。</li><li>合格版本可提交至待知识构建清单，原件与历史版本保留。</li><li>混合检索与规则判定仍使用独立的虚构演示样例。</li></ol><p class="subtle">OCR、外部连接器、实时流及知识实体关系抽取尚未接入。</p>');
   }catch(error){toast(error.message);}
 });
 document.addEventListener('change',event=>{
   usersUI.change(event);
-  if(event.target.id==='project-select'){state.projectId=event.target.value;state.wellId=currentProject().wells[0];state.selectedType='well';state.expanded=new Set([state.wellId]);state.activeResult=null;state.treeFilter='';persist();render();}
+  if(event.target.id==='project-select'){state.selectedAssetId='';state.projectId=event.target.value;state.wellId=currentProject().wells[0];state.selectedType='well';state.expanded=new Set([state.wellId]);state.activeResult=null;state.treeFilter='';persist();render();}
   if(event.target.id==='analysis-well'){state.wellId=event.target.value;state.selectedType='well';state.expanded.add(state.wellId);state.activeResult=null;persist();render();}
   if(event.target.id==='sample-select'){state.sampleId=event.target.value;state.formDirty=false;state.activeResult=null;render();}
   if(event.target.id==='scenario-select'){state.scenario=event.target.value;state.activeResult=null;render();}
@@ -1126,7 +1597,9 @@ document.addEventListener('input',event=>{
   if(['target-thickness','reference-thickness'].includes(event.target.id))invalidateResult();
 });
 document.addEventListener('submit',async event=>{
-  if(['login-form','admin-edit-form','audit-filter-form','rule-form','import-form'].includes(event.target.id))event.preventDefault();
+  if(event.target.id.startsWith('ing-')||['login-form','admin-edit-form','audit-filter-form','rule-form'].includes(event.target.id))event.preventDefault();
+  if(await ingestionUI.submit(event))return;
+  if(['login-form','admin-edit-form','audit-filter-form','rule-form'].includes(event.target.id))event.preventDefault();
   if(event.target.id==='login-form'){event.preventDefault();await login(event.target);return;}
   if(await usersUI.submit(event))return;
   if(!currentUser)return;
@@ -1135,14 +1608,11 @@ document.addEventListener('submit',async event=>{
     event.preventDefault();const threshold=Number($('#rule-threshold').value);if(!Number.isFinite(threshold)||threshold<=0){toast('请输入大于零的阈值。');return;}
     state.rule=await api('/business/rule-edit',{projectId:state.projectId,wellId:state.wellId,threshold,enabled:$('#rule-enabled').checked});state.activeResult=null;await refreshWorkspace();toast('规则已保存，历史记录保留原版本。');
   }
-  if(event.target.id==='import-form'){
-    event.preventDefault();const file=$('#import-file').files[0];if(!file)return;
-    await api('/business/import',{projectId:state.projectId,wellId:state.wellId,name:file.name,type:$('#import-type').value});$('dialog').close();await refreshWorkspace();toast('资料已登记，尚未保存原文件或解析。');
-  }
   }catch(error){toast(error.message);}
 });
 document.addEventListener('keydown',event=>{if((event.key==='Enter'||event.key===' ')&&event.target.matches('.graph-node')){event.preventDefault();event.target.dispatchEvent(new MouseEvent('click',{bubbles:true}));}});
 const usersUI=createUsersUI({modal,toast,refresh:refreshWorkspace,getUser:()=>currentUser});
+const ingestionUI=createIngestionUI({getContext:()=>({projectId:state.projectId,wellId:state.wellId,block:currentProject().block,canData:permitted('data'),canImport:permitted('import'),route:route()}),repaint:render,refresh:refreshWorkspace,modal,toast,go,selectAsset:asset=>{state.wellId=asset.wellId;state.selectedType=asset.objectType;state.selectedAssetId=asset.id;state.expanded.add(asset.wellId);}});
 function applyPermissions(){
   for(const button of document.querySelectorAll('[data-route]'))if(!permitted(button.dataset.route))button.disabled=true;
   for(const button of document.querySelectorAll('[data-action]')){const key={import:'import','run-rule':'run','export-run':'export','joint-analysis':'run'}[button.dataset.action];if(key&&!permitted(key))button.hidden=true;}
@@ -1150,6 +1620,8 @@ function applyPermissions(){
   if(!projects.length||route()==='users'){document.querySelector('.context-bar')?.classList.add('hidden');document.querySelector('.data-sidebar')?.classList.add('hidden');document.querySelector('.app-body')?.classList.add('admin-layout');}
 }
 function clearSession(message=''){
+  ingestionUI.clear();
+  state.selectedAssetId='';
   currentUser=null;projects=[];wells=[];initialTasks=[];authorizedAssets=[];allowedActions={};state.runs=[];state.imported=[];state.activeResult=null;state.projectId='';state.wellId='';state.homeTab='overview';state.treeFilter='';state.selectedType='well';state.expanded=new Set();usersUI.clear();clearTimeout(sessionTimer);$('#overlay-root').innerHTML='';loginNotice=message;authLoading=false;location.hash='/login';render();
 }
 async function refreshWorkspace(fetchData=true){
