@@ -1,6 +1,7 @@
 import {clone,fault,can,requirePermission,resourceAllowed,auditEvent,permittedWells} from './access-model.js';
 import {ingEnsure,ingFindAsset,ingId} from './ingestion-model.js';
 import {ontoEnsure} from './ontology-model.js';
+import {gmEnsure,gmVersion} from './graph-model.js';
 import {kcStages,kcEngine,kcEntities,kcRelations,kcNormalize,kcCheck,kcMetric,kcEvaluationItems,kcName,kcStable,kcTaskDisplayName} from './construction-core.js';
 
 export function kcEnsure(db){
@@ -133,11 +134,12 @@ export function kcMutation(db,user,action,body,context={}){
     for(const c of accepted){const errors=kcCheck(task,c);if(errors.length)fault(`发布校验失败：${errors.join('；')}`,409);if(c.kind==='relation'&&['subjectId','objectId'].some(k=>!accepted.some(e=>e.id===c.value[k]&&e.kind==='entity')))fault('已接受关系的两端实体必须同时接受。',409);}
     // Refuse an older extraction overwriting a release from a newer data version.
     for(const source of task.sources){const number=id=>ingEnsure(db).versions.find(v=>v.id===id)?.number||0;const newer=model.facts.some(f=>f.active&&f.assetId===source.assetId&&number(f.evidence.versionId)>number(source.versionId));if(newer)fault('此资料已有更新版本发布，不能以旧版本覆盖。',409);}
+    gmEnsure(db);
     const id=ingId(db,'PUB'),factId=c=>`${id}:${typeof c==='string'?c:c.id}`;
     for(const old of model.facts)if(old.projectId===projectId&&task.sources.some(s=>s.assetId===old.assetId))old.active=false;
     const facts=accepted.map(c=>({id:factId(c),candidateId:c.id,kind:c.kind,typeId:c.typeId,typeName:c.typeName,name:c.kind==='relation'?`${accepted.find(e=>e.id===c.value.subjectId).name} — ${c.typeName} — ${accepted.find(e=>e.id===c.value.objectId).name}`:c.name,value:clone(c.value),...(c.kind==='relation'?{subjectId:factId(c.value.subjectId),objectId:factId(c.value.objectId)}:{}),assetId:c.evidence.assetId,evidence:clone(c.evidence),projectId,taskId:task.id,publicationId:id,ontologyVersionId:task.ontologyVersionId,active:true,history:clone(c.history)}));model.facts.push(...facts);
     const active=model.facts.filter(f=>f.projectId===projectId&&f.active),index=Object.create(null);for(const f of active)for(const word of [...new Set(`${f.name} ${f.typeName}`.split(/\s+/).filter(Boolean))]){index[word]??=[];index[word].push(f.id);}model.indexes[projectId]={publicationId:id,updatedAt:kcNow(),entries:index};model.caches[projectId]={publicationId:id,entityCount:active.filter(f=>f.kind==='entity').length,relationCount:active.filter(f=>f.kind==='relation').length};
-    const publication={id,taskId:task.id,projectId,publishedAt:kcNow(),publishedBy:user.name,sourceVersions:task.sources.map(s=>s.versionId),ontologyVersionId:task.ontologyVersionId,factIds:facts.map(f=>f.id),entityCount:facts.filter(f=>f.kind==='entity').length,relationCount:facts.filter(f=>f.kind==='relation').length,refresh:{graph:'本机知识库已更新',index:'本机名称索引已重建',cache:'本机统计缓存已刷新'},external:'外部图数据库、搜索服务与缓存服务未接入'};model.publications.unshift(publication);task.status='published';task.publicationId=id;task.revision++;log('发布已校核知识',id,publication);return clone(publication);
+    const publication={id,taskId:task.id,projectId,publishedAt:kcNow(),publishedBy:user.name,sourceVersions:task.sources.map(s=>s.versionId),ontologyVersionId:task.ontologyVersionId,factIds:facts.map(f=>f.id),entityCount:facts.filter(f=>f.kind==='entity').length,relationCount:facts.filter(f=>f.kind==='relation').length,refresh:{graph:'本机知识库已更新',index:'本机名称索引已重建',cache:'本机统计缓存已刷新'},external:'外部图数据库、搜索服务与缓存服务未接入'};model.publications.unshift(publication);task.status='published';task.publicationId=id;task.revision++;gmVersion(db,projectId,'知识发布',id,user.name);log('发布已校核知识',id,publication);return clone(publication);
   }
   fault('知识构建操作不存在。',404);
 }

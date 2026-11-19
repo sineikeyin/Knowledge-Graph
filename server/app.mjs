@@ -6,6 +6,7 @@ import {makeDatabase,activeUser,identity,workspace,adminView,mutate,business,aud
 import {createIngestion} from './ingestion.mjs';
 import {createConstruction} from './construction.mjs';
 import {ontoEnsure,ontoDashboard,ontoPublished,ontoMutation,ontoImpact} from '../src/ontology-model.js';
+import {gmEnsure,gmSeedDemo,gmDashboard,gmQuery,gmMutation} from '../src/graph-model.js';
 
 export function passwordHash(password,salt=randomBytes(16).toString('hex')) {return `${salt}:${scryptSync(password,salt,64).toString('hex')}`;}
 export function passwordMatches(password,stored='') {const [salt,hash]=stored.split(':');if(!salt||!hash)return false;const actual=scryptSync(password,salt,64);const expected=Buffer.from(hash,'hex');return actual.length===expected.length&&timingSafeEqual(actual,expected);}
@@ -13,6 +14,7 @@ export async function createApp({root,dataFile,sessionTtl=30*60*1000}={}) {
   root=path.resolve(root);
   let state;try {state=JSON.parse(await fs.readFile(dataFile,'utf8'));}catch(error){if(error.code!=='ENOENT')throw error;state={db:makeDatabase(),passwords:{}};for(const user of state.db.users)state.passwords[user.id]=passwordHash('GeoDemo!2026');}
   ontoEnsure(state.db);
+  gmEnsure(state.db);for(const project of state.db.projects)gmSeedDemo(state.db,project.id);
   const sessions=new Map(),attempts=new Map();let commits=Promise.resolve();
   const persist=async()=>{await fs.mkdir(path.dirname(dataFile),{recursive:true});const tmp=dataFile+'.tmp';await fs.writeFile(tmp,JSON.stringify(state,null,2));await fs.rename(tmp,dataFile);};
   await persist();
@@ -31,7 +33,7 @@ export async function createApp({root,dataFile,sessionTtl=30*60*1000}={}) {
       if(!pathname.startsWith('/api/')) {
         if(!['GET','HEAD'].includes(req.method))fault('Method not allowed',405);
         const relative=pathname==='/'?'index.html':pathname.slice(1);
-        const publicFiles=['index.html','src/main.js','src/data.js','src/icons.js','src/rules.js','src/styles.css','src/api.js','src/users.js','src/ingestion.js','src/ingestion-core.js','src/ontology.js','src/ontology-core.js','src/las-core.js','src/construction.js','src/construction-core.js'];
+        const publicFiles=['index.html','src/main.js','src/data.js','src/icons.js','src/rules.js','src/styles.css','src/api.js','src/users.js','src/ingestion.js','src/ingestion-core.js','src/ontology.js','src/ontology-core.js','src/las-core.js','src/construction.js','src/construction-core.js','src/graph.js','src/graph-core.js'];
         if(!publicFiles.includes(relative)&&!/^assets\/[a-zA-Z0-9_.-]+\.svg$/.test(relative)&&relative!=='docs/页面搭建步骤.html')fault('File unavailable',404);
         const file=path.resolve(root,relative);if(!file.startsWith(root+path.sep))fault('Forbidden',403);
         const content=await fs.readFile(file);const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.svg':'image/svg+xml'};
@@ -61,6 +63,11 @@ export async function createApp({root,dataFile,sessionTtl=30*60*1000}={}) {
       const user=activeUser(state.db,session.userId);auditUser=user;if(req.method==='POST'&&req.headers['x-csrf-token']!==session.csrf)fault('请求校验失败，请刷新页面。',403);
       if(pathname.startsWith('/api/ingestion')&&await ingestion.handle({req,res,url,user,body,requestId,send}))return;
       if(pathname.startsWith('/api/construction')&&await construction.handle({req,res,url,user,body,requestId,send}))return;
+      if(pathname==='/api/graph'&&req.method==='GET'){send(200,gmDashboard(state.db,user,url.searchParams.get('projectId'),url.searchParams.get('dataset')||'published'));return;}
+      const graphQuery=pathname.match(/^\/api\/graph\/(paths|spatial|similar|history)$/);
+      if(graphQuery&&req.method==='POST'){send(200,gmQuery(state.db,user,graphQuery[1],body));return;}
+      const graphMutation=pathname.match(/^\/api\/graph\/(algorithm|spatial-save|snapshot|restore)$/);
+      if(graphMutation&&req.method==='POST'){send(200,await commit(()=>gmMutation(state.db,user,graphMutation[1],body,{requestId})));return;}
       if(pathname==='/api/auth/me'&&req.method==='GET'){send(200,{user:identity(state.db,user),csrf:session.csrf,expires:session.expires});return;}
       if(pathname==='/api/auth/logout'&&req.method==='POST'){await commit(()=>auditEvent(state.db,user,'退出登录','会话',{}, {requestId}));sessions.delete(token);res.setHeader('Set-Cookie','geokg_session=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0');send(200,{ok:true});return;}
       if(pathname==='/api/workspace'&&req.method==='GET'){send(200,workspace(state.db,user));return;}

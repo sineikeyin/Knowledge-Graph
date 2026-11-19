@@ -4,18 +4,24 @@ import {ingParse} from './ingestion-core.js';
 import {ingSeedDemo} from './ingestion-demo.js';
 import {ontoEnsure,ontoDashboard,ontoPublished,ontoMutation,ontoImpact} from './ontology-model.js';
 import {kcEnsure,kcDashboard,kcDetail,kcGraph,kcMutation,kcDispatch,kcAdvance} from './construction-model.js';
+import {gmEnsure,gmSeedDemo,gmDashboard,gmQuery,gmMutation} from './graph-model.js';
 export function createOfflineService() {
   let db;try{db=JSON.parse(localStorage.getItem('geokg-offline-users-v1'));}catch{}if(!db?.users)db=makeDatabase();
   let session;try{session=JSON.parse(sessionStorage.getItem('geokg-offline-session-v1'));}catch{}
   ingEnsure(db);ontoEnsure(db);kcEnsure(db);
   const save=()=>{localStorage.setItem('geokg-offline-users-v1',JSON.stringify(db));if(session)sessionStorage.setItem('geokg-offline-session-v1',JSON.stringify(session));else sessionStorage.removeItem('geokg-offline-session-v1');};
   if(ingSeedDemo(db).changed)save();
+  gmEnsure(db);for(const project of db.projects)gmSeedDemo(db,project.id);save();
   return async(pathname,body)=>{
     if(pathname==='/auth/login') {const user=db.users.find(u=>u.account===body.account);if(!user||body.password!=='GeoDemo!2026')fault('账号或密码不正确。',401);if(!user.enabled)fault('账号已停用，请联系管理员。',403);session={userId:user.id,expires:Date.now()+30*60*1000};user.lastLogin=new Date().toISOString();auditEvent(db,user,'登录（离线演示）','会话');save();return {user:identity(db,user),expires:session.expires};}
     if(!session||session.expires<=Date.now())fault('登录已失效，请重新登录。',401);const user=activeUser(db,session.userId);
     if(pathname==='/auth/me')return {user:identity(db,user),expires:session.expires};
     if(pathname==='/auth/logout'){auditEvent(db,user,'退出登录（离线演示）','会话');session=null;save();return {ok:true};}
     if(pathname==='/workspace')return workspace(db,user);
+    if(pathname==='/graph'||pathname.startsWith('/graph?')||pathname.startsWith('/graph/')){
+      const [endpoint,query='']=pathname.split('?'),params=new URLSearchParams(query),action=endpoint.split('/').pop(),before=clone(db);
+      try{const result=endpoint==='/graph'?gmDashboard(db,user,params.get('projectId'),params.get('dataset')||'published'):['paths','spatial','similar','history'].includes(action)?gmQuery(db,user,action,body):gmMutation(db,user,action,body);save();return result;}catch(error){db=before;throw error;}
+    }
     if(pathname.startsWith('/construction')){
       const [endpoint,query='']=pathname.split('?'),params=new URLSearchParams(query),projectId=params.get('projectId');
       const before=clone(db);

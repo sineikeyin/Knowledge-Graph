@@ -5,6 +5,7 @@ import {createUsersUI,loginHtml} from './users.js';
 import {createIngestionUI} from './ingestion.js';
 import {createOntologyUI} from './ontology.js';
 import {createConstructionUI} from './construction.js';
+import {createGraphUI} from './graph.js';
 let projects=[],wells=[],initialTasks=[],authorizedAssets=[],allowedActions={},currentUser=null,authLoading=true,loginNotice='',sessionTimer;
 const permitted=(permission)=>['import','run','export','rule-edit'].includes(permission)?(allowedActions[state.wellId]||[]).includes(permission):currentUser?.permissions.includes('manage')||((projects.find(p=>p.id===state.projectId)?.permissions||currentUser?.permissions||[]).includes(permission));
 import {evaluateThicknessRule} from './rules.js';
@@ -33,7 +34,7 @@ const currentProject = () => projects.find(p => p.id === state.projectId)||{id:'
 const projectWells = () => wells.filter(w => currentProject().wells.includes(w.id));
 if (!currentProject().wells.includes(state.wellId)) state.wellId=projectWells()[0]?.id||'';
 const currentWell = () => wells.find(w => w.id === state.wellId)||{id:'',name:'未选择井',short:'—',layer:'受限或未提供',depth:'受限或未提供',source:'受限或未提供',version:'—'};
-const referenceWell = () => projectWells().find(w => w.id !== state.wellId) || currentWell();
+const referenceWell = () => projectWells().find(w => w.id===state.graphReferenceWellId&&w.id!==state.wellId) || projectWells().find(w => w.id !== state.wellId) || currentWell();
 const route = () => (location.hash.match(/^#\/([a-z]+)/)?.[1] || 'home');
 function persist() {} // 数据通过鉴权接口保存，不共享浏览器业务缓存。
 function toast(message) {const target=$('#toast');target.textContent=message;target.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>target.classList.remove('show'),4200);}
@@ -106,7 +107,7 @@ function pageHtml(page) {
   if(page==='home') return homeHtml();
   if(page==='retrieval') return retrievalHtml();
   if(page==='reasoning') return reasoningHtml();
-  if(page==='graph') return heading('图谱管理','知识关联与来源','围绕当前井查看五类知识对象及其关联依据。',`<button class="button primary" data-route="retrieval">${icon('search',15)}进入混合检索</button>`)+constructionUI.graphHtml()+`<section class="panel graph-full"><div class="panel-heading"><h2>${icon('graph',18)}当前井知识关联</h2>${badge('示例图谱','neutral')}</div>${graphHtml()}${graphLegend()}</section>`+assetTable();
+  if(page==='graph') return graphUI.html();
   if(page==='data') return ingestionUI.html();
   if(page==='ontology') return ontologyUI.html();
   if(page==='construction') return constructionUI.html();
@@ -153,7 +154,7 @@ function moduleRoadmap(page){const def=moduleDefinitions[page];return `<section 
 function retrievalHtml() {
   const sample=demoCases.find(c=>c.id===state.sampleId);const target=currentWell();const ref=referenceWell();
   return heading('混合检索','检索与规则判定','查到哪些资料、为什么选这条规则、各项条件如何判断，在同一面板中逐项核查。',`<button class="button" data-route="reasoning">${icon('rule',15)}规则库与运行记录</button>`)+`
-  <div class="notice demo-note">${icon('info',16)}当前使用演示资料与规则。厚度差阈值 ${escape(state.rule.threshold)} m 为演示值，正式规则需经专家确认。</div>
+  ${graphUI.retrievalHtml()}<div class="notice demo-note">${icon('info',16)}当前使用演示资料与规则。厚度差阈值 ${escape(state.rule.threshold)} m 为演示值，正式规则需经专家确认。</div>
   <section class="panel analysis-context"><div class="panel-heading"><h2><span class="section-index">01</span>选择分析对象</h2>${badge('规则判定','blue')}</div><div class="analysis-fields"><label>目标井<select id="analysis-well">${projectWells().map(w=>`<option value="${w.id}" ${w.id===state.wellId?'selected':''}>${w.name}</option>`).join('')}</select></label><label>参考井<input value="${ref.name}" readonly></label><label>分析场景<select id="scenario-select"><option value="strata" ${state.scenario==='strata'?'selected':''}>地层对比</option><option value="neighbor" ${state.scenario==='neighbor'?'selected':''}>邻井推荐</option></select></label><label>井段 / 层位<input value="${escape(target.layer??'字段受限')} · ${escape(target.depth??'字段受限')}" readonly></label></div><div class="sample-controls"><label for="sample-select">演示样例</label><select id="sample-select">${demoCases.map(c=>`<option value="${c.id}" ${c.id===state.sampleId?'selected':''}>${c.name}</option>`).join('')}</select><button class="button primary" id="run-rule" data-action="run-rule">${icon('play',15)}运行规则判定</button><span class="subtle">T3：检索 → 规则关联 → 确定性判断</span></div></section>
   <div class="analysis-grid"><section class="panel retrieved-panel"><div class="panel-heading"><h2><span class="section-index">02</span>检索到的资料</h2>${badge('A07','neutral')}</div>${[target,ref].filter((w,i,list)=>list.findIndex(x=>x.id===w.id)===i).map(w=>{const asset=authorizedAssets.find(a=>a.wellId===w.id&&a.objectType==='stratum');return asset?`<div class="source-card"><div class="source-icon">${icon('file',19)}</div><div><strong>${escape(w.short)} 分层记录</strong><small>${escape(w.layer??'字段受限')} · ${escape(w.depth??'字段受限')} · MD / m</small><p>${escape(asset.source??'来源字段受限')}</p><button class="text-button" data-action="evidence" data-evidence="${w.id===target.id?'target':'reference'}">查看原始记录</button></div></div>`:`<div class="admin-note">${escape(w.short)} 分层证据不可访问。</div>`;}).join('')}<div class="evidence-footnote">${icon('link',14)}井 → 井段 → 地层 → 分层记录；资料版本 ${target.version}</div></section>
   <section class="panel selected-rule"><div class="panel-heading"><h2><span class="section-index">03</span>系统选择的规则</h2>${badge('A08','neutral')}</div>${!sample.aligned||state.scenario!=='strata'||!state.rule.enabled?`<div class="rule-empty">${icon('info',24)}<strong>无适用规则</strong><p>${!state.rule.enabled?'演示规则已停用。':state.scenario!=='strata'?'当前厚度差规则仅适用于地层对比；邻井推荐规则待专家提供。':'尚未确认两井层位对应，本规则不适用。'}</p></div>`:`<div class="rule-detail"><div class="rule-name"><strong>${escape(state.rule.name)}</strong>${badge(sample.conflict?'存在冲突':'适用',sample.conflict?'amber':'teal')}</div><div class="rule-code mono">${state.rule.id} · ${escape(state.rule.version)}</div><p>${escape(state.rule.description)}</p><dl><div><dt>选用理由</dt><dd>已选择地层对比；演示样例标记层位已确认对应。</dd></div><div><dt>判定条件</dt><dd>两井厚度差绝对值 &gt; ${escape(state.rule.threshold)} m</dd></div><div><dt>规则来源</dt><dd>${escape(state.rule.source)}</dd></div></dl>${sample.conflict?'<div class="inline-warning">样例模拟同一工况存在相反规则结论，需人工处理。</div>':''}</div>`}</section></div>
@@ -206,6 +207,7 @@ document.addEventListener('click',async event=>{
   const actionPermission={import:'import','run-rule':'run','export-run':'export','joint-analysis':'run'}[permissionButton?.dataset.action];
   if(actionPermission&&!permitted(actionPermission)){toast('无权执行此操作。');return;}
   try {
+  if(await graphUI.click(event))return;
   if(await constructionUI.click(event))return;
   if(await ontologyUI.click(event))return;
   if(await ingestionUI.click(event))return;
@@ -254,8 +256,9 @@ document.addEventListener('change',event=>{
   usersUI.change(event);
   ontologyUI.change(event);
   constructionUI.change(event);
+  graphUI.change(event);
   if(event.target.id==='project-select'&&ontologyUI.hasUnsaved()&&!window.confirm('当前本体有未保存修改，切换项目将放弃这些修改。是否继续？')){event.target.value=state.projectId;return;}
-  if(event.target.id==='project-select'){state.selectedAssetId='';state.projectId=event.target.value;state.wellId=currentProject().wells[0];state.selectedType='well';state.expanded=new Set([state.wellId]);state.activeResult=null;state.treeFilter='';persist();render();}
+  if(event.target.id==='project-select'){state.selectedAssetId='';state.graphReferenceWellId='';state.projectId=event.target.value;state.wellId=currentProject().wells[0];state.selectedType='well';state.expanded=new Set([state.wellId]);state.activeResult=null;state.treeFilter='';persist();render();}
   if(event.target.id==='analysis-well'){state.wellId=event.target.value;state.selectedType='well';state.expanded.add(state.wellId);state.activeResult=null;persist();render();}
   if(event.target.id==='sample-select'){state.sampleId=event.target.value;state.formDirty=false;state.activeResult=null;render();}
   if(event.target.id==='scenario-select'){state.scenario=event.target.value;state.activeResult=null;render();}
@@ -266,6 +269,7 @@ document.addEventListener('input',event=>{
   if(['target-thickness','reference-thickness'].includes(event.target.id))invalidateResult();
 });
 document.addEventListener('submit',async event=>{
+  if(event.target.id.startsWith('gm-')){event.preventDefault();await graphUI.submit(event);return;}
   if(event.target.id.startsWith('kc-')){event.preventDefault();await constructionUI.submit(event);return;}
   if(event.target.id.startsWith('onto-')||event.target.id.startsWith('ing-')||['login-form','admin-edit-form','audit-filter-form','rule-form'].includes(event.target.id))event.preventDefault();
   if(await ontologyUI.submit(event))return;
@@ -287,6 +291,8 @@ const usersUI=createUsersUI({modal,toast,refresh:refreshWorkspace,getUser:()=>cu
 const ingestionUI=createIngestionUI({getContext:()=>({projectId:state.projectId,wellId:state.wellId,block:currentProject().block,canData:permitted('data'),canImport:permitted('import'),route:route()}),repaint:render,refresh:refreshWorkspace,modal,toast,go,constructionSelector:id=>ontologyUI.constructionSelector(id),selectAsset:asset=>{state.wellId=asset.wellId;state.selectedType=asset.objectType;state.selectedAssetId=asset.id;state.expanded.add(asset.wellId);}});
 const ontologyUI=createOntologyUI({getContext:()=>({projectId:state.projectId,canOntology:permitted('ontology'),canConstruction:permitted('construction'),assets:getAssets()}),repaint:render,modal,toast,go});
 const constructionUI=createConstructionUI({getContext:()=>({projectId:state.projectId,wellId:state.wellId,canConstruction:permitted('construction'),route:route()}),repaint:render,modal,toast,go});
+const graphUI=createGraphUI({getContext:()=>({projectId:state.projectId,wellId:state.wellId,canGraph:permitted('graph')}),repaint:render,modal,toast,go,openAsset:id=>ingestionUI.open(id),onContext:context=>{if(context.wellId){state.wellId=context.wellId;state.expanded.add(context.wellId);}state.selectedType=objectTypes.some(t=>t.id===context.type)?context.type:'well';state.selectedAssetId='';state.graphReferenceWellId=context.referenceWellId||'';state.activeResult=null;}});
+document.addEventListener('keydown',event=>{if((event.key==='Enter'||event.key===' ')&&event.target.matches('.gm-canvas [data-gm]')){event.preventDefault();event.target.dispatchEvent(new MouseEvent('click',{bubbles:true}));}});
 document.addEventListener('dragstart',event=>ontologyUI.dragstart(event));
 document.addEventListener('dragover',event=>{if(event.target.closest('.onto-canvas'))event.preventDefault();});
 document.addEventListener('drop',event=>ontologyUI.drop(event));
@@ -306,6 +312,7 @@ function clearSession(message=''){
   ingestionUI.clear();
   ontologyUI.clear();
   constructionUI.clear();
+  graphUI.clear();state.graphReferenceWellId='';
   state.selectedAssetId='';
   currentUser=null;projects=[];wells=[];initialTasks=[];authorizedAssets=[];allowedActions={};state.runs=[];state.imported=[];state.activeResult=null;state.projectId='';state.wellId='';state.homeTab='overview';state.treeFilter='';state.selectedType='well';state.expanded=new Set();usersUI.clear();clearTimeout(sessionTimer);$('#overlay-root').innerHTML='';loginNotice=message;authLoading=false;location.hash='/login';render();
 }
@@ -324,7 +331,7 @@ async function handleAuthAction(event){const control=event.target.closest('[data
   if(control.dataset.auth==='logout'){try{await api('/auth/logout',{});clearSession('您已退出登录。');}catch(error){toast(error.message);}}
 }
 window.addEventListener('session-expired',()=>clearSession('登录已失效或账号已停用，请重新登录。'));
-window.addEventListener('hashchange',async()=>{$('dialog')?.close();if(currentUser&&route()==='users')await usersUI.load();if(currentUser&&route()==='construction')await constructionUI.load();render();});
-window.addEventListener('focus',async()=>{if(!currentUser)return;try{await refreshWorkspace();}catch(error){if(error.status!==401)toast(error.message);}});
+window.addEventListener('hashchange',async()=>{$('dialog')?.close();if(currentUser&&route()==='users')await usersUI.load();if(currentUser&&route()==='construction')await constructionUI.load();if(currentUser&&permitted('graph')&&['graph','retrieval'].includes(route()))await graphUI.load();render();});
+window.addEventListener('focus',async()=>{if(!currentUser)return;try{await refreshWorkspace();if(permitted('graph')&&['graph','retrieval'].includes(route()))await graphUI.load();}catch(error){if(error.status!==401)toast(error.message);}});
 async function start(){render();try{await refreshWorkspace();if(route()==='users')await usersUI.load();authLoading=false;render();}catch(error){if(error.status===401)clearSession();else {authLoading=false;clearSession('无法连接服务，请确认本机服务已启动后刷新。');}}}
 start();
