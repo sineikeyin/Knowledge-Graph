@@ -14,6 +14,12 @@ export const defaultRule = {
   scenario: 'strata', source: '分享对话中的示例规则（待专家确认）',
   description: '两井层位已确认对应，单位及深度基准一致，厚度差绝对值超过阈值时标记待复核。',
 };
+export const defaultNeighborRule = {
+  id: 'DEMO-NEIGHBOR-001', name: '邻井可参考性规则', version: 'demo-v1.0',
+  maxThicknessDifference: 2, unit: 'm', enabled: true,
+  scenario: 'neighbor', source: '邻井推荐示例规则（待专家确认）',
+  description: '候选井与目标井层位一致且在搜索范围内时，厚度资料完整且厚度差不超过阈值则推荐参考；超过阈值标记待复核。',
+};
 export const demoCases = [
   { id: 'triggered', name: '厚度差超限 · 8 m / 11 m', target: 8, reference: 11, aligned: true, sameBasis: true, conflict: false, expected: 'triggered' },
   { id: 'not_triggered', name: '未触发 · 8 m / 9 m', target: 8, reference: 9, aligned: true, sameBasis: true, conflict: false, expected: 'not_triggered' },

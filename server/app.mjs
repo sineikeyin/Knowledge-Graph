@@ -2,12 +2,15 @@ import http from 'node:http';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {randomBytes,scryptSync,timingSafeEqual} from 'node:crypto';
-import {makeDatabase,activeUser,identity,workspace,adminView,mutate,business,auditEvent,fault,clone} from '../src/access-model.js';
+import {makeDatabase,activeUser,identity,workspace,adminView,mutate,business,auditEvent,fault,clone,ensureBusiness} from '../src/access-model.js';
 import {createIngestion} from './ingestion.mjs';
 import {createConstruction} from './construction.mjs';
 import {ontoEnsure,ontoDashboard,ontoPublished,ontoMutation,ontoImpact} from '../src/ontology-model.js';
 import {gmEnsure,gmSeedDemo,gmDashboard,gmQuery,gmMutation} from '../src/graph-model.js';
 import {prepareSampleLabelCleanup} from './sample-labels.mjs';
+import {rgEnsure,rgDashboard,rgMutation} from '../src/regression-model.js';
+import {igEnsure,igDashboard,igMutation} from '../src/integration-model.js';
+import {opEnsure,opDashboard,opMutation} from '../src/operations-model.js';
 
 export function passwordHash(password,salt=randomBytes(16).toString('hex')) {return `${salt}:${scryptSync(password,salt,64).toString('hex')}`;}
 export function passwordMatches(password,stored='') {const [salt,hash]=stored.split(':');if(!salt||!hash)return false;const actual=scryptSync(password,salt,64);const expected=Buffer.from(hash,'hex');return actual.length===expected.length&&timingSafeEqual(actual,expected);}
@@ -15,10 +18,14 @@ export async function createApp({root,dataFile,sessionTtl=30*60*1000,labelBackup
   root=path.resolve(root);
   let state;try {state=JSON.parse(await fs.readFile(dataFile,'utf8'));}catch(error){if(error.code!=='ENOENT')throw error;state={db:makeDatabase(),passwords:{}};for(const user of state.db.users)state.passwords[user.id]=passwordHash('GeoDemo!2026');}
   const labelCleanup=await prepareSampleLabelCleanup({db:state.db,directory:path.dirname(dataFile),dataFile,backupRoot:labelBackupRoot});state.db=labelCleanup.db;
+  ensureBusiness(state.db);
+  rgEnsure(state.db);
+  igEnsure(state.db);
+  opEnsure(state.db);
   ontoEnsure(state.db);
   gmEnsure(state.db);for(const project of state.db.projects)gmSeedDemo(state.db,project.id);
   const sessions=new Map(),attempts=new Map();let commits=Promise.resolve();
-  const persist=async()=>{await fs.mkdir(path.dirname(dataFile),{recursive:true});const tmp=dataFile+'.tmp';await fs.writeFile(tmp,JSON.stringify(state,null,2));await fs.rename(tmp,dataFile);};
+  const persist=async()=>{await fs.mkdir(path.dirname(dataFile),{recursive:true});const tmp=dataFile+'.tmp';await fs.writeFile(tmp,JSON.stringify(state,null,2));for(let attempt=0;;attempt++){try{await fs.rename(tmp,dataFile);return;}catch(error){if(!['EPERM','EBUSY','EACCES'].includes(error.code)||attempt>=9){await fs.unlink(tmp).catch(()=>{});throw error;}await new Promise(resolve=>setTimeout(resolve,20+attempt*30));}}};
   try{await labelCleanup.apply();if(labelCleanup.changed)state.db.sampleLabelCleanup={version:1,completedAt:new Date().toISOString(),...labelCleanup.summary};await persist();}catch(error){await labelCleanup.rollback();throw error;}
   const commit=operation=>{const next=commits.then(async()=>{const before=clone(state);try {const result=operation();await persist();return result;}catch(error){state=before;throw error;}});commits=next.catch(()=>{});return next;};
   const ingestion=await createIngestion({directory:path.join(path.dirname(dataFile),'ingestion'),getDb:()=>state.db,commit:operation=>commit(()=>operation(state.db))});
@@ -35,7 +42,7 @@ export async function createApp({root,dataFile,sessionTtl=30*60*1000,labelBackup
       if(!pathname.startsWith('/api/')) {
         if(!['GET','HEAD'].includes(req.method))fault('Method not allowed',405);
         const relative=pathname==='/'?'index.html':pathname.slice(1);
-        const publicFiles=['index.html','src/main.js','src/data.js','src/icons.js','src/rules.js','src/styles.css','src/api.js','src/users.js','src/ingestion.js','src/ingestion-core.js','src/ontology.js','src/ontology-core.js','src/las-core.js','src/construction.js','src/construction-core.js','src/graph.js','src/graph-core.js'];
+        const publicFiles=['index.html','src/main.js','src/data.js','src/icons.js','src/rules.js','src/styles.css','src/api.js','src/users.js','src/ingestion.js','src/ingestion-core.js','src/ontology.js','src/ontology-core.js','src/las-core.js','src/construction.js','src/construction-core.js','src/graph.js','src/graph-core.js','src/joint-analysis.js'];
         if(!publicFiles.includes(relative)&&!/^assets\/[a-zA-Z0-9_.-]+\.svg$/.test(relative)&&relative!=='docs/页面搭建步骤.html')fault('File unavailable',404);
         const file=path.resolve(root,relative);if(!file.startsWith(root+path.sep))fault('Forbidden',403);
         const content=await fs.readFile(file);const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.svg':'image/svg+xml'};
@@ -73,6 +80,12 @@ export async function createApp({root,dataFile,sessionTtl=30*60*1000,labelBackup
       if(pathname==='/api/auth/me'&&req.method==='GET'){send(200,{user:identity(state.db,user),csrf:session.csrf,expires:session.expires});return;}
       if(pathname==='/api/auth/logout'&&req.method==='POST'){await commit(()=>auditEvent(state.db,user,'退出登录','会话',{}, {requestId}));sessions.delete(token);res.setHeader('Set-Cookie','geokg_session=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0');send(200,{ok:true});return;}
       if(pathname==='/api/workspace'&&req.method==='GET'){send(200,workspace(state.db,user));return;}
+      if(pathname==='/api/regression'&&req.method==='GET'){send(200,rgDashboard(state.db,user,url.searchParams.get('projectId')));return;}
+      if(pathname==='/api/regression/mutate'&&req.method==='POST'){send(200,await commit(()=>rgMutation(state.db,user,body.action,body,{requestId})));return;}
+      if(pathname==='/api/integration'&&req.method==='GET'){send(200,igDashboard(state.db,user,url.searchParams.get('projectId')));return;}
+      if(pathname==='/api/integration/mutate'&&req.method==='POST'){send(200,await commit(()=>igMutation(state.db,user,body.action,body,{requestId})));return;}
+      if(pathname==='/api/operations'&&req.method==='GET'){send(200,opDashboard(state.db,user,url.searchParams.get('projectId')));return;}
+      if(pathname==='/api/operations/mutate'&&req.method==='POST'){send(200,await commit(()=>opMutation(state.db,user,body.action,body,{requestId})));return;}
       if(pathname==='/api/ontology'&&req.method==='GET'){send(200,ontoDashboard(state.db,user,url.searchParams.get('projectId')));return;}
       if(pathname==='/api/ontology/published'&&req.method==='GET'){send(200,ontoPublished(state.db,user,url.searchParams.get('projectId')));return;}
       if(pathname==='/api/ontology/impact'&&req.method==='GET'){
@@ -89,7 +102,7 @@ export async function createApp({root,dataFile,sessionTtl=30*60*1000,labelBackup
         if(entity==='users')for(const [key,value]of sessions)if(value.userId===result.id&&(!state.db.users.find(u=>u.id===result.id)?.enabled||newHash))sessions.delete(key);
         send(200,result);return;
       }
-      const businessMatch=pathname.match(/^\/api\/business\/(import|run|rule-edit|export)$/);
+      const businessMatch=pathname.match(/^\/api\/business\/(import|run|rule-edit|export|joint-run|joint-export|neighbors|neighbor-run|neighbor-review)$/);
       if(businessMatch&&req.method==='POST'){const result=await commit(()=>business(state.db,user,businessMatch[1],body,{requestId}));send(200,result);return;}
       fault('接口不存在。',404);
     }catch(error){const status=error.status||(error.code==='ENOENT'?404:500);if(status===403&&req.url?.startsWith('/api/')){try{await commit(()=>auditEvent(state.db,auditUser,'拒绝访问',req.url,{},{requestId,result:'拒绝'}));}catch{}}

@@ -1,4 +1,4 @@
-import {makeDatabase,activeUser,identity,workspace,adminView,mutate,business,auditEvent,fault,clone} from './access-model.js';
+import {makeDatabase,activeUser,identity,workspace,adminView,mutate,business,auditEvent,fault,clone,ensureBusiness} from './access-model.js';
 import {ingEnsure,ingRecordUpload,ingSetParsed,ingDashboard,ingDetail,ingMutation,ingId} from './ingestion-model.js';
 import {ingParse} from './ingestion-core.js';
 import {ingSeedDemo} from './ingestion-demo.js';
@@ -6,8 +6,15 @@ import {ontoEnsure,ontoDashboard,ontoPublished,ontoMutation,ontoImpact} from './
 import {kcEnsure,kcDashboard,kcDetail,kcGraph,kcMutation,kcDispatch,kcAdvance} from './construction-model.js';
 import {gmEnsure,gmSeedDemo,gmDashboard,gmQuery,gmMutation} from './graph-model.js';
 import {slCleanDatabase} from './sample-labels.js';
+import {rgEnsure,rgDashboard,rgMutation} from './regression-model.js';
+import {igEnsure,igDashboard,igMutation} from './integration-model.js';
+import {opEnsure,opDashboard,opMutation} from './operations-model.js';
 export function createOfflineService() {
   let db;try{db=JSON.parse(localStorage.getItem('geokg-offline-users-v1'));}catch{}if(!db?.users)db=makeDatabase();
+  ensureBusiness(db);
+  rgEnsure(db);
+  igEnsure(db);
+  opEnsure(db);
   slCleanDatabase(db);
   let session;try{session=JSON.parse(sessionStorage.getItem('geokg-offline-session-v1'));}catch{}
   ingEnsure(db);ontoEnsure(db);kcEnsure(db);
@@ -62,6 +69,12 @@ export function createOfflineService() {
       }
       fault('离线模式不支持该数据接口。',404);
     }
+    if(pathname==='/regression'||pathname.startsWith('/regression?')){const [endpoint,query='']=pathname.split('?');const params=new URLSearchParams(query);return rgDashboard(db,user,params.get('projectId'));}
+    if(pathname==='/regression/mutate'){const before=clone(db);try{const result=rgMutation(db,user,body.action,body);save();return result;}catch(error){db=before;throw error;}}
+    if(pathname==='/integration'||pathname.startsWith('/integration?')){const [,query='']=pathname.split('?');const params=new URLSearchParams(query);return igDashboard(db,user,params.get('projectId'));}
+    if(pathname==='/integration/mutate'){const before=clone(db);try{const result=igMutation(db,user,body.action,body);save();return result;}catch(error){db=before;throw error;}}
+    if(pathname==='/operations'||pathname.startsWith('/operations?')){const [,query='']=pathname.split('?');const params=new URLSearchParams(query);return opDashboard(db,user,params.get('projectId'));}
+    if(pathname==='/operations/mutate'){const before=clone(db);try{const result=opMutation(db,user,body.action,body);save();return result;}catch(error){db=before;throw error;}}
     if(pathname==='/admin')return adminView(db,user);
     if(pathname.startsWith('/business/')){const result=business(db,user,pathname.split('/').pop(),body);save();return result;}
     const entity=pathname.slice(1);const clean={...body};delete clean.password;const result=mutate(db,user,entity,clean);save();return result;
